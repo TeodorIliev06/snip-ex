@@ -7,6 +7,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{9492908E-CA9
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnipEx.Web", "SnipEx.Web\SnipEx.Web.csproj", "{A0263DD9-0474-482A-8D95-FA3D798F4AF5}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{2DD52EA5-136B-43F6-9F65-BEB84CD9A300}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnipEx.Data", "SnipEx.Data\SnipEx.Data.csproj", "{4E23400E-F146-4BC7-A58F-85C2997D5DC1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnipEx.Data.Models", "SnipEx.Data.Models\SnipEx.Data.Models.csproj", "{BF494923-F688-49E7-A435-F337BA37B4FE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,11 +23,21 @@ Global
 		{A0263DD9-0474-482A-8D95-FA3D798F4AF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0263DD9-0474-482A-8D95-FA3D798F4AF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A0263DD9-0474-482A-8D95-FA3D798F4AF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E23400E-F146-4BC7-A58F-85C2997D5DC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E23400E-F146-4BC7-A58F-85C2997D5DC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E23400E-F146-4BC7-A58F-85C2997D5DC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E23400E-F146-4BC7-A58F-85C2997D5DC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF494923-F688-49E7-A435-F337BA37B4FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF494923-F688-49E7-A435-F337BA37B4FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF494923-F688-49E7-A435-F337BA37B4FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF494923-F688-49E7-A435-F337BA37B4FE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{A0263DD9-0474-482A-8D95-FA3D798F4AF5} = {9492908E-CA9B-44B2-BE32-986DBF6CAE05}
+		{4E23400E-F146-4BC7-A58F-85C2997D5DC1} = {2DD52EA5-136B-43F6-9F65-BEB84CD9A300}
+		{BF494923-F688-49E7-A435-F337BA37B4FE} = {2DD52EA5-136B-43F6-9F65-BEB84CD9A300}
 	EndGlobalSection
 EndGlobal
