@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SnipEx.Common\SnipEx.Common.csproj" />
     <ProjectReference Include="..\SnipEx.Data.Models\SnipEx.Data.Models.csproj" />
   </ItemGroup>
 

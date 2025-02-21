@@ -11,5 +11,8 @@
 
         public virtual ICollection<Post> Posts { get; set; }
             = new HashSet<Post>();
+
+        public virtual ICollection<Comment> Comments { get; set; }
+            = new HashSet<Comment>();
     }
 }
