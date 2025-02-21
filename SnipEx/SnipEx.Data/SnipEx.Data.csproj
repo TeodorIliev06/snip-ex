@@ -19,4 +19,8 @@
     <ProjectReference Include="..\SnipEx.Data.Models\SnipEx.Data.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

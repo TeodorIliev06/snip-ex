@@ -4,8 +4,9 @@
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
     using SnipEx.Data.Models;
+    using System.Reflection;
 
-    public class SnipExDbContext : IdentityDbContext
+    public class SnipExDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
     {
         public SnipExDbContext()
         {
@@ -18,5 +19,10 @@
         }
 
         public virtual DbSet<Post> Posts { get; set; } = null!;
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

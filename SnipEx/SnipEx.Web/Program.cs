@@ -4,6 +4,7 @@ namespace SnipEx.Web
     using Microsoft.EntityFrameworkCore;
 
     using SnipEx.Data;
+    using SnipEx.Data.Models;
 
     public class Program
     {
@@ -17,9 +18,14 @@ namespace SnipEx.Web
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<SnipExDbContext>();
+            builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
+                .AddEntityFrameworkStores<SnipExDbContext>()
+                .AddRoles<ApplicationRole>()
+                .AddSignInManager<SignInManager<ApplicationUser>>()
+                .AddUserManager<UserManager<ApplicationUser>>();
+
             builder.Services.AddControllersWithViews();
+            builder.Services.AddRazorPages();
 
             var app = builder.Build();
 
@@ -40,6 +46,7 @@ namespace SnipEx.Web
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(

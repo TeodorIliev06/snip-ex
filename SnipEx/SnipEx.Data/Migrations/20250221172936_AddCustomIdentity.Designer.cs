@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SnipEx.Data;
 
@@ -11,9 +12,11 @@ using SnipEx.Data;
 namespace SnipEx.Data.Migrations
 {
     [DbContext(typeof(SnipExDbContext))]
-    partial class SnipExDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250221172936_AddCustomIdentity")]
+    partial class AddCustomIdentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

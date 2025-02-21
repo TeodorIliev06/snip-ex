@@ -11,5 +11,9 @@
         public int Views { get; set; }
 
         public decimal Rating { get; set; }
+
+        public Guid UserId { get; set; }
+
+        public ApplicationUser User { get; set; } = null!;
     }
 }
