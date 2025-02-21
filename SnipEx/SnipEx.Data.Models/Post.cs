@@ -12,8 +12,16 @@
 
         public decimal Rating { get; set; }
 
+        public DateTime CreatedAt { get; set; }
+
         public Guid UserId { get; set; }
 
         public ApplicationUser User { get; set; } = null!;
+
+        public ICollection<PostTag> PostsTags { get; set; }
+            = new HashSet<PostTag>();
+
+        public ICollection<Comment> Comments { get; set; }
+            = new HashSet<Comment>();
     }
 }

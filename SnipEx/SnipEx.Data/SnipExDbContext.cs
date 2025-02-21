@@ -19,10 +19,14 @@
         }
 
         public virtual DbSet<Post> Posts { get; set; } = null!;
+        public virtual DbSet<Tag> Tags { get; set; } = null!;
+        public virtual DbSet<PostTag> PostsTags { get; set; } = null!;
+        public virtual DbSet<Comment> Comments { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
     }
 }
