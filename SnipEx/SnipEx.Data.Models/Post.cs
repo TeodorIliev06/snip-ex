@@ -14,9 +14,9 @@
 
         public DateTime CreatedAt { get; set; }
 
-        public Guid UserId { get; set; }
+        public Guid? UserId { get; set; }
 
-        public ApplicationUser User { get; set; } = null!;
+        public ApplicationUser? User { get; set; }
 
         public ICollection<PostTag> PostsTags { get; set; }
             = new HashSet<PostTag>();

@@ -12,8 +12,8 @@ using SnipEx.Data;
 namespace SnipEx.Data.Migrations
 {
     [DbContext(typeof(SnipExDbContext))]
-    [Migration("20250223132624_SeedAllData")]
-    partial class SeedAllData
+    [Migration("20250223162113_MakeAppUserNullable")]
+    partial class MakeAppUserNullable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -239,7 +239,7 @@ namespace SnipEx.Data.Migrations
                     b.Property<Guid>("PostId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -256,40 +256,35 @@ namespace SnipEx.Data.Migrations
                             Id = new Guid("84cd3f43-760c-4a00-9f01-37c450c1b1d6"),
                             Content = "This article provided exactly what I needed to understand dependency injection properly. The examples were clear and the explanations of service lifetimes were particularly helpful. I've already started implementing these patterns in my current project.",
                             CreatedAt = new DateTime(2024, 2, 16, 0, 0, 0, 0, DateTimeKind.Utc),
-                            PostId = new Guid("606585ff-5f22-49a8-bb12-d1b52f155cfb"),
-                            UserId = new Guid("586d46d4-93e7-44d8-92db-88c273c8d1b5")
+                            PostId = new Guid("606585ff-5f22-49a8-bb12-d1b52f155cfb")
                         },
                         new
                         {
                             Id = new Guid("43007dab-e354-4c2b-a2d2-b9c873c1c20e"),
                             Content = "The section about query optimization was eye-opening. I never realized how much performance impact the difference between IEnumerable and IQueryable could have. Would love to see a follow-up post about handling complex joins efficiently.",
                             CreatedAt = new DateTime(2024, 2, 21, 0, 0, 0, 0, DateTimeKind.Utc),
-                            PostId = new Guid("2deb2f40-7a55-4a0b-86d0-e3983cc460b8"),
-                            UserId = new Guid("586d46d4-93e7-44d8-92db-88c273c8d1b5")
+                            PostId = new Guid("2deb2f40-7a55-4a0b-86d0-e3983cc460b8")
                         },
                         new
                         {
                             Id = new Guid("6563ecc2-48e7-417b-b0fc-0e97bf1ef1dc"),
                             Content = "The microservices architecture patterns described here helped me understand how to better structure our distributed system. The examples of handling data consistency across services were particularly valuable.",
                             CreatedAt = new DateTime(2024, 2, 2, 0, 0, 0, 0, DateTimeKind.Utc),
-                            PostId = new Guid("8ad01fc6-828e-4e4a-aae8-efb860d210fc"),
-                            UserId = new Guid("586d46d4-93e7-44d8-92db-88c273c8d1b5")
+                            PostId = new Guid("8ad01fc6-828e-4e4a-aae8-efb860d210fc")
                         },
                         new
                         {
                             Id = new Guid("fa286f96-7a7b-45ab-8e4b-4a34cc5ff75f"),
                             Content = "Great coverage of exception handling best practices. The middleware implementation example was especially useful. I've implemented similar patterns in my projects and it has significantly improved our error tracking.",
                             CreatedAt = new DateTime(2024, 2, 11, 0, 0, 0, 0, DateTimeKind.Utc),
-                            PostId = new Guid("714f4d63-8e48-4a31-abaf-e3142420a34c"),
-                            UserId = new Guid("586d46d4-93e7-44d8-92db-88c273c8d1b5")
+                            PostId = new Guid("714f4d63-8e48-4a31-abaf-e3142420a34c")
                         },
                         new
                         {
                             Id = new Guid("d80eb8f8-f40c-4118-844a-5bb6e272433d"),
                             Content = "The performance optimization techniques for Entity Framework Core were invaluable. I especially appreciated the detailed explanation of when to use different tracking options and how they affect application performance.",
                             CreatedAt = new DateTime(2024, 2, 6, 0, 0, 0, 0, DateTimeKind.Utc),
-                            PostId = new Guid("5a250d42-f366-437a-9f21-c00f2d56e898"),
-                            UserId = new Guid("586d46d4-93e7-44d8-92db-88c273c8d1b5")
+                            PostId = new Guid("5a250d42-f366-437a-9f21-c00f2d56e898")
                         });
                 });
 
@@ -316,7 +311,7 @@ namespace SnipEx.Data.Migrations
                         .HasMaxLength(70)
                         .HasColumnType("nvarchar(70)");
 
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Views")
@@ -338,7 +333,6 @@ namespace SnipEx.Data.Migrations
                             CreatedAt = new DateTime(2024, 2, 15, 0, 0, 0, 0, DateTimeKind.Utc),
                             Rating = 4.8m,
                             Title = "Understanding Dependency Injection in .NET Core Applications",
-                            UserId = new Guid("586d46d4-93e7-44d8-92db-88c273c8d1b5"),
                             Views = 856
                         },
                         new
@@ -348,7 +342,6 @@ namespace SnipEx.Data.Migrations
                             CreatedAt = new DateTime(2024, 2, 20, 0, 0, 0, 0, DateTimeKind.Utc),
                             Rating = 4.9m,
                             Title = "Mastering LINQ: Advanced Queries and Performance Optimization",
-                            UserId = new Guid("586d46d4-93e7-44d8-92db-88c273c8d1b5"),
                             Views = 1000
                         },
                         new
@@ -358,7 +351,6 @@ namespace SnipEx.Data.Migrations
                             CreatedAt = new DateTime(2024, 2, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Rating = 4.5m,
                             Title = "Building Scalable Microservices with ASP.NET Core",
-                            UserId = new Guid("586d46d4-93e7-44d8-92db-88c273c8d1b5"),
                             Views = 723
                         },
                         new
@@ -368,7 +360,6 @@ namespace SnipEx.Data.Migrations
                             CreatedAt = new DateTime(2024, 2, 10, 0, 0, 0, 0, DateTimeKind.Utc),
                             Rating = 4.7m,
                             Title = "Effective Error Handling in C# Applications",
-                            UserId = new Guid("586d46d4-93e7-44d8-92db-88c273c8d1b5"),
                             Views = 645
                         },
                         new
@@ -378,7 +369,6 @@ namespace SnipEx.Data.Migrations
                             CreatedAt = new DateTime(2024, 2, 5, 0, 0, 0, 0, DateTimeKind.Utc),
                             Rating = 4.6m,
                             Title = "Entity Framework Core: Advanced Patterns and Performance Tips",
-                            UserId = new Guid("586d46d4-93e7-44d8-92db-88c273c8d1b5"),
                             Views = 912
                         });
                 });
@@ -539,8 +529,7 @@ namespace SnipEx.Data.Migrations
                     b.HasOne("SnipEx.Data.Models.ApplicationUser", "User")
                         .WithMany("Comments")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Post");
 
@@ -552,8 +541,7 @@ namespace SnipEx.Data.Migrations
                     b.HasOne("SnipEx.Data.Models.ApplicationUser", "User")
                         .WithMany("Posts")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("User");
                 });

@@ -36,6 +36,7 @@
             builder.HasOne(p => p.User)
                 .WithMany(u => u.Posts)
                 .HasForeignKey(p => p.UserId)
+                .IsRequired(false)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasMany(p => p.Comments)
