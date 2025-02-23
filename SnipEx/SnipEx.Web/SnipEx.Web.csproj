@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SnipEx.Data\SnipEx.Data.csproj" />
+    <ProjectReference Include="..\SnipEx.Web.Infrastructure\SnipEx.Web.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

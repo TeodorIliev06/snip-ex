@@ -5,10 +5,11 @@ namespace SnipEx.Web
 
     using SnipEx.Data;
     using SnipEx.Data.Models;
+    using SnipEx.Web.Infrastructure;
 
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
             string connectionString = builder.Configuration.GetConnectionString("DefaultConnection")!;
@@ -49,12 +50,14 @@ namespace SnipEx.Web
             app.UseAuthentication();
             app.UseAuthorization();
 
+            await app.SeedAdminAsync();
+
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
 
-            app.Run();
+            await app.RunAsync();
         }
     }
 }
