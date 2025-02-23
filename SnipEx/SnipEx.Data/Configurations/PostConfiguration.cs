@@ -4,6 +4,8 @@
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
     using SnipEx.Data.Models;
+    using SnipEx.Data.Extensions;
+
     using static Common.EntityValidationConstants.Post;
 
     public class PostConfiguration : IEntityTypeConfiguration<Post>
@@ -40,6 +42,9 @@
                 .WithOne(c => c.Post)
                 .HasForeignKey(c => c.PostId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder
+                .SeedDataFromJson("posts.json");
         }
     }
 }

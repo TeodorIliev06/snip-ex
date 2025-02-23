@@ -1,0 +1,37 @@
+[
+  {
+    "Id": "84cd3f43-760c-4a00-9f01-37c450c1b1d6",
+    "Content": "This article provided exactly what I needed to understand dependency injection properly. The examples were clear and the explanations of service lifetimes were particularly helpful. I've already started implementing these patterns in my current project.",
+    "CreatedAt": "2024-02-16T00:00:00.000Z",
+    "PostId": "606585ff-5f22-49a8-bb12-d1b52f155cfb",
+    "UserId": "586d46d4-93e7-44d8-92db-88c273c8d1b5"
+  },
+  {
+    "Id": "43007dab-e354-4c2b-a2d2-b9c873c1c20e",
+    "Content": "The section about query optimization was eye-opening. I never realized how much performance impact the difference between IEnumerable and IQueryable could have. Would love to see a follow-up post about handling complex joins efficiently.",
+    "CreatedAt": "2024-02-21T00:00:00.000Z",
+    "PostId": "2deb2f40-7a55-4a0b-86d0-e3983cc460b8",
+    "UserId": "586d46d4-93e7-44d8-92db-88c273c8d1b5"
+  },
+  {
+    "Id": "6563ecc2-48e7-417b-b0fc-0e97bf1ef1dc",
+    "Content": "The microservices architecture patterns described here helped me understand how to better structure our distributed system. The examples of handling data consistency across services were particularly valuable.",
+    "CreatedAt": "2024-02-02T00:00:00.000Z",
+    "PostId": "8ad01fc6-828e-4e4a-aae8-efb860d210fc",
+    "UserId": "586d46d4-93e7-44d8-92db-88c273c8d1b5"
+  },
+  {
+    "Id": "fa286f96-7a7b-45ab-8e4b-4a34cc5ff75f",
+    "Content": "Great coverage of exception handling best practices. The middleware implementation example was especially useful. I've implemented similar patterns in my projects and it has significantly improved our error tracking.",
+    "CreatedAt": "2024-02-11T00:00:00.000Z",
+    "PostId": "714f4d63-8e48-4a31-abaf-e3142420a34c",
+    "UserId": "586d46d4-93e7-44d8-92db-88c273c8d1b5"
+  },
+  {
+    "Id": "d80eb8f8-f40c-4118-844a-5bb6e272433d",
+    "Content": "The performance optimization techniques for Entity Framework Core were invaluable. I especially appreciated the detailed explanation of when to use different tracking options and how they affect application performance.",
+    "CreatedAt": "2024-02-06T00:00:00.000Z",
+    "PostId": "5a250d42-f366-437a-9f21-c00f2d56e898",
+    "UserId": "586d46d4-93e7-44d8-92db-88c273c8d1b5"
+  }
+]

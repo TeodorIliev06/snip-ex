@@ -1,0 +1,27 @@
+[
+  {
+    "Id": "5f064346-c5ee-4c85-a9d3-141f681953f2",
+    "Name": "Dependency-Injection",
+    "Description": "Topics related to implementing and managing dependency injection in .NET applications, including service lifetime management, container configuration, and best practices for loose coupling."
+  },
+  {
+    "Id": "a6e14c7b-5321-463d-bdd9-6718ee40d775",
+    "Name": "LINQ-and-Collections",
+    "Description": "Discussions about Language Integrated Query (LINQ), including query optimization, collection handling, and advanced techniques for data manipulation in .NET applications."
+  },
+  {
+    "Id": "2b8a891c-e627-40bd-8cdd-bfd0655f0fc7",
+    "Name": "Microservices-Architecture",
+    "Description": "Content covering microservices design patterns, implementation strategies, service communication, and deployment considerations in distributed systems."
+  },
+  {
+    "Id": "b09d09f3-a249-4f48-841f-eecd5fd3ec93",
+    "Name": "Error-Handling-Patterns",
+    "Description": "Resources and discussions about implementing robust error handling, exception management, and logging strategies in .NET applications."
+  },
+  {
+    "Id": "8ab0d353-2dcf-47e9-af14-9c8a66efa2ac",
+    "Name": "Entity-Framework-Core",
+    "Description": "Information about Entity Framework Core ORM, including performance optimization, query strategies, and database interaction patterns."
+  }
+]

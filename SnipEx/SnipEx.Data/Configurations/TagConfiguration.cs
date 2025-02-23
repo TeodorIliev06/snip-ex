@@ -4,6 +4,8 @@
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
     using SnipEx.Data.Models;
+    using SnipEx.Data.Extensions;
+
     using static Common.EntityValidationConstants.Tag;
 
     internal class TagConfiguration : IEntityTypeConfiguration<Tag>
@@ -22,6 +24,9 @@
                 .Property(t => t.Description)
                 .IsRequired(false)
                 .HasMaxLength(DescriptionMaxLength);
+
+            builder
+                .SeedDataFromJson("tags.json");
         }
     }
 }

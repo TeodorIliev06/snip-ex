@@ -4,6 +4,8 @@
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
     using SnipEx.Data.Models;
+    using SnipEx.Data.Extensions;
+
     using static Common.EntityValidationConstants.Comment;
 
     public class CommentConfiguration : IEntityTypeConfiguration<Comment>
@@ -28,6 +30,9 @@
                 .HasOne(c => c.Post)
                 .WithMany(p => p.Comments)
                 .HasForeignKey(c => c.PostId);
+
+            builder
+                .SeedDataFromJson("comments.json");
         }
     }
 }

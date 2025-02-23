@@ -4,6 +4,7 @@
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
     using SnipEx.Data.Models;
+    using SnipEx.Data.Extensions;
 
     public class PostTagConfiguration : IEntityTypeConfiguration<PostTag>
     {
@@ -23,6 +24,9 @@
                 .WithMany(t => t.PostsTags)
                 .HasForeignKey(pt => pt.TagId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .SeedDataFromJson("postsTags.json");
         }
     }
 }
