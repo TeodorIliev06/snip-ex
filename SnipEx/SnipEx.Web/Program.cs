@@ -28,6 +28,8 @@ namespace SnipEx.Web
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
 
+            builder.Services.RegisterRepositories(typeof(ApplicationUser).Assembly);
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
