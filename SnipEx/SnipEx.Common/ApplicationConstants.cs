@@ -12,5 +12,7 @@ namespace SnipEx.Common
         public const string AdminEmail = "admin@example.com";
         public const string AdminUsername = "admin";
         public const string AdminPassword = "Admin123!";
+
+        public const string NoUserName = "Anonymous";
     }
 }

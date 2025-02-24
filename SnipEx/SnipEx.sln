@@ -19,6 +19,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnipEx.Web.Infrastructure",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnipEx.Web.ViewModels", "SnipEx.Web.ViewModels\SnipEx.Web.ViewModels.csproj", "{523D9161-9B34-409B-AE54-BD6577F30D3B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{026A6ADD-B5E7-471F-BD54-8FCCE8B4D051}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnipEx.Services.Data", "SnipEx.Services.Data\SnipEx.Services.Data.csproj", "{AD07DE04-2884-4B28-AA54-DAE537650649}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +53,10 @@ Global
 		{523D9161-9B34-409B-AE54-BD6577F30D3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{523D9161-9B34-409B-AE54-BD6577F30D3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{523D9161-9B34-409B-AE54-BD6577F30D3B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD07DE04-2884-4B28-AA54-DAE537650649}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD07DE04-2884-4B28-AA54-DAE537650649}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD07DE04-2884-4B28-AA54-DAE537650649}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD07DE04-2884-4B28-AA54-DAE537650649}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -59,5 +67,6 @@ Global
 		{BF494923-F688-49E7-A435-F337BA37B4FE} = {2DD52EA5-136B-43F6-9F65-BEB84CD9A300}
 		{0758E28C-5287-4B25-BEE3-5CA0AF5F32F7} = {9492908E-CA9B-44B2-BE32-986DBF6CAE05}
 		{523D9161-9B34-409B-AE54-BD6577F30D3B} = {9492908E-CA9B-44B2-BE32-986DBF6CAE05}
+		{AD07DE04-2884-4B28-AA54-DAE537650649} = {026A6ADD-B5E7-471F-BD54-8FCCE8B4D051}
 	EndGlobalSection
 EndGlobal
