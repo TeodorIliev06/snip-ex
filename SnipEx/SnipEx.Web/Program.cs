@@ -6,6 +6,7 @@ namespace SnipEx.Web
     using SnipEx.Data;
     using SnipEx.Data.Models;
     using SnipEx.Web.Infrastructure;
+    using SnipEx.Services.Data.Contracts;
 
     public class Program
     {
@@ -29,6 +30,7 @@ namespace SnipEx.Web
             builder.Services.AddRazorPages();
 
             builder.Services.RegisterRepositories(typeof(ApplicationUser).Assembly);
+            builder.Services.RegisterUserDefinedServices(typeof(IPostService).Assembly);
 
             var app = builder.Build();
 

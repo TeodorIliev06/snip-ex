@@ -51,5 +51,32 @@
             }
         }
 
+        public static void RegisterUserDefinedServices(this IServiceCollection services, Assembly servicesAssembly)
+        {
+            Type[] serviceInterfaceTypes = servicesAssembly
+                .GetTypes()
+                .Where(t => t.IsInterface)
+                .ToArray();
+            Type[] serviceTypes = servicesAssembly
+                .GetTypes()
+                .Where(t =>
+                    !t.IsInterface && !t.IsAbstract &&
+                    t.Name.ToLower().EndsWith("service"))
+                .ToArray();
+
+            foreach (var serviceInterfaceType in serviceInterfaceTypes)
+            {
+                Type? serviceType = serviceTypes
+                    .SingleOrDefault(t =>
+                        String.Equals("I" + t.Name, serviceInterfaceType.Name, StringComparison.OrdinalIgnoreCase));
+
+                if (serviceType == null)
+                {
+                    throw new NullReferenceException($"Service type could not be obtained {serviceInterfaceType.Name}");
+                }
+
+                services.AddScoped(serviceInterfaceType, serviceType);
+            }
+        }
     }
 }
