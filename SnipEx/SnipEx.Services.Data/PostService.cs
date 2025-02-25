@@ -1,5 +1,6 @@
 ﻿namespace SnipEx.Services.Data
 {
+    using System.Globalization;
     using Microsoft.EntityFrameworkCore;
 
     using SnipEx.Common;
@@ -30,7 +31,10 @@
 
             if (!string.IsNullOrEmpty(search))
             {
-                query = query.Where(p => p.Title.Contains(search) || p.Content.Contains(search));
+                search = search.ToLower();
+                query = query.Where(p => 
+                    p.Title.ToLower().Contains(search) ||
+                    p.Content.ToLower().Contains(search));
             }
 
             query = sort switch
@@ -62,7 +66,7 @@
                     Title = p.Title,
                     Content = p.Content,
                     UserName = p.User?.UserName ?? ApplicationConstants.NoUserName,
-                    CreatedAt = p.CreatedAt.ToString(CreatedAtFormat),
+                    CreatedAt = p.CreatedAt.ToString(CreatedAtFormat, CultureInfo.InvariantCulture),
                     Views = p.Views,
                     Rating = p.Rating,
                     CommentCount = p.Comments.Count,

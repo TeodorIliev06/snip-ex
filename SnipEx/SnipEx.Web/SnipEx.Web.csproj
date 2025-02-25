@@ -24,8 +24,4 @@
     <ProjectReference Include="..\SnipEx.Web.ViewModels\SnipEx.Web.ViewModels.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\js\post\" />
-  </ItemGroup>
-
 </Project>
