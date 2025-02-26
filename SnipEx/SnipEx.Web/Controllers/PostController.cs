@@ -7,11 +7,18 @@
     public class PostController(
         IPostService postService) : Controller
     {
+
         [HttpGet]
         public async Task<IActionResult> Index(string? tag, string? search, string sort = "newest")
         {
             var viewModel = await postService.GetPostsAsync(tag, search, sort);
             return View(viewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Create()
+        {
+            return View();
         }
     }
 }

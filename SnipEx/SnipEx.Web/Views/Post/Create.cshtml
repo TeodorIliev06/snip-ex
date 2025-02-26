@@ -1,0 +1,120 @@
+﻿@model SnipEx.Data.Models.Post
+@{
+    ViewData["Title"] = "Create Snippet";
+}
+
+<div class="main-container">
+    <h1 class="page-title">Create a New Snippet</h1>
+
+    <form class="create-post-form" asp-controller="Post" asp-action="Create" method="post">
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "validation-summary-errors" })
+
+        <div class="form-group">
+            <label asp-for="Title" class="form-label">Title</label>
+            <input asp-for="Title" class="form-input" placeholder="Give your snippet a descriptive title...">
+            <span asp-validation-for="Title" class="field-validation-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Content" class="form-label">Code</label>
+            <div class="editor-container">
+                <div class="code-header">
+                    <select class="language-selector" id="language-selector">
+                        <option value="clike">C#</option>
+                        <option value="javascript">JavaScript</option>
+                        <option value="html">HTML</option>
+                        <option value="css">CSS</option>
+                        <option value="python">Python</option>
+                        <option value="java">Java</option>
+                        <option value="php">PHP</option>
+                        <option value="ruby">Ruby</option>
+                        <option value="go">Go</option>
+                        <option value="rust">Rust</option>
+                        <option value="sql">SQL</option>
+                    </select>
+                    <div>
+                        <button type="button" class="btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.9rem;" id="copy-code-btn">
+                            <i class="fas fa-copy"></i> Copy
+                        </button>
+                    </div>
+                </div>
+                <textarea id="code-editor" asp-for="Content"></textarea>
+                <span asp-validation-for="Content" class="field-validation-error"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Preview</label>
+            <div class="preview-toggle">
+                <button type="button" class="preview-toggle-btn active" id="code-view-btn">Code</button>
+                <button type="button" class="preview-toggle-btn" id="terminal-view-btn">Terminal</button>
+            </div>
+
+            <div class="terminal-preview" id="terminal-preview" style="display: none;">
+                <div class="terminal-header">
+                    <div class="terminal-buttons">
+                        <span class="terminal-button close"></span>
+                        <span class="terminal-button minimize"></span>
+                        <span class="terminal-button maximize"></span>
+                    </div>
+                    <div class="terminal-title">~/snippets</div>
+                </div>
+                <div class="terminal-content">
+                    <div class="terminal-line">Your code will appear in the terminal preview</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Additional hidden field for language selection -->
+        <input type="hidden" id="selected-language" name="Language" value="csharp">
+
+        <div class="form-group">
+            <label class="form-label">Tags</label>
+            <div class="tags-container" id="tags-container">
+                <!-- Tags will be added dynamically -->
+            </div>
+            <div style="display: flex;">
+                <input type="text" class="tag-input" id="tag-input" placeholder="Add a tag...">
+                <button type="button" class="add-tag-btn" id="add-tag-btn">Add</button>
+            </div>
+            <!-- Hidden container for tag IDs to be submitted with the form -->
+            <div id="tag-ids-container"></div>
+        </div>
+
+        <div class="form-buttons">
+            <button type="button" class="btn btn-secondary" id="save-draft-btn">Save Draft</button>
+            <div>
+                <a
+                    asp-controller="Post"
+                    asp-action="Index" class="btn btn-danger" style="margin-right: 1rem;">
+                    Cancel
+                </a>
+                <button type="submit" class="btn btn-primary">Publish Snippet</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Styles {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/theme/dracula.min.css">
+    <link rel="stylesheet" href="~/css/post/create.css">
+}
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/addon/edit/closebrackets.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/addon/edit/matchbrackets.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/mode/clike/clike.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/mode/htmlmixed/htmlmixed.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/mode/css/css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/mode/python/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/mode/sql/sql.min.js"></script>
+
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+
+    <script src="~/js/post/create.js"></script>
+}
