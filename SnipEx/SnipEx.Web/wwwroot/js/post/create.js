@@ -9,7 +9,9 @@
     autoCloseBrackets: true,
         matchBrackets: true,
         readOnly: false,
-        });
+    });
+
+    setTimeout(() => editor.focus(), 100);
 
     // Language mappings (CodeMirror mode -> language name for backend)
     const languageMappings = {
@@ -72,20 +74,17 @@
     const terminalContent = document.querySelector('.terminal-content');
     terminalContent.innerHTML = '';
 
-    if (code.trim()) {
-                const lines = code.split('\n');
-                lines.forEach(line => {
-                    const terminalLine = document.createElement('div');
-    terminalLine.className = 'terminal-line';
-    terminalLine.textContent = line;
-    terminalContent.appendChild(terminalLine);
-                });
-            } else {
-                const terminalLine = document.createElement('div');
-    terminalLine.className = 'terminal-line';
-    terminalLine.textContent = 'No code to preview yet...';
-    terminalContent.appendChild(terminalLine);
-            }
+    const preElement = document.createElement('pre');
+    const codeElement = document.createElement('code');
+    codeElement.className = 'language-' + (languageMappings[editor.getOption('mode')] || editor.getOption('mode'));
+    codeElement.textContent = editor.getValue() || 'No code to preview yet...';
+    preElement.appendChild(codeElement);
+    terminalContent.appendChild(preElement);
+
+    // If using highlight.js or Prism for terminal highlighting
+    if (typeof hljs !== 'undefined') {
+        hljs.highlightElement(codeElement);
+    }
         });
 
     // Handle tag management
@@ -179,4 +178,37 @@
         // Update the content field with current editor value
         document.getElementById('code-editor').value = editor.getValue();
     });
+
+    editor.setOption('extraKeys', {
+        'Ctrl-S': function (cm) {
+            document.getElementById('save-draft-btn').click();
+            return false;
+        },
+        'Ctrl-Enter': function (cm) {
+            document.querySelector('form button[type="submit"]').click();
+            return false;
+        },
+        'Tab': function (cm) {
+            const spaces = Array(cm.getOption('indentUnit') + 1).join(' ');
+            cm.replaceSelection(spaces);
+            return false;
+        },
+        'Shift-Tab': function (cm) {
+            const cursor = cm.getCursor();
+            const line = cm.getLine(cursor.line);
+
+            // Check if the line starts with 4 spaces, then remove them
+            if (line.startsWith('    ')) {
+                cm.replaceRange('', { line: cursor.line, ch: 0 }, { line: cursor.line, ch: 4 });
+            }
+            return false;
+        }
+    });
+
+    // Set different options for mobile
+    if (window.innerWidth < 768) {
+        editor.setOption('lineNumbers', false);
+        editor.setOption('lineWrapping', true);
+        // Add touch-friendly UI adjustments
+    }
 });
