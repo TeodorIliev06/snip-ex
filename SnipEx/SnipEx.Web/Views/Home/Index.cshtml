@@ -1,7 +1,41 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "SnipEx - Share. Learn. Code.";
 }
 
-<div class="text-center">
-    <h1>Welcome to SnipEx!</h1>
+<div class="hero-section">
+    <div class="code-animation-background">
+        <div class="terminal-window">
+            <div class="terminal-header">
+                <div class="terminal-buttons">
+                    <span class="terminal-button close"></span>
+                    <span class="terminal-button minimize"></span>
+                    <span class="terminal-button maximize"></span>
+                </div>
+                <div class="terminal-title">~/snippets</div>
+            </div>
+            <div class="terminal-content" id="terminal-content">
+                <!-- This will be populated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <div class="hero-content">
+        <h1 class="animated-headline">Share. Learn. Code.</h1>
+        <p class="subheadline">A place where developers post challenges, exchange ideas, and grow together.</p>
+
+        <div class="cta-buttons">
+            <a asp-controller="Post" asp-action="Index" class="btn btn-primary">Explore Snippets</a>
+            <a asp-controller="Snippets" asp-action="Create" class="btn btn-secondary">Post a Snippet</a> 
+        </div>
+
+        @* Add live preview feature *@
+    </div>
 </div>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/home/heroSection.css" />
+}
+
+@section Scripts {
+    <script src="~/js/home/heroSection.js"></script>
+}
