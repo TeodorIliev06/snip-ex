@@ -1,4 +1,5 @@
-﻿@model SnipEx.Data.Models.Post
+﻿@using SnipEx.Web.ViewModels.Post
+@model AddPostFormModel
 @{
     ViewData["Title"] = "Create Snippet";
 }
@@ -21,6 +22,8 @@
             <div class="editor-container">
                 <div class="code-header">
                     <select class="language-selector" id="language-selector">
+
+                        @* TODO: Fix by introducing language entity to view model *@
                         <option value="clike">C#</option>
                         <option value="javascript">JavaScript</option>
                         <option value="html">HTML</option>
@@ -83,7 +86,7 @@
         </div>
 
         <div class="form-buttons">
-            <button type="button" class="btn btn-secondary" id="save-draft-btn">Save Draft</button>
+            @* TODO: Add save draft feature *@
             <div>
                 <a
                     asp-controller="Post"

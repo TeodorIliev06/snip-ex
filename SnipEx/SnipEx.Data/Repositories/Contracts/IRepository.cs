@@ -34,5 +34,8 @@
 
         Task<bool> UpdateAsync(TType item);
 
+        void SaveChanges();
+
+        Task SaveChangesAsync();
     }
 }
