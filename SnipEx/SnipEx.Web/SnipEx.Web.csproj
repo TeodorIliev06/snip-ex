@@ -20,6 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SnipEx.Common\SnipEx.Common.csproj" />
     <ProjectReference Include="..\SnipEx.Services.Data\SnipEx.Services.Data.csproj" />
+    <ProjectReference Include="..\SnipEx.Services.Mapping\SnipEx.Services.Mapping.csproj" />
     <ProjectReference Include="..\SnipEx.Web.Infrastructure\SnipEx.Web.Infrastructure.csproj" />
     <ProjectReference Include="..\SnipEx.Web.ViewModels\SnipEx.Web.ViewModels.csproj" />
   </ItemGroup>
