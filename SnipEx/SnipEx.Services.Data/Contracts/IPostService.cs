@@ -5,5 +5,7 @@
     public interface IPostService
     {
         Task<PostIndexViewModel> GetPostsAsync(string? tag, string? search, string? sort);
+
+        Task<bool> AddPostAsync(AddPostFormModel model);
     }
 }

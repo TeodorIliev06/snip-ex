@@ -9,6 +9,7 @@
     using SnipEx.Web.ViewModels.Post;
     using SnipEx.Services.Data.Contracts;
     using SnipEx.Data.Repositories.Contracts;
+    using SnipEx.Services.Mapping;
 
     using static Common.EntityValidationConstants.Post;
 
@@ -77,6 +78,25 @@
                     }).ToList()
                 }).ToList()
             };
+        }
+
+        public async Task<bool> AddPostAsync(AddPostFormModel model)
+        {
+            bool isCreationDateValid = DateTime
+                .TryParseExact(model.CreatedAt, CreatedAtFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime creationDate);
+            if (!isCreationDateValid)
+            {
+                return false;
+            }
+
+            var post = new Post();
+            AutoMapperConfig.MapperInstance.Map(model, post);
+            post.CreatedAt = creationDate;
+
+            await postRepository.AddAsync(post);
+            await postRepository.SaveChangesAsync();
+
+            return true;
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿@using SnipEx.Web.ViewModels.Post
+﻿@using System.Security.Claims
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using SnipEx.Web.ViewModels.Post
 @model AddPostFormModel
 @{
     ViewData["Title"] = "Create Snippet";
@@ -69,8 +71,7 @@
             </div>
         </div>
 
-        <!-- Additional hidden field for language selection -->
-        <input type="hidden" id="selected-language" name="Language" value="csharp">
+        <input type="hidden" id="UserId" value="@User.FindFirstValue(ClaimTypes.NameIdentifier)" />
 
         <div class="form-group">
             <label class="form-label">Tags</label>

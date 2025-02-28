@@ -28,14 +28,15 @@
         [Required]
         public string CreatedAt { get; set; }
 
+        public string? UserId { get; set; }
+
         public List<string> Tags { get; set; } = new List<string>();
         public void CreateMappings(IProfileExpression configuration)
         {
             configuration.CreateMap<AddPostFormModel, Post>()
                 .ForMember(dest => dest.Views, opt => opt.MapFrom(src => 0))
                 .ForMember(dest => dest.Rating, opt => opt.MapFrom(src => 0))
-                .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
-                .ForMember(dest => dest.UserId, opt => opt.Ignore());
+                .ForMember(dest => dest.CreatedAt, opt => opt.Ignore());
         }
     }
 }
