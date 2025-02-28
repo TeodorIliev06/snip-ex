@@ -8,7 +8,7 @@ namespace SnipEx.Web
     using SnipEx.Web.Infrastructure;
     using SnipEx.Services.Data.Contracts;
     using SnipEx.Services.Mapping;
-    using SnipEx.Web.Models;
+    using SnipEx.Web.ViewModels.Post;
 
     public class Program
     {
@@ -36,7 +36,7 @@ namespace SnipEx.Web
 
             var app = builder.Build();
 
-            AutoMapperConfig.RegisterMappings(typeof(ErrorViewModel).Assembly);
+            AutoMapperConfig.RegisterMappings(typeof(PostViewModel).Assembly);
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
