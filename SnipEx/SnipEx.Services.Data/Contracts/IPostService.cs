@@ -6,6 +6,6 @@
     {
         Task<PostIndexViewModel> GetPostsAsync(string? tag, string? search, string? sort);
 
-        Task<bool> AddPostAsync(AddPostFormModel model);
+        Task<bool> AddPostAsync(AddPostFormModel model, string userId);
     }
 }

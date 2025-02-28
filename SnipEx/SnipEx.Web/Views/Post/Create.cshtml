@@ -71,7 +71,7 @@
             </div>
         </div>
 
-        <input type="hidden" id="UserId" value="@User.FindFirstValue(ClaimTypes.NameIdentifier)" />
+        <input type="hidden" asp-for="UserId" value="@User.FindFirstValue(ClaimTypes.NameIdentifier)" />
 
         <div class="form-group">
             <label class="form-label">Tags</label>

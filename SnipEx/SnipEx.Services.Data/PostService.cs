@@ -80,7 +80,7 @@
             };
         }
 
-        public async Task<bool> AddPostAsync(AddPostFormModel model)
+        public async Task<bool> AddPostAsync(AddPostFormModel model, string userId)
         {
             bool isCreationDateValid = DateTime
                 .TryParseExact(model.CreatedAt, CreatedAtFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime creationDate);
@@ -89,9 +89,12 @@
                 return false;
             }
 
+            var userGuid = Guid.Parse(userId);
+
             var post = new Post();
             AutoMapperConfig.MapperInstance.Map(model, post);
             post.CreatedAt = creationDate;
+            post.UserId = userGuid; //Workaround
 
             await postRepository.AddAsync(post);
             await postRepository.SaveChangesAsync();
