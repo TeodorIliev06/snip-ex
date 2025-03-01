@@ -205,10 +205,8 @@
         }
     });
 
-    // Set different options for mobile
     if (window.innerWidth < 768) {
         editor.setOption('lineNumbers', false);
         editor.setOption('lineWrapping', true);
-        // Add touch-friendly UI adjustments
     }
 });
