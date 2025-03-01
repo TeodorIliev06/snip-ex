@@ -1,0 +1,223 @@
+﻿/* Features Section */
+.features-section {
+    background-color: #0d1117;
+    padding: 0 2rem 4rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 5rem;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: #e6edf3;
+    position: relative;
+}
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 3px;
+        background: linear-gradient(90deg, #58a6ff, #bc8cff);
+    }
+
+/* Trending Topics */
+.trending-topics-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.tag-cloud {
+    height: 200px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tag {
+    position: absolute;
+    padding: 8px 16px;
+    border-radius: 20px;
+    background-color: #1f2937;
+    color: #58a6ff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    opacity: 0.8;
+}
+
+    .tag:hover {
+        transform: scale(1.1);
+        background-color: #2d3748;
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+        opacity: 1;
+    }
+
+/* Live Snippet Showcase */
+.snippet-showcase-container {
+    max-width: 1160px;
+    margin: 0 auto;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.snippet-carousel {
+    display: flex;
+    overflow: hidden;
+    position: relative;
+    height: 300px;
+    gap: 20px;
+    width: 100%;
+}
+
+.snippet-card {
+    min-width: 350px;
+    width: 350px;
+    height: 280px;
+    background-color: #1a1d24;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    flex-shrink: 0;
+    margin-right: 20px;
+}
+
+    .snippet-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4);
+    }
+
+.snippet-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.snippet-title {
+    font-size: 1.2rem;
+    color: #e6edf3;
+    font-weight: 600;
+}
+
+.snippet-language {
+    background-color: #30363d;
+    color: #58a6ff;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+}
+
+.snippet-content {
+    flex-grow: 1;
+    background-color: #0d1117;
+    border-radius: 6px;
+    padding: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: #a5d6ff;
+    overflow: hidden;
+    border: 1px solid #30363d;
+}
+
+.snippet-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+    color: #8b949e;
+    font-size: 0.85rem;
+}
+
+.carousel-controls {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.carousel-control {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #30363d;
+    color: #e6edf3;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.carousel-control:hover:not([disabled]) {
+    background-color: #3c444d;
+    transform: translateY(-2px);
+}
+
+.carousel-control:disabled {
+    cursor: not-allowed;
+}
+
+/* Stats Counter */
+.stats-counter-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.stats-counter {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 30px;
+    background-color: #1a1d24;
+    border-radius: 8px;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+    min-width: 250px;
+    transition: all 0.3s ease;
+}
+
+    .stat-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .stat-item i {
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+        color: #58a6ff;
+        background: linear-gradient(90deg, #58a6ff, #bc8cff);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+.stat-count {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #e6edf3;
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    color: #8b949e;
+    font-size: 1rem;
+}
