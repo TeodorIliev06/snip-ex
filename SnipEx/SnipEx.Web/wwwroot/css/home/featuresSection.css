@@ -72,7 +72,6 @@
 
 .snippet-carousel {
     display: flex;
-    overflow: hidden;
     position: relative;
     height: 300px;
     gap: 20px;

@@ -139,7 +139,7 @@ function initSnippetCarousel() {
     // **Carousel state**
     let position = 0;
     const visibleCards = 3; // Show 3 cards at a time
-    const cardWidth = 370; // Width of a single card (including margin)
+    const cardWidth = 390; // Width of a single card (including margin)
     const totalCards = snippets.length;
 
     function updateCarouselPosition() {
