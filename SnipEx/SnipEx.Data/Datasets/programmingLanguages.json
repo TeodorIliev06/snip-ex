@@ -1,0 +1,38 @@
+[
+  {
+    "Id": "b3f7e6d5-89f4-4b29-bd0e-31a3f9076b2d",
+    "Name": "C#",
+    "FileExtension": ".cs",
+    "Posts": []
+  },
+  {
+    "Id": "a1e2c3d4-56b7-89f0-a1b2-c3d4e5f67890",
+    "Name": "JavaScript",
+    "FileExtension": ".js",
+    "Posts": []
+  },
+  {
+    "Id": "c3d4e5f6-7890-a1b2-c3d4-e5f67890abcd",
+    "Name": "Python",
+    "FileExtension": ".py",
+    "Posts": []
+  },
+  {
+    "Id": "d4e5f678-90ab-c1d2-e3f4-567890abcdef",
+    "Name": "Java",
+    "FileExtension": ".java",
+    "Posts": []
+  },
+  {
+    "Id": "e5f67890-abcd-1234-5678-90abcdef1234",
+    "Name": "Go",
+    "FileExtension": ".go",
+    "Posts": []
+  },
+  {
+    "Id": "f67890ab-cdef-5678-90ab-cdef12345678",
+    "Name": "TypeScript",
+    "FileExtension": ".ts",
+    "Posts": []
+  }
+]

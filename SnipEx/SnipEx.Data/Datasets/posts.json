@@ -6,7 +6,8 @@
     "Views": 856,
     "Rating": 4.8,
     "CreatedAt": "2024-02-15T00:00:00.000Z",
-    "UserId": null
+    "UserId": null,
+    "LanguageId": "b3f7e6d5-89f4-4b29-bd0e-31a3f9076b2d"
   },
   {
     "Id": "2deb2f40-7a55-4a0b-86d0-e3983cc460b8",
@@ -15,7 +16,8 @@
     "Views": 1000,
     "Rating": 4.9,
     "CreatedAt": "2024-02-20T00:00:00.000Z",
-    "UserId": null
+    "UserId": null,
+    "LanguageId": "b3f7e6d5-89f4-4b29-bd0e-31a3f9076b2d"
   },
   {
     "Id": "8ad01fc6-828e-4e4a-aae8-efb860d210fc",
@@ -24,7 +26,8 @@
     "Views": 723,
     "Rating": 4.5,
     "CreatedAt": "2024-02-01T00:00:00.000Z",
-    "UserId": null
+    "UserId": null,
+    "LanguageId": "b3f7e6d5-89f4-4b29-bd0e-31a3f9076b2d"
   },
   {
     "Id": "714f4d63-8e48-4a31-abaf-e3142420a34c",
@@ -33,7 +36,8 @@
     "Views": 645,
     "Rating": 4.7,
     "CreatedAt": "2024-02-10T00:00:00.000Z",
-    "UserId": null
+    "UserId": null,
+    "LanguageId": "b3f7e6d5-89f4-4b29-bd0e-31a3f9076b2d"
   },
   {
     "Id": "5a250d42-f366-437a-9f21-c00f2d56e898",
@@ -42,6 +46,7 @@
     "Views": 912,
     "Rating": 4.6,
     "CreatedAt": "2024-02-05T00:00:00.000Z",
-    "UserId": null
+    "UserId": null,
+    "LanguageId": "b3f7e6d5-89f4-4b29-bd0e-31a3f9076b2d"
   }
 ]

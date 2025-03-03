@@ -45,6 +45,12 @@
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder
+                .HasOne(p => p.Language)
+                .WithMany(pl => pl.Posts)
+                .HasForeignKey(p => p.LanguageId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
                 .SeedDataFromJson("posts.json");
         }
     }

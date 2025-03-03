@@ -22,6 +22,14 @@
             public const string CreatedAtFormat = "dd/MM/yyyy";
         }
 
+        public static class ProgrammingLanguage
+        {
+            public const int NameMinLength = 1;
+            public const int NameMaxLength = 40;
+            public const int FileExtensionMinLength = 2;
+            public const int FileExtensionMaxLength = 10;
+        }
+
         public static class Tag
         {
             public const int NameMinLength = 5;

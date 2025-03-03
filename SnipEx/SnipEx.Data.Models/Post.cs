@@ -18,6 +18,10 @@
 
         public ApplicationUser? User { get; set; }
 
+        public Guid LanguageId { get; set; }
+
+        public ProgrammingLanguage Language { get; set; } = null!;
+
         public ICollection<PostTag> PostsTags { get; set; }
             = new HashSet<PostTag>();
 
