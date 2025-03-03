@@ -6,7 +6,7 @@
     using AutoMapper;
     using SnipEx.Data.Models;
     using SnipEx.Services.Mapping.Contracts;
-
+    using SnipEx.Web.ViewModels.Language;
     using static Common.EntityValidationConstants.Post;
 
     public class AddPostFormModel : IMapTo<Post>, IHaveCustomMappings
@@ -31,6 +31,12 @@
         public string? UserId { get; set; }
 
         public List<string> Tags { get; set; } = new List<string>();
+
+        [Required]
+        public string LanguageId { get; set; }
+
+        public IEnumerable<LanguageViewModel> AvailableLanguages { get; set; }
+
         public void CreateMappings(IProfileExpression configuration)
         {
             configuration.CreateMap<AddPostFormModel, Post>()

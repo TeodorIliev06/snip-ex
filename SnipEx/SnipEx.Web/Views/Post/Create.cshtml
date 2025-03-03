@@ -23,20 +23,10 @@
             <label asp-for="Content" class="form-label">Code</label>
             <div class="editor-container">
                 <div class="code-header">
-                    <select class="language-selector" id="language-selector">
-
-                        @* TODO: Fix by introducing language entity to view model *@
-                        <option value="clike">C#</option>
-                        <option value="javascript">JavaScript</option>
-                        <option value="html">HTML</option>
-                        <option value="css">CSS</option>
-                        <option value="python">Python</option>
-                        <option value="java">Java</option>
-                        <option value="php">PHP</option>
-                        <option value="ruby">Ruby</option>
-                        <option value="go">Go</option>
-                        <option value="rust">Rust</option>
-                        <option value="sql">SQL</option>
+                    <select class="language-selector" 
+                            id="language-selector"
+                            asp-for="LanguageId" 
+                            asp-items="@(new SelectList(Model.AvailableLanguages, "Id", "Name"))">
                     </select>
                     <div>
                         <button type="button" class="btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.9rem;" id="copy-code-btn">
