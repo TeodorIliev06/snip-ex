@@ -176,49 +176,6 @@ function initSnippetCarousel() {
     updateCarouselPosition();
 }
 
-// Function to create snippet card
-function createSnippetCard(snippet) {
-    const card = document.createElement('div');
-    card.className = 'snippet-card';
-
-    const header = document.createElement('div');
-    header.className = 'snippet-header';
-
-    const title = document.createElement('div');
-    title.className = 'snippet-title';
-    title.textContent = snippet.title;
-
-    const language = document.createElement('div');
-    language.className = 'snippet-language';
-    language.textContent = snippet.language;
-
-    header.appendChild(title);
-    header.appendChild(language);
-
-    const content = document.createElement('div');
-    content.className = 'snippet-content';
-    content.textContent = snippet.code;
-
-    const footer = document.createElement('div');
-    footer.className = 'snippet-footer';
-
-    const author = document.createElement('div');
-    author.textContent = snippet.author;
-
-    const date = document.createElement('div');
-    date.textContent = snippet.date;
-
-    footer.appendChild(author);
-    footer.appendChild(date);
-
-    card.appendChild(header);
-    card.appendChild(content);
-    card.appendChild(footer);
-
-    return card;
-}
-
-
 // Stats Counter
 function initStatsCounter() {
     const developerCount = document.getElementById('developer-count');

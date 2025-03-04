@@ -4,18 +4,25 @@ using SnipEx.Web.Models;
 
 namespace SnipEx.Web.Controllers
 {
-    public class HomeController : Controller
+    using SnipEx.Services.Data.Contracts;
+    using SnipEx.Web.ViewModels.Post;
+
+    public class HomeController(
+        IPostService postService,
+        ILogger<HomeController> logger) : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<HomeController> _logger = logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public async Task<IActionResult> Index()
         {
-            _logger = logger;
-        }
+            var featuredPosts = await postService.GetFeaturedPostsAsync();
 
-        public IActionResult Index()
-        {
-            return View();
+            var viewModel = new PostCarouselViewModel()
+            {
+                FeaturedPosts = featuredPosts
+            };
+
+            return View(viewModel);
         }
 
         public IActionResult Privacy()

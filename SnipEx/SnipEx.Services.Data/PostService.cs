@@ -80,6 +80,17 @@
             };
         }
 
+        public async Task<IEnumerable<PostCardViewModel>> GetFeaturedPostsAsync()
+        {
+            var featuredPosts = await postRepository.GetAllAttached()
+                .Include(p => p.Language)
+                .OrderByDescending(p => p.CreatedAt)
+                .To<PostCardViewModel>()
+                .ToListAsync();
+
+            return featuredPosts;
+        }
+
         public async Task<bool> AddPostAsync(AddPostFormModel model, string userId)
         {
             bool isCreationDateValid = DateTime
