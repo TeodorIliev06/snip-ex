@@ -8,41 +8,28 @@
 
 function initTrendingTags() {
     const tagCloud = document.getElementById('tag-cloud');
-    const tags = [
-        { text: '#JavaScript', size: 1.2 },
-        { text: '#Python', size: 1.4 },
-        { text: '#React', size: 1.3 },
-        { text: '#CSharp', size: 1.2 },
-        { text: '#TypeScript', size: 1.1 },
-        { text: '#Java', size: 1.0 },
-        { text: '#HTML', size: 0.9 },
-        { text: '#CSS', size: 0.9 },
-        { text: '#Angular', size: 1.0 },
-        { text: '#Vue', size: 1.1 },
-        { text: '#Node', size: 1.2 },
-        { text: '#PHP', size: 0.8 },
-        { text: '#Ruby', size: 0.8 },
-        { text: '#Go', size: 1.0 },
-        { text: '#SQL', size: 1.1 }
-    ];
+    const tags = Array.from(tagCloud.querySelectorAll('.tag'));
 
-    tags.forEach(tag => {
-        const tagElement = document.createElement('div');
-        tagElement.className = 'tag';
-        tagElement.textContent = tag.text;
-        tagElement.style.fontSize = `${tag.size}rem`;
+    tags.forEach(tagElement => {
+        const size = calculateTagSize(tagElement);
+        tagElement.style.fontSize = `${size}rem`;
         tagElement.style.opacity = '0';
-        tagCloud.appendChild(tagElement);
-
         positionTagRandomly(tagElement);
 
         tagElement.addEventListener('click', () => {
-            alert(`Filtering by ${tag.text}`);
+            const tagName = tagElement.getAttribute('data-tag');
+            alert(`Filtering by ${tagName}`);
             // Implementation would go here to filter snippets by tag
         });
     });
 
     animateTagCloud();
+}
+
+function calculateTagSize(tagElement) {
+    const baseSize = 0.8;
+    const variation = 0.4;
+    return baseSize + (Math.random() * variation);
 }
 
 function positionTagRandomly(tagElement) {

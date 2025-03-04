@@ -9,6 +9,7 @@ namespace SnipEx.Web.Controllers
 
     public class HomeController(
         IPostService postService,
+        ITagService tagService,
         ILogger<HomeController> logger) : Controller
     {
         private readonly ILogger<HomeController> _logger = logger;
@@ -16,10 +17,12 @@ namespace SnipEx.Web.Controllers
         public async Task<IActionResult> Index()
         {
             var featuredPosts = await postService.GetFeaturedPostsAsync();
+            var trendingTags = await tagService.GetTrendingTagsAsync();
 
             var viewModel = new PostCarouselViewModel()
             {
-                FeaturedPosts = featuredPosts
+                FeaturedPosts = featuredPosts,
+                TrendingTags = trendingTags
             };
 
             return View(viewModel);

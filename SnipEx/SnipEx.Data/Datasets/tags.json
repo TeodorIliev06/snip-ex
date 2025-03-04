@@ -23,5 +23,60 @@
     "Id": "8ab0d353-2dcf-47e9-af14-9c8a66efa2ac",
     "Name": "Entity-Framework-Core",
     "Description": "Information about Entity Framework Core ORM, including performance optimization, query strategies, and database interaction patterns."
+  },
+  {
+    "Id": "ff453f57-c9ad-4914-8e76-794b5b917ef8",
+    "Name": "JavaScript",
+    "Description": "A versatile, high-level programming language commonly used for web development, supporting both front-end and back-end applications."
+  },
+  {
+    "Id": "31177cd3-13f4-44d2-b317-ab3f81aedc55",
+    "Name": "Python",
+    "Description": "A powerful, easy-to-read programming language popular for web development, data science, AI, and scripting."
+  },
+  {
+    "Id": "af9a2024-9340-4451-84ad-b093ad05a7e1",
+    "Name": "React",
+    "Description": "A JavaScript library for building fast and interactive user interfaces, maintained by Facebook and a strong community."
+  },
+  {
+    "Id": "93692d51-2d0c-4a57-8c42-fee1be6fa3ba",
+    "Name": "CSharp",
+    "Description": "A modern, object-oriented programming language developed by Microsoft, widely used for developing applications on the .NET platform."
+  },
+  {
+    "Id": "3be97903-3d50-4c29-ac9e-b2fdc84602ba",
+    "Name": "TypeScript",
+    "Description": "A strongly-typed superset of JavaScript that compiles to clean JavaScript code and improves maintainability in large projects."
+  },
+  {
+    "Id": "5bd996b0-ae55-4049-8159-7c513f3c8370",
+    "Name": "Java",
+    "Description": "A class-based, object-oriented programming language designed to have as few implementation dependencies as possible, widely used in enterprise and mobile development."
+  },
+  {
+    "Id": "d2501bb3-3806-435d-bde9-30ef5e3c759b",
+    "Name": "HTML",
+    "Description": "The standard markup language for creating web pages and web applications."
+  },
+  {
+    "Id": "332c883e-7890-4286-9dd3-cb5ab81f4a81",
+    "Name": "CSS",
+    "Description": "A stylesheet language used for describing the presentation of a document written in HTML or XML."
+  },
+  {
+    "Id": "ea5c4859-1ff2-4804-9d82-eb498397d6ba",
+    "Name": "Angular",
+    "Description": "A platform and framework for building single-page client applications using HTML and TypeScript, developed by Google."
+  },
+  {
+    "Id": "686a2ca8-742e-4659-833e-d7bbd9c7d310",
+    "Name": "Vue",
+    "Description": "A progressive JavaScript framework for building user interfaces and single-page applications."
+  },
+  {
+    "Id": "f8b2bf6d-bf81-44e7-912a-7670c92b5e18",
+    "Name": "SQL",
+    "Description": "A domain-specific language used in programming and managing relational databases."
   }
 ]

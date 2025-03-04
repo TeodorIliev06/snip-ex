@@ -1,6 +1,9 @@
 ﻿namespace SnipEx.Web.ViewModels.Tag
 {
-    public class TagViewModel
+    using SnipEx.Data.Models;
+    using SnipEx.Services.Mapping.Contracts;
+
+    public class TagViewModel : IMapFrom<Tag>
     {
         public string Name { get; set; } = null!;
 
