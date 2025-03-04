@@ -1,15 +1,11 @@
-﻿// Wait for DOM to load
-document.addEventListener('DOMContentLoaded', function () {
-    // Initialize trending tags
+﻿document.addEventListener('DOMContentLoaded', function () {
     initTrendingTags();
 
-    // Initialize snippet carousel
     initSnippetCarousel();
 
-    // Initialize stats counter
     initStatsCounter();
 });
-// Trending Tags Animation
+
 function initTrendingTags() {
     const tagCloud = document.getElementById('tag-cloud');
     const tags = [
@@ -30,7 +26,6 @@ function initTrendingTags() {
         { text: '#SQL', size: 1.1 }
     ];
 
-    // Create tag elements
     tags.forEach(tag => {
         const tagElement = document.createElement('div');
         tagElement.className = 'tag';
@@ -39,17 +34,14 @@ function initTrendingTags() {
         tagElement.style.opacity = '0';
         tagCloud.appendChild(tagElement);
 
-        // Position tag randomly
         positionTagRandomly(tagElement);
 
-        // Add click event for filtering
         tagElement.addEventListener('click', () => {
             alert(`Filtering by ${tag.text}`);
             // Implementation would go here to filter snippets by tag
         });
     });
 
-    // Animate tags
     animateTagCloud();
 }
 
@@ -121,26 +113,10 @@ function initSnippetCarousel() {
     const prevButton = document.getElementById('prev-snippet');
     const nextButton = document.getElementById('next-snippet');
 
-    // Sample snippets (Replace with API call in the future)
-    const snippets = [
-        { title: 'React useState Hook', language: 'JavaScript', code: 'import React, { useState } from "react";\n\nfunction Counter() {\n  const [count, setCount] = useState(0);\n  return (\n    <button onClick={() => setCount(count + 1)}>\n      Count: {count}\n    </button>\n  );\n}', author: '@reactdev', date: '2 hours ago' },
-        { title: 'Python List Comprehension', language: 'Python', code: 'numbers = [1, 2, 3, 4, 5]\n\n# Get squares of all numbers\nsquares = [x**2 for x in numbers]\n\n# Get even numbers only\nevens = [x for x in numbers if x % 2 == 0]', author: '@pythonista', date: '4 hours ago' },
-        { title: 'C# LINQ Query', language: 'C#', code: 'var numbers = new List<int> { 1, 2, 3, 4, 5 };\n\nvar evenNumbers = numbers\n    .Where(n => n % 2 == 0)\n    .Select(n => n * n)\n    .ToList();', author: '@csharpdev', date: '6 hours ago' },
-        { title: 'CSS Grid Layout', language: 'CSS', code: '.container {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  grid-gap: 20px;\n}\n\n.item {\n  padding: 20px;\n  background-color: #f0f0f0;\n}', author: '@cssmaster', date: '8 hours ago' },
-        { title: 'SQL JOIN Query', language: 'SQL', code: 'SELECT u.username, p.title, p.created_at\nFROM users u\nINNER JOIN posts p\n  ON u.id = p.user_id\nWHERE p.created_at > DATE_SUB(NOW(), INTERVAL 1 DAY)\nORDER BY p.created_at DESC;', author: '@datadev', date: '10 hours ago' }
-    ];
-
-    // Create snippet cards dynamically
-    snippets.forEach(snippet => {
-        const snippetCard = createSnippetCard(snippet);
-        carousel.appendChild(snippetCard);
-    });
-
-    // **Carousel state**
     let position = 0;
-    const visibleCards = 3; // Show 3 cards at a time
-    const cardWidth = 390; // Width of a single card (including margin)
-    const totalCards = snippets.length;
+    const visibleCards = 3;
+    const cardWidth = 390;
+    const totalCards = carousel.children.length;
 
     function updateCarouselPosition() {
         carousel.style.transition = 'transform 0.5s ease';
@@ -149,30 +125,27 @@ function initSnippetCarousel() {
         // **Disable buttons when at limits**
         prevButton.disabled = position === 0;
         nextButton.disabled = position >= totalCards - visibleCards;
-
         prevButton.style.opacity = prevButton.disabled ? "0.5" : "1";
         nextButton.style.opacity = nextButton.disabled ? "0.5" : "1";
     }
 
     function moveNext() {
         if (position + visibleCards < totalCards) {
-            position += visibleCards; // Move forward by 3 cards
+            position += visibleCards;
             updateCarouselPosition();
         }
     }
 
     function movePrev() {
         if (position > 0) {
-            position -= visibleCards; // Move backward by 3 cards
+            position -= visibleCards;
             updateCarouselPosition();
         }
     }
 
-    // **Attach event listeners**
     nextButton.addEventListener('click', moveNext);
     prevButton.addEventListener('click', movePrev);
 
-    // Initialize button states
     updateCarouselPosition();
 }
 
@@ -182,12 +155,10 @@ function initStatsCounter() {
     const snippetCount = document.getElementById('snippet-count');
     const commentCount = document.getElementById('comment-count');
 
-    // Target values
     const targetDevs = 2500;
     const targetSnippets = 8900;
     const targetComments = 120;
 
-    // Animate counters
     animateCounter(developerCount, targetDevs, 2000);
     animateCounter(snippetCount, targetSnippets, 2000);
     animateCounter(commentCount, targetComments, 2000);
