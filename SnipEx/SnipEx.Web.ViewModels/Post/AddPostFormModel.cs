@@ -36,6 +36,7 @@
         public string LanguageId { get; set; }
 
         public IEnumerable<LanguageViewModel> AvailableLanguages { get; set; }
+            = new HashSet<LanguageViewModel>();
 
         public void CreateMappings(IProfileExpression configuration)
         {
