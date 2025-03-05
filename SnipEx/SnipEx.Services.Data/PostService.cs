@@ -112,5 +112,49 @@
 
             return true;
         }
+
+        public async Task<PostDetailsViewModel?> GetPostByIdAsync(Guid postGuid)
+        {
+            var post = postRepository.GetAllAttached()
+                .Include(p => p.Comments)
+                .ThenInclude(c => c.User)
+                .Include(p => p.PostsTags)
+                .ThenInclude(pt => pt.Tag)
+                .Include(p => p.Language)
+                .Include(p => p.User)
+                .FirstOrDefault(p => p.Id == postGuid);
+
+            var viewModel = new PostDetailsViewModel
+            {
+                Id = post.Id.ToString(),
+                Title = post.Title,
+                Content = post.Content,
+                LanguageName = post.Language != null
+                    ? post.Language.Name
+                    : "Unknown Language",
+                UserName = post.User != null
+                    ? post.User.UserName
+                    : "Anonymous User",
+                CreatedAt = post.CreatedAt,
+                Tags = post.PostsTags != null
+                    ? post.PostsTags
+                        .Select(pt => pt.Tag?.Name ?? "Untagged")
+                        .ToList()
+                    : new List<string>(),
+                Comments = post.Comments != null
+                    ? post.Comments.Select(c => new CommentViewModel
+                    {
+                        Id = c.Id.ToString(),
+                        Content = c.Content,
+                        UserName = c.User != null
+                            ? c.User.UserName
+                            : "Anonymous Commenter",
+                        CreatedAt = c.CreatedAt
+                    }).ToList()
+                    : new List<CommentViewModel>()
+            };
+
+            return viewModel;
+        }
     }
 }

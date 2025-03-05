@@ -53,7 +53,7 @@
         <div class="snippet-carousel" id="snippet-carousel">
             @foreach (var snippet in Model.FeaturedPosts)
             {
-                <div class="snippet-card">
+                <a asp-controller="Post" asp-action="Details" asp-route-id="@snippet.Id" class="snippet-card">
                     <div class="snippet-header">
                         <div class="snippet-title">@snippet.Title</div>
                         <div class="snippet-language">@snippet.LanguageName</div>
@@ -63,7 +63,7 @@
                         <div>@snippet.UserName</div>
                         <div>@snippet.CreatedAt</div>
                     </div>
-                </div>
+                </a>
             }
         </div>
         <div class="carousel-controls">

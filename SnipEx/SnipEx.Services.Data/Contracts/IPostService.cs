@@ -9,5 +9,7 @@
         Task<IEnumerable<PostCardViewModel>> GetFeaturedPostsAsync();
 
         Task<bool> AddPostAsync(AddPostFormModel model, string userId);
+
+        Task<PostDetailsViewModel?> GetPostByIdAsync(Guid postGuid);
     }
 }
