@@ -40,7 +40,9 @@
         <div class="tag-cloud" id="tag-cloud">
             @foreach (var tag in Model.TrendingTags)
             {
-                <div class="tag" data-tag="@tag.Name">@tag.Name</div>
+                <a asp-controller="Post" asp-action="Index" asp-route-tag="@tag.Name" class="tag">
+                    @tag.Name
+                </a>
             }
         </div>
     </div>

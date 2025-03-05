@@ -15,12 +15,6 @@ function initTrendingTags() {
         tagElement.style.fontSize = `${size}rem`;
         tagElement.style.opacity = '0';
         positionTagRandomly(tagElement);
-
-        tagElement.addEventListener('click', () => {
-            const tagName = tagElement.getAttribute('data-tag');
-            alert(`Filtering by ${tagName}`);
-            // Implementation would go here to filter snippets by tag
-        });
     });
 
     animateTagCloud();
