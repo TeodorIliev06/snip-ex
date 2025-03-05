@@ -1,4 +1,8 @@
 ﻿/* Features Section */
+a {
+    text-decoration: none !important;
+}
+
 .features-section {
     background-color: #0d1117;
     padding: 0 2rem 4rem 2rem;
