@@ -1,0 +1,22 @@
+﻿@media (max-width: 768px) {
+    /*post details*/
+    .post-title {
+        font-size: 2rem;
+    }
+
+    .post-meta, .comments-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .post-actions {
+        justify-content: space-between;
+    }
+
+    .submit-comment {
+        position: static;
+        width: 100%;
+        margin-top: 1rem;
+    }
+}

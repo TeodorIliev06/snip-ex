@@ -1,59 +1,105 @@
 ﻿@using SnipEx.Web.ViewModels.Post
 @model PostDetailsViewModel
-
 @{
     ViewData["Title"] = Model.Title + " - SnipEx";
 }
-
 <div class="container">
-    <div class="post-header">
-        <h1 class="post-title">@Model.Title</h1>
-        <div class="post-meta">
-            <div class="post-author">Posted by @Model.UserName</div>
-            <div class="post-date">@Model.CreatedAt</div>
+    <div class="post-card">
+        <div class="post-header">
+            <h1 class="post-title">@Model.Title</h1>
+            <div class="post-meta">
+                <div class="author-info">
+                    <div class="avatar">@Model.UserName[0]</div>
+                    <span>@Model.UserName</span>
+                </div>
+                <div class="post-date">
+                    <i class="fa fa-calendar-alt"></i> @Model.CreatedAt
+                </div>
+            </div>
+            <div class="post-tags">
+                @foreach (var tag in Model.Tags)
+                {
+                    <span class="post-tag">@tag</span>
+                }
+            </div>
         </div>
-        <div class="post-tags">
-            @foreach (var tag in Model.Tags)
-            {
-                <span class="post-tag">@tag</span>
-            }
-        </div>
-    </div>
 
-    <div class="code-snippet">
-        <button class="copy-button" onclick="copyToClipboard()">Copy</button>
-        <pre><code class="language-@Model.LanguageName">@Model.Content</code></pre>
+        <div class="code-container">
+            <div class="code-header">
+                <span class="language-badge">@Model.LanguageName</span>
+                <button class="copy-button" onclick="copyToClipboard()" title="Copy to clipboard">
+                    <i class="fa fa-copy"></i> Copy
+                </button>
+            </div>
+            <div class="code-snippet">
+                <pre><code class="language-@Model.LanguageName">@Model.Content</code></pre>
+            </div>
+        </div>
+
+        <div class="post-actions">
+            <button class="action-button like-button">
+                <i class="fa fa-thumbs-up"></i> <span class="count">42</span>
+            </button>
+            <button class="action-button save-button">
+                <i class="fa fa-bookmark"></i> Save
+            </button>
+            <button class="action-button share-button">
+                <i class="fa fa-share-alt"></i> Share
+            </button>
+        </div>
     </div>
 
     <div class="comments-section">
         <div class="comments-header">
             <h2 class="comments-title">Comments (@Model.Comments.Count)</h2>
+            <button class="sort-comments">
+                <i class="fa fa-sort"></i> Sort by newest
+            </button>
         </div>
 
-        <form asp-action="AddComment" asp-controller="Post" method="post">
+        <form asp-action="AddComment" asp-controller="Post" method="post" class="comment-form">
             <input type="hidden" name="PostId" value="@Model.Id" />
-            <textarea name="CommentContent" class="comment-input" placeholder="Share your thoughts..." required></textarea>
-            <button type="submit" class="submit-comment">Post Comment</button>
+            <div class="comment-input-container">
+                <textarea name="CommentContent" class="comment-input" placeholder="Share your thoughts..." required></textarea>
+                <button type="submit" class="submit-comment">Post Comment</button>
+            </div>
         </form>
 
-        @foreach (var comment in Model.Comments)
-        {
-            <div class="comment">
-                <div class="comment-header">
-                    <div class="comment-author">@comment.UserName</div>
-                    <div class="comment-date">@comment.CreatedAt</div>
+        <div class="comments-list">
+            @foreach (var comment in Model.Comments)
+            {
+                <div class="comment">
+                    <div class="comment-header">
+                        <div class="comment-author-info">
+                            <div class="avatar small">@comment.UserName[0]</div>
+                            <div>
+                                <div class="comment-author">@comment.UserName</div>
+                                <div class="comment-date">@comment.CreatedAt</div>
+                            </div>
+                        </div>
+                        <div class="comment-actions">
+                            <button class="comment-action" title="Reply">
+                                <i class="fa fa-reply"></i>
+                            </button>
+                            <button class="comment-action" title="Like">
+                                <i class="fa fa-thumbs-up"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="comment-body">
+                        @comment.Content
+                    </div>
                 </div>
-                <div class="comment-body">
-                    @comment.Content
-                </div>
-            </div>
-        }
+            }
+        </div>
     </div>
 </div>
 
 @section Styles {
     <link rel="stylesheet" href="~/css/post/details.css" />
+    <link rel="stylesheet" href="~/css/post/responsive.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 }
 
 @section Scripts {
