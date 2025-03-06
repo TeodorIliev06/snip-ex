@@ -10,7 +10,7 @@
     using SnipEx.Services.Data.Contracts;
     using SnipEx.Data.Repositories.Contracts;
     using SnipEx.Services.Mapping;
-
+    using SnipEx.Web.ViewModels.Comment;
     using static Common.EntityValidationConstants.Post;
 
     public class PostService(
@@ -122,39 +122,10 @@
                 .ThenInclude(pt => pt.Tag)
                 .Include(p => p.Language)
                 .Include(p => p.User)
-                .FirstOrDefault(p => p.Id == postGuid);
+                .To<PostDetailsViewModel>()
+                .FirstOrDefault(p => p.Id == postGuid.ToString());
 
-            var viewModel = new PostDetailsViewModel
-            {
-                Id = post.Id.ToString(),
-                Title = post.Title,
-                Content = post.Content,
-                LanguageName = post.Language != null
-                    ? post.Language.Name
-                    : "Unknown Language",
-                UserName = post.User != null
-                    ? post.User.UserName
-                    : "Anonymous User",
-                CreatedAt = post.CreatedAt,
-                Tags = post.PostsTags != null
-                    ? post.PostsTags
-                        .Select(pt => pt.Tag?.Name ?? "Untagged")
-                        .ToList()
-                    : new List<string>(),
-                Comments = post.Comments != null
-                    ? post.Comments.Select(c => new CommentViewModel
-                    {
-                        Id = c.Id.ToString(),
-                        Content = c.Content,
-                        UserName = c.User != null
-                            ? c.User.UserName
-                            : "Anonymous Commenter",
-                        CreatedAt = c.CreatedAt
-                    }).ToList()
-                    : new List<CommentViewModel>()
-            };
-
-            return viewModel;
+            return post;
         }
     }
 }

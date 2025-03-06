@@ -72,24 +72,6 @@
                 return NotFound();
             }
 
-            //var viewModel = new PostDetailsViewModel
-            //{
-            //    Id = post.Id,
-            //    Title = post.Title,
-            //    Content = post.Content,
-            //    LanguageName = post.LanguageName,
-            //    UserName = post.UserName,
-            //    CreatedAt = post.CreatedAt,
-            //    Tags = post.Tags.ToList(),
-            //    Comments = post.Comments.Select(c => new CommentViewModel
-            //    {
-            //        Id = c.Id,
-            //        Content = c.Content,
-            //        UserName = c.UserName,
-            //        CreatedAt = c.CreatedAt
-            //    }).ToList()
-            //};
-
             return View(viewModel);
         }
     }
