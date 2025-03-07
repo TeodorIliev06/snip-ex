@@ -8,10 +8,12 @@
     using SnipEx.Data.Models;
     using SnipEx.Web.ViewModels.Post;
     using SnipEx.Services.Data.Contracts;
+    using SnipEx.Web.ViewModels.Comment;
 
 
     public class PostController(
         IPostService postService,
+        ICommentService commentService,
         ILanguageService languageService,
         UserManager<ApplicationUser> userManager) : Controller
     {
@@ -73,6 +75,25 @@
             }
 
             return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddComment(AddCommentFormModel model)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return RedirectToAction(nameof(Details), new { id = model.PostId });
+            }
+
+            var userId = userManager.GetUserId(User)!;
+            bool isAdded = await commentService.AddCommentAsync(model, userId);
+            if (!isAdded)
+            {
+                //Add model errors
+                return RedirectToAction(nameof(Details), new { id = model.PostId });
+            }
+
+            return RedirectToAction(nameof(Details), new { id = model.PostId });
         }
     }
 }

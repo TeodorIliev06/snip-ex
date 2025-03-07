@@ -60,7 +60,7 @@
         <form asp-action="AddComment" asp-controller="Post" method="post" class="comment-form">
             <input type="hidden" name="PostId" value="@Model.Id" />
             <div class="comment-input-container">
-                <textarea name="CommentContent" class="comment-input" placeholder="Share your thoughts..." required></textarea>
+                <textarea name="Content" class="comment-input" placeholder="Share your thoughts..." required></textarea>
                 <button type="submit" class="submit-comment">Post Comment</button>
             </div>
         </form>

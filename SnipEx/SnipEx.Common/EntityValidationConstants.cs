@@ -2,6 +2,12 @@
 {
     public static class EntityValidationConstants
     {
+        public static class User
+        {
+            public const int UsernameMinLength = 1;
+            public const int UsernameMaxLength = 100;
+        }
+
         public static class Comment
         {
             public const int ContentMinLength = 50;

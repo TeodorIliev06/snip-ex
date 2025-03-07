@@ -11,21 +11,20 @@
 
     public class CommentViewModel : IMapFrom<Comment>, IHaveCustomMappings
     {
-        public CommentViewModel()
-        {
-            this.CreatedAt = DateTime.UtcNow
-                .ToString(CreatedAtFormat, CultureInfo.InvariantCulture);
-        }
-
         public string Id { get; set; } = null!;
+
         public string Content { get; set; } = null!;
+
         public string? UserName { get; set; }
-        public string CreatedAt { get; set; }
+
+        public string CreatedAt { get; set; } = null!;
 
         public void CreateMappings(IProfileExpression configuration)
         {
             configuration.CreateMap<Comment, CommentViewModel>()
-                .ForMember(d => d.CreatedAt, opt => opt.Ignore())
+                .ForMember(d => d.CreatedAt,
+                    opt =>
+                    opt.MapFrom(c => c.CreatedAt.ToString(CreatedAtFormat, CultureInfo.InvariantCulture)))
                 .ForMember(d => d.UserName, opt =>
                     opt.MapFrom(s => s.User != null ? s.User.UserName : NoUserName));
         }

@@ -1,6 +1,7 @@
 ﻿namespace SnipEx.Services.Data
 {
     using System.Globalization;
+
     using Microsoft.EntityFrameworkCore;
 
     using SnipEx.Common;
@@ -10,7 +11,7 @@
     using SnipEx.Services.Data.Contracts;
     using SnipEx.Data.Repositories.Contracts;
     using SnipEx.Services.Mapping;
-    using SnipEx.Web.ViewModels.Comment;
+
     using static Common.EntityValidationConstants.Post;
 
     public class PostService(
