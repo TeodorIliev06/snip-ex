@@ -1,0 +1,11 @@
+﻿@using SnipEx.Web.ViewModels.Comment
+@model AddCommentFormModel
+
+<form asp-action="AddComment" asp-controller="Post" method="post" class="comment-form">
+    <input type="hidden" asp-for="PostId" />
+    <div class="comment-input-container">
+        <textarea asp-for="Content" class="comment-input" placeholder="Share your thoughts..."></textarea>
+        <span asp-validation-for="Content" class="text-danger"></span>
+        <button type="submit" class="submit-comment">Post Comment</button>
+    </div>
+</form>

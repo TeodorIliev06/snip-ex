@@ -1,8 +1,12 @@
-﻿@using SnipEx.Web.ViewModels.Post
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using SnipEx.Web.ViewModels.Comment
+@using SnipEx.Web.ViewModels.Post
 @model PostDetailsViewModel
+
 @{
     ViewData["Title"] = Model.Title + " - SnipEx";
 }
+
 <div class="container">
     <div class="post-card">
         <div class="post-header">
@@ -57,13 +61,7 @@
             </button>
         </div>
 
-        <form asp-action="AddComment" asp-controller="Post" method="post" class="comment-form">
-            <input type="hidden" name="PostId" value="@Model.Id" />
-            <div class="comment-input-container">
-                <textarea name="Content" class="comment-input" placeholder="Share your thoughts..." required></textarea>
-                <button type="submit" class="submit-comment">Post Comment</button>
-            </div>
-        </form>
+        <partial name="_CommentForm" model="new AddCommentFormModel { PostId = Model.Id }" />
 
         <div class="comments-list">
             @foreach (var comment in Model.Comments)

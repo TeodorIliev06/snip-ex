@@ -82,6 +82,8 @@
         {
             if (!this.ModelState.IsValid)
             {
+                //TODO: Implement better notification for client validations
+                this.ModelState.AddModelError(nameof(model.Content), $"Content length needs to be at least 50 chars");
                 return RedirectToAction(nameof(Details), new { id = model.PostId });
             }
 
