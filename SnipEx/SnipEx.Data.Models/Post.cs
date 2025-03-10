@@ -27,5 +27,8 @@
 
         public ICollection<Comment> Comments { get; set; }
             = new HashSet<Comment>();
+
+        public ICollection<PostLike> Likes { get; set; }
+            = new HashSet<PostLike>();
     }
 }

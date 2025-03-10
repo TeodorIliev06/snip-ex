@@ -19,9 +19,11 @@
         }
 
         public virtual DbSet<Post> Posts { get; set; } = null!;
+        public virtual DbSet<PostLike> PostsLikes { get; set; } = null!;
         public virtual DbSet<Tag> Tags { get; set; } = null!;
         public virtual DbSet<PostTag> PostsTags { get; set; } = null!;
         public virtual DbSet<Comment> Comments { get; set; } = null!;
+        public virtual DbSet<CommentLike> CommentsLikes { get; set; } = null!;
         public virtual DbSet<ProgrammingLanguage> ProgrammingLanguages { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

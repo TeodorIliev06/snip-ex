@@ -12,7 +12,13 @@
         public virtual ICollection<Post> Posts { get; set; }
             = new HashSet<Post>();
 
+        public ICollection<PostLike> LikedPosts { get; set; }
+            = new HashSet<PostLike>();
+
         public virtual ICollection<Comment> Comments { get; set; }
             = new HashSet<Comment>();
+
+        public ICollection<CommentLike> LikedComments { get; set; }
+            = new HashSet<CommentLike>();
     }
 }

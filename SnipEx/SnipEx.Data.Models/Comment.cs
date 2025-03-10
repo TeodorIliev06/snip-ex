@@ -15,5 +15,8 @@
         public Guid? UserId { get; set; }
 
         public ApplicationUser? User { get; set; }
+
+        public ICollection<CommentLike> Likes { get; set; }
+            = new HashSet<CommentLike>();
     }
 }
