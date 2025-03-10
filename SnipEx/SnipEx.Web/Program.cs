@@ -22,7 +22,10 @@ namespace SnipEx.Web
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
+            builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(cfg =>
+                {
+                    IdentityOptionsConfigurator.Configure(builder, cfg);
+                })
                 .AddEntityFrameworkStores<SnipExDbContext>()
                 .AddRoles<ApplicationRole>()
                 .AddSignInManager<SignInManager<ApplicationUser>>()

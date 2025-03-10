@@ -86,8 +86,9 @@ namespace SnipEx.Web.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
+                user.Email = Input.Email;
 
-                await userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+                await userStore.SetUserNameAsync(user, Input.Username, CancellationToken.None);
                 var result = await userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
