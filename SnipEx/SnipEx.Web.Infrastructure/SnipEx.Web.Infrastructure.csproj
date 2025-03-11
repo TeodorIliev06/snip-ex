@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SnipEx.Common\SnipEx.Common.csproj" />
     <ProjectReference Include="..\SnipEx.Data\SnipEx.Data.csproj" />
+    <ProjectReference Include="..\SnipEx.Services.Data\SnipEx.Services.Data.csproj" />
   </ItemGroup>
 
 </Project>
