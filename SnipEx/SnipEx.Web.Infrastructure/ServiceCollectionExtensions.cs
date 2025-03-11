@@ -22,7 +22,7 @@
 
             foreach (Type type in modelsTypes)
             {
-                if (!typesToExclude.Contains(type))
+                if (!typesToExclude.Contains(type) && !type.IsEnum)
                 {
                     Type repositoryInterfaceType = typeof(IRepository<,>);
                     Type repositoryInstanceType = typeof(BaseRepository<,>);
