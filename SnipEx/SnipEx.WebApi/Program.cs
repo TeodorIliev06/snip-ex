@@ -1,5 +1,6 @@
 namespace SnipEx.WebApi
 {
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
 
     using SnipEx.Data;
@@ -23,6 +24,13 @@ namespace SnipEx.WebApi
                 {
                     cfg.UseSqlServer(connectionString);
                 });
+
+            builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(cfg =>
+                {
+                    IdentityOptionsConfigurator.Configure(builder, cfg);
+                })
+                .AddEntityFrameworkStores<SnipExDbContext>()
+                .AddDefaultTokenProviders();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -66,14 +74,14 @@ namespace SnipEx.WebApi
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
-
-            app.UseAuthorization();
-
             if (!string.IsNullOrWhiteSpace(appOrigin))
             {
                 app.UseCors("AllowMyServer");
             }
+
+            app.UseHttpsRedirection();
+
+            app.UseAuthorization();
 
             app.MapControllers();
 
