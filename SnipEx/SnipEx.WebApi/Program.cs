@@ -15,7 +15,7 @@ namespace SnipEx.WebApi
         {
             var builder = WebApplication.CreateBuilder(args);
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
+            var appOrigin = builder.Configuration.GetValue<string>("ClientOrigins:SnipEx");
             // Add services to the container.
 
             builder.Services
@@ -32,6 +32,29 @@ namespace SnipEx.WebApi
             builder.Services.RegisterRepositories(typeof(ApplicationUser).Assembly);
             builder.Services.RegisterUserDefinedServices(typeof(IPostService).Assembly);
 
+            builder.Services.AddCors(cfg =>
+            {
+                cfg.AddPolicy("AllowAll", policyBld =>
+                {
+                    policyBld
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowAnyOrigin();
+                });
+
+                if (!string.IsNullOrWhiteSpace(appOrigin))
+                {
+                    cfg.AddPolicy("AllowMyServer", policyBld =>
+                    {
+                        policyBld
+                            .AllowAnyHeader()
+                            .AllowAnyMethod()
+                            .AllowCredentials()
+                            .WithOrigins(appOrigin);
+                    });
+                }
+            });
+
             var app = builder.Build();
 
             AutoMapperConfig.RegisterMappings(typeof(PostCardViewModel).Assembly);
@@ -47,6 +70,10 @@ namespace SnipEx.WebApi
 
             app.UseAuthorization();
 
+            if (!string.IsNullOrWhiteSpace(appOrigin))
+            {
+                app.UseCors("AllowMyServer");
+            }
 
             app.MapControllers();
 
