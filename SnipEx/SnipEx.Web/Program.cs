@@ -34,6 +34,11 @@ namespace SnipEx.Web
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
 
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Identity/Account/Login";
+            });
+
             builder.Services.RegisterRepositories(typeof(ApplicationUser).Assembly);
             builder.Services.RegisterUserDefinedServices(typeof(IPostService).Assembly);
 
@@ -63,6 +68,9 @@ namespace SnipEx.Web
 
             await app.SeedAdminAsync();
 
+            app.MapControllerRoute(
+                name: "Areas",
+                pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");

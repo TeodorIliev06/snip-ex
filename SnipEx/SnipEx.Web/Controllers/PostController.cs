@@ -78,6 +78,7 @@
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> AddComment(AddCommentFormModel model)
         {
             if (!this.ModelState.IsValid)
