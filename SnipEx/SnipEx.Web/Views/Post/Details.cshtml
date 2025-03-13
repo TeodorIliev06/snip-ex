@@ -44,9 +44,12 @@
         <input type="hidden" id="currentUserId" value="@User.FindFirstValue(ClaimTypes.NameIdentifier)" />
         <div class="post-actions">
             <button class="action-button like-button @(Model.IsLikedByCurrentUser ? "liked" : "")" 
-                    data-post-id="@Model.Id" 
-                    onclick="togglePostLike('@Model.Id')">
-                <i class="fa fa-thumbs-up"></i> <span class="count">@Model.LikesCount</span>
+                    data-post-id="@Model.Id">
+                <i class="fa fa-thumbs-up"></i>
+                @if (@Model.LikesCount > 0)
+                {
+                    <span class="count">@Model.LikesCount</span>
+                }
             </button>
             <button class="action-button save-button">
                 <i class="fa fa-bookmark"></i> Save
@@ -83,8 +86,13 @@
                             <button class="comment-action" title="Reply">
                                 <i class="fa fa-reply"></i>
                             </button>
-                            <button class="comment-action" title="Like">
+                            <button class="comment-action like-button @(Model.IsLikedByCurrentUser ? "liked" : "")"
+                                    data-comment-id="@comment.Id">
                                 <i class="fa fa-thumbs-up"></i>
+                                @if (comment.LikesCount > 0)
+                                {
+                                    <span class="count">@comment.LikesCount</span>
+                                }
                             </button>
                         </div>
                     </div>

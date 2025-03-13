@@ -19,6 +19,10 @@
 
         public string CreatedAt { get; set; } = null!;
 
+        public int LikesCount { get; set; }
+
+        public bool IsLikedByCurrentUser { get; set; }
+
         public void CreateMappings(IProfileExpression configuration)
         {
             configuration.CreateMap<Comment, CommentViewModel>()
@@ -26,7 +30,9 @@
                     opt =>
                     opt.MapFrom(c => c.CreatedAt.ToString(CreatedAtFormat, CultureInfo.InvariantCulture)))
                 .ForMember(d => d.UserName, opt =>
-                    opt.MapFrom(s => s.User != null ? s.User.UserName : NoUserName));
+                    opt.MapFrom(s => s.User != null ? s.User.UserName : NoUserName))
+                .ForMember(d => d.IsLikedByCurrentUser,
+                    opt => opt.Ignore()); ;
         }
     }
 }

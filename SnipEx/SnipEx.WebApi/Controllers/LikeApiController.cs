@@ -37,11 +37,24 @@ namespace SnipEx.WebApi.Controllers
             return Ok(new { isLiked, likesCount });
         }
 
-        [HttpGet("test")]
-        [AllowAnonymous]
-        public IActionResult TestRoute()
+        [HttpPost("[action]/{commentId}")]
+        public async Task<IActionResult> ToggleCommentLike(string commentId, [FromBody] ToggleLikeRequest request)
         {
-            return Ok("Route works!");
+            var isGuidValid = ValidationUtils.TryGetGuid(commentId, out Guid commentGuid);
+            if (!isGuidValid)
+            {
+                return BadRequest();
+            }
+
+            if (string.IsNullOrEmpty(request.UserId))
+            {
+                return Unauthorized();
+            }
+
+            var isLiked = await likeService.ToggleCommentLikeAsync(commentGuid, request.UserId);
+            var likesCount = await likeService.GetCommentLikesCountAsync(commentGuid);
+
+            return Ok(new { isLiked, likesCount });
         }
 
         // DTO class

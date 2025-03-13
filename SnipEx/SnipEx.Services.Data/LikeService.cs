@@ -6,7 +6,8 @@
     using Microsoft.EntityFrameworkCore;
 
     public class LikeService(
-        IRepository<PostLike, Guid> postLikeRepository) : ILikeService
+        IRepository<PostLike, Guid> postLikeRepository,
+        IRepository<CommentLike, Guid> commentLikeRepository) : ILikeService
     {
         public async Task<bool> TogglePostLikeAsync(Guid postGuid, string userId)
         {
@@ -48,11 +49,60 @@
             return isPostLiked;
         }
 
-        public async Task<int> GetPostLikesCountAsync(Guid postId)
+        public async Task<int> GetPostLikesCountAsync(Guid postGuid)
         {
             var postLikesCount = await postLikeRepository
                 .GetAllAttached()
-                .CountAsync(pl => pl.PostId == postId);
+                .CountAsync(pl => pl.PostId == postGuid);
+
+            return postLikesCount;
+        }
+
+        public async Task<bool> ToggleCommentLikeAsync(Guid commentGuid, string userId)
+        {
+            var userGuid = Guid.Parse(userId);
+            var existingLike = await commentLikeRepository
+                .FirstOrDefaultAsync(pl =>
+                    pl.CommentId == commentGuid &&
+                    pl.UserId == userGuid);
+
+            if (existingLike != null)
+            {
+                await commentLikeRepository.DeleteAsync(existingLike.Id);
+                await commentLikeRepository.SaveChangesAsync();
+
+                return false;
+            }
+
+            var newLike = new CommentLike()
+            {
+                Id = Guid.NewGuid(),
+                CommentId = commentGuid,
+                UserId = userGuid,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            await commentLikeRepository.AddAsync(newLike);
+            await commentLikeRepository.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> IsCommentLikedByUserAsync(Guid commentGuid, string userId)
+        {
+            var userGuid = Guid.Parse(userId);
+            var isPostLiked = await commentLikeRepository
+                .GetAllAttached()
+                .AnyAsync(pl => pl.CommentId == commentGuid && pl.UserId == userGuid);
+
+            return isPostLiked;
+        }
+
+        public async Task<int> GetCommentLikesCountAsync(Guid commentGuid)
+        {
+            var postLikesCount = await commentLikeRepository
+                .GetAllAttached()
+                .CountAsync(pl => pl.CommentId == commentGuid);
 
             return postLikesCount;
         }

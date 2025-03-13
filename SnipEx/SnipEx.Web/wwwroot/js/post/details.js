@@ -9,12 +9,19 @@
         copyButton.addEventListener('click', copyToClipboard);
     }
 
-    const likeBtn = document.querySelectorAll('.like-button');
-
-    likeBtn.forEach(button => {
-        const postId = button.getAttribute('data-post-id');
-        button.addEventListener('click', function () {
+    const postLikeButton = document.querySelector('.like-button[data-post-id]');
+    if (postLikeButton) {
+        const postId = postLikeButton.getAttribute('data-post-id');
+        postLikeButton.addEventListener('click', function () {
             togglePostLike(postId);
+        });
+    }
+
+    const commentLikeButtons = document.querySelectorAll('.like-button[data-comment-id]');
+    commentLikeButtons.forEach(button => {
+        const commentId = button.getAttribute('data-comment-id');
+        button.addEventListener('click', function () {
+            toggleCommentLike(commentId);
         });
     });
 });
@@ -115,10 +122,67 @@ function togglePostLike(postId) {
         })
         .then(data => {
             const likeButton = document.querySelector(`.like-button[data-post-id="${postId}"]`);
-            const likeCount = likeButton.querySelector('.count');
+            let likeCountSpan = likeButton.querySelector('.count');
 
-            let currentCount = parseInt(likeCount.textContent, 10);
-            likeCount.textContent = data.isLiked ? currentCount + 1 : currentCount - 1;
+            let currentCount = parseInt(likeCountSpan?.textContent || "0", 10);
+            let newCount = data.isLiked ? currentCount + 1 : currentCount - 1;
+
+            if (newCount >= 1) {
+                if (!likeCountSpan) {
+                    likeCountSpan = document.createElement("span");
+                    likeCountSpan.classList.add("count");
+                    likeButton.appendChild(likeCountSpan);
+                }
+                likeCountSpan.textContent = newCount;
+            } else {
+                if (likeCountSpan) {
+                    likeCountSpan.remove();
+                }
+            }
+
+            likeButton.classList.toggle('liked', data.isLiked);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
+function toggleCommentLike(commentId) {
+    const userId = document.getElementById('currentUserId').value;
+
+    fetch(`https://localhost:7000/LikeApi/ToggleCommentLike/${commentId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            body: JSON.stringify({ userId })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const likeButton = document.querySelector(`.like-button[data-comment-id="${commentId}"]`);
+            let likeCountSpan = likeButton.querySelector('.count');
+
+            let currentCount = parseInt(likeCountSpan?.textContent || "0", 10);
+            let newCount = data.isLiked ? currentCount + 1 : currentCount - 1;
+
+            if (newCount >= 1) {
+                if (!likeCountSpan) {
+                    likeCountSpan = document.createElement("span");
+                    likeCountSpan.classList.add("count");
+                    likeButton.appendChild(likeCountSpan);
+                }
+                likeCountSpan.textContent = newCount;
+            } else {
+                if (likeCountSpan) {
+                    likeCountSpan.remove();
+                }
+            }
 
             likeButton.classList.toggle('liked', data.isLiked);
         })

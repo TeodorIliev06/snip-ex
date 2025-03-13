@@ -7,5 +7,11 @@
         Task<bool> IsPostLikedByUserAsync(Guid postGuid, string userId);
 
         Task<int> GetPostLikesCountAsync(Guid postGuid);
+
+        Task<bool> ToggleCommentLikeAsync(Guid commentGuid, string userId);
+
+        Task<bool> IsCommentLikedByUserAsync(Guid commentGuid, string userId);
+
+        Task<int> GetCommentLikesCountAsync(Guid commentGuid);
     }
 }
