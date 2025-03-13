@@ -33,6 +33,13 @@
                 .HasForeignKey(c => c.PostId);
 
             builder
+                .HasOne(c => c.ParentComment)
+                .WithMany(c => c.Replies)
+                .HasForeignKey(c => c.ParentCommentId)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
                 .SeedDataFromJson("comments.json");
         }
     }

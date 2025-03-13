@@ -16,7 +16,14 @@
 
         public ApplicationUser? User { get; set; }
 
-        public ICollection<CommentLike> Likes { get; set; }
+        public Guid? ParentCommentId { get; set; }
+
+        public Comment? ParentComment { get; set; }
+
+        public virtual ICollection<CommentLike> Likes { get; set; }
             = new HashSet<CommentLike>();
+
+        public virtual ICollection<Comment> Replies { get; set; } 
+            = new HashSet<Comment>();
     }
 }
