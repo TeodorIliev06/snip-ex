@@ -67,7 +67,8 @@
                 return RedirectToAction(nameof(Index));
             }
 
-            var viewModel = await postService.GetPostByIdAsync(postGuid);
+            var userId = userManager.GetUserId(User);
+            var viewModel = await postService.GetPostByIdAsync(postGuid, userId);
 
             if (viewModel == null)
             {

@@ -362,6 +362,17 @@ body {
     background: #3c444d;
 }
 
+/*Like buttons*/
+.like-button.liked,
+.comment-action.liked {
+    color: #1E88E5 !important;
+}
+
+.like-button.liked i,
+.comment-action.liked i {
+    font-weight: bold !important;
+}
+
 /* For the copy button success state */
 .copy-button.copied {
     background-color: #238636;

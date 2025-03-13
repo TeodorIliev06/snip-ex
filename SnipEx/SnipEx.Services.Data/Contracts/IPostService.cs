@@ -10,6 +10,6 @@
 
         Task<bool> AddPostAsync(AddPostFormModel model, string userId);
 
-        Task<PostDetailsViewModel?> GetPostByIdAsync(Guid postGuid);
+        Task<PostDetailsViewModel?> GetPostByIdAsync(Guid postGuid, string? userId);
     }
 }

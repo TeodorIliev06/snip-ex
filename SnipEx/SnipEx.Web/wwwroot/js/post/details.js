@@ -4,11 +4,19 @@
         Prism.highlightAll();
     }
 
-    // Setup the copy button event listener rather than auto-copying on page load
     const copyButton = document.querySelector('.copy-button');
     if (copyButton) {
         copyButton.addEventListener('click', copyToClipboard);
     }
+
+    const likeBtn = document.querySelectorAll('.like-button');
+
+    likeBtn.forEach(button => {
+        const postId = button.getAttribute('data-post-id');
+        button.addEventListener('click', function () {
+            togglePostLike(postId);
+        });
+    });
 });
 
 function copyToClipboard() {
@@ -86,6 +94,37 @@ function handleLongCode() {
         // Add the button after the code container
         codeContainer.parentNode.insertBefore(expandButton, codeContainer.nextSibling);
     }
+}
+
+function togglePostLike(postId) {
+    const userId = document.getElementById('currentUserId').value;
+
+    fetch(`https://localhost:7000/LikeApi/TogglePostLike/${postId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            body: JSON.stringify({ userId })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const likeButton = document.querySelector(`.like-button[data-post-id="${postId}"]`);
+            const likeCount = likeButton.querySelector('.count');
+
+            let currentCount = parseInt(likeCount.textContent, 10);
+            likeCount.textContent = data.isLiked ? currentCount + 1 : currentCount - 1;
+
+            likeButton.classList.toggle('liked', data.isLiked);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
 }
 
 // Run all code enhancements after the document is ready

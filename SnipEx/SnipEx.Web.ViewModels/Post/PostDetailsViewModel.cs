@@ -30,6 +30,10 @@
 
         public string CreatedAt { get; set; }
 
+        public int LikesCount { get; set; }
+
+        public bool IsLikedByCurrentUser { get; set; }
+
         public List<string> Tags { get; set; } = new List<string>();
 
         public List<CommentViewModel> Comments { get; set; } = new List<CommentViewModel>();
@@ -39,7 +43,9 @@
             configuration.CreateMap<Post, PostDetailsViewModel>()
                 .ForMember(d => d.CreatedAt, opt => opt.Ignore())
                 .ForMember(d => d.UserName, opt =>
-                    opt.MapFrom(s => s.User != null ? s.User.UserName : NoUserName));
+                    opt.MapFrom(p => p.User != null ? p.User.UserName : NoUserName))
+                .ForMember(d => d.IsLikedByCurrentUser,
+                opt => opt.Ignore());
         }
     }
 }

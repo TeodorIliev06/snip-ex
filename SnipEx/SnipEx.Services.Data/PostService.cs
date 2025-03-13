@@ -1,7 +1,7 @@
 ﻿namespace SnipEx.Services.Data
 {
     using System.Globalization;
-
+    using AutoMapper;
     using Microsoft.EntityFrameworkCore;
 
     using SnipEx.Common;
@@ -114,19 +114,33 @@
             return true;
         }
 
-        public async Task<PostDetailsViewModel?> GetPostByIdAsync(Guid postGuid)
+        public async Task<PostDetailsViewModel?> GetPostByIdAsync(Guid postGuid, string? userId)
         {
-            var post = postRepository.GetAllAttached()
+            var post = await postRepository.GetAllAttached()
                 .Include(p => p.Comments)
                 .ThenInclude(c => c.User)
                 .Include(p => p.PostsTags)
                 .ThenInclude(pt => pt.Tag)
                 .Include(p => p.Language)
                 .Include(p => p.User)
-                .To<PostDetailsViewModel>()
-                .FirstOrDefault(p => p.Id == postGuid.ToString());
+                .Include(p => p.Likes)
+                .FirstOrDefaultAsync(p => p.Id == postGuid);
 
-            return post;
+            if (post == null)
+            {
+                return null;
+            }
+
+            var viewModel = new PostDetailsViewModel();
+            AutoMapperConfig.MapperInstance.Map(post, viewModel);
+
+            if (!string.IsNullOrEmpty(userId))
+            {
+                var userGuid = Guid.Parse(userId);
+                viewModel.IsLikedByCurrentUser = post.Likes.Any(l => l.UserId == userGuid);
+            }
+
+            return viewModel;
         }
     }
 }
