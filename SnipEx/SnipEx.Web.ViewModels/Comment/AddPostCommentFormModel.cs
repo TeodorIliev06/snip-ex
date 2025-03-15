@@ -7,12 +7,11 @@
     using SnipEx.Data.Models;
     using SnipEx.Services.Mapping.Contracts;
 
-    using static Common.ApplicationConstants;
     using static Common.EntityValidationConstants.Comment;
 
-    public class AddCommentFormModel : IMapTo<Comment>, IHaveCustomMappings
+    public class AddPostCommentFormModel : IMapTo<Comment>, IHaveCustomMappings
     {
-        public AddCommentFormModel()
+        public AddPostCommentFormModel()
         {
             this.CreatedAt = DateTime.UtcNow.ToString(CreatedAtFormat, CultureInfo.InvariantCulture);
         }

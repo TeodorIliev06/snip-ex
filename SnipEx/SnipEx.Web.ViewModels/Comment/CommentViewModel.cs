@@ -23,6 +23,11 @@
 
         public bool IsLikedByCurrentUser { get; set; }
 
+        public string? ParentCommentId { get; set; }
+
+        public ICollection<CommentViewModel> Replies { get; set; } 
+            = new List<CommentViewModel>();
+
         public void CreateMappings(IProfileExpression configuration)
         {
             configuration.CreateMap<Comment, CommentViewModel>()
@@ -31,6 +36,8 @@
                     opt.MapFrom(c => c.CreatedAt.ToString(CreatedAtFormat, CultureInfo.InvariantCulture)))
                 .ForMember(d => d.UserName, opt =>
                     opt.MapFrom(s => s.User != null ? s.User.UserName : NoUserName))
+                .ForMember(d => d.Replies,
+                    opt => opt.MapFrom(c => c.Replies.OrderBy(c => c.CreatedAt).ToList()))
                 .ForMember(d => d.IsLikedByCurrentUser,
                     opt => opt.Ignore()); ;
         }

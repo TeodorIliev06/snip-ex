@@ -4,6 +4,8 @@
 
     public interface ICommentService
     {
-        Task<bool> AddCommentAsync(AddCommentFormModel model, string userId);
+        Task<bool> AddCommentAsync(AddPostCommentFormModel model, string userId);
+
+        Task<IEnumerable<CommentViewModel>> GetStructuredComments(IEnumerable<CommentViewModel> comments);
     }
 }

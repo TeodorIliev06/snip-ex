@@ -1,22 +1,23 @@
 ﻿namespace SnipEx.Services.Data
 {
     using System.Globalization;
-    using AutoMapper;
+
     using Microsoft.EntityFrameworkCore;
 
     using SnipEx.Common;
     using SnipEx.Data.Models;
+    using SnipEx.Services.Mapping;
     using SnipEx.Web.ViewModels.Tag;
     using SnipEx.Web.ViewModels.Post;
     using SnipEx.Services.Data.Contracts;
     using SnipEx.Data.Repositories.Contracts;
-    using SnipEx.Services.Mapping;
 
     using static Common.EntityValidationConstants.Post;
 
     public class PostService(
         IRepository<Post, Guid> postRepository,
-        IRepository<Tag, Guid> tagRepository) : IPostService
+        IRepository<Tag, Guid> tagRepository,
+        ICommentService commentService) : IPostService
     {
         public async Task<PostIndexViewModel> GetPostsAsync(string? tag, string? search, string? sort)
         {
@@ -118,6 +119,7 @@
         {
             var post = await postRepository.GetAllAttached()
                 .Include(p => p.Comments)
+                .ThenInclude(c => c.Replies)
                 .ThenInclude(c => c.User)
                 .Include(p => p.Comments)
                 .ThenInclude(c => c.Likes)
@@ -135,6 +137,10 @@
 
             var viewModel = new PostDetailsViewModel();
             AutoMapperConfig.MapperInstance.Map(post, viewModel);
+
+            var structuredComments = await commentService
+                .GetStructuredComments(viewModel.Comments);
+            viewModel.Comments = structuredComments.ToList();
 
             if (!string.IsNullOrEmpty(userId))
             {

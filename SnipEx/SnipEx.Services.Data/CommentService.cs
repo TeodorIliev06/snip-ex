@@ -14,7 +14,7 @@
     public class CommentService(
         IRepository<Comment, Guid> commentRepository) : ICommentService
     {
-        public async Task<bool> AddCommentAsync(AddCommentFormModel model, string userId)
+        public async Task<bool> AddCommentAsync(AddPostCommentFormModel model, string userId)
         {
             var isPostGuidValid = ValidationUtils.TryGetGuid(model.PostId, out Guid postGuid);
             if (!isPostGuidValid)
@@ -41,6 +41,27 @@
             await commentRepository.SaveChangesAsync();
 
             return true;
+        }
+
+        public async Task<IEnumerable<CommentViewModel>> GetStructuredComments(IEnumerable<CommentViewModel> comments)
+        {
+            var commentLookup = comments.ToDictionary(c => c.Id);
+            var structuredComments = new List<CommentViewModel>();
+
+            foreach (var comment in comments)
+            {
+                //If no parent comment - add to top-level comments
+                if (comment.ParentCommentId == null)
+                {
+                    structuredComments.Add(comment);
+                }
+                else if (commentLookup.TryGetValue(comment.ParentCommentId, out var parent))
+                {
+                    parent.Replies.Add(comment);
+                }
+            }
+
+            return structuredComments;
         }
     }
 }
