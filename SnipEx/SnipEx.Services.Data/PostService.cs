@@ -119,7 +119,7 @@
         {
             var post = await postRepository.GetAllAttached()
                 .Include(p => p.Comments)
-                .ThenInclude(c => c.Replies)
+                //.ThenInclude(c => c.Replies) We are building it manually
                 .ThenInclude(c => c.User)
                 .Include(p => p.Comments)
                 .ThenInclude(c => c.Likes)
@@ -146,20 +146,10 @@
             {
                 var userGuid = Guid.Parse(userId);
                 viewModel.IsLikedByCurrentUser = post.Likes.Any(l => l.UserId == userGuid);
+
                 foreach (var comment in viewModel.Comments)
                 {
-                    var isCommentGuidValid = ValidationUtils.TryGetGuid(comment.Id, out Guid commentGuid);
-                    if (!isCommentGuidValid)
-                    {
-                        //TODO: decide what to do with invalid comments
-                        continue;
-                    }
-
-                    var postComment = post.Comments.FirstOrDefault(c => c.Id == commentGuid);
-                    if (postComment != null)
-                    {
-                        comment.IsLikedByCurrentUser = postComment.Likes.Any(l => l.UserId == userGuid);
-                    }
+                    commentService.SetUserLikeStatus(comment, post.Comments, userGuid);
                 }
             }
 

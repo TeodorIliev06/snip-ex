@@ -68,7 +68,7 @@
             </button>
         </div>
 
-        <partial name="_CommentForm" model="new AddCommentFormModel { PostId = Model.Id }" />
+        <partial name="_CommentForm" model="new AddPostCommentFormModel { PostId = Model.Id }" />
 
         <div class="comments-list">
             @foreach (var comment in Model.Comments)
@@ -86,7 +86,7 @@
                             <button class="comment-action" title="Reply">
                                 <i class="fa fa-reply"></i>
                             </button>
-                            <button class="comment-action like-button @(Model.IsLikedByCurrentUser ? "liked" : "")"
+                            <button class="comment-action like-button @(comment.IsLikedByCurrentUser ? "liked" : "")"
                                     data-comment-id="@comment.Id">
                                 <i class="fa fa-thumbs-up"></i>
                                 @if (comment.LikesCount > 0)
@@ -99,6 +99,56 @@
                     <div class="comment-body">
                         @comment.Content
                     </div>
+                    <input type="hidden" name="CreatedAt" value="@DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")" />
+                    <div class="form-group">
+                        <textarea name="Content" class="form-control" placeholder="Write your reply..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-sm">Reply</button>
+                    <button type="button" class="btn btn-secondary btn-sm cancel-reply" data-comment-id="@comment.Id">Cancel</button>
+                </form>
+            </div>
+
+            <!-- Replies section -->
+            @if (comment.Replies != null && comment.Replies.Any())
+            {
+                <div class="replies-container">
+                    @foreach (var reply in comment.Replies)
+                    {
+                        <div class="comment reply" id="comment-@reply.Id">
+                            <div class="comment-header">
+                                <div class="comment-author-info">
+                                    <div class="avatar small">@reply.UserName[0]</div>
+                                    <div>
+                                        <div class="comment-author">@reply.UserName</div>
+                                        <div class="comment-date">@reply.CreatedAt</div>
+                                    </div>
+                                </div>
+                                <div class="comment-actions">
+                                    <button class="comment-action reply-button" title="Reply" data-comment-id="@reply.Id">
+                                        <i class="fa fa-reply"></i>
+                                    </button>
+                                    <button class="comment-action like-button @(reply.IsLikedByCurrentUser ? "liked" : "")"
+                                            data-comment-id="@reply.Id">
+                                        <i class="fa fa-thumbs-up"></i>
+                                        @if (reply.LikesCount > 0)
+                                        {
+                                            <span class="count">@reply.LikesCount</span>
+                                        }
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="comment-body">
+                                @reply.Content
+                            </div>
+
+                            <!-- Reply form for replies (initially hidden) -->
+                            <div class="reply-form-container" id="reply-form-@reply.Id" style="display: none;">
+                                <form asp-controller="Comment" asp-action="AddReply" method="post">
+                                    <input type="hidden" name="PostId" value="@Model.Id" />
+                                    <input type="hidden" name="ParentCommentId" value="@reply.Id" />
+                                    <input type="hidden" name="CreatedAt" value="@DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")" />
+                                    <div class="form-group">
+                                        <textarea name="Content" class="form-control" placeholder="Write your reply..." required></textarea>
                 </div>
             }
         </div>

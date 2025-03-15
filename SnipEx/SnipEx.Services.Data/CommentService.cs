@@ -45,7 +45,6 @@
 
         public async Task<IEnumerable<CommentViewModel>> GetStructuredComments(IEnumerable<CommentViewModel> comments)
         {
-            var commentLookup = comments.ToDictionary(c => c.Id);
             var structuredComments = new List<CommentViewModel>();
 
             foreach (var comment in comments)
@@ -55,13 +54,27 @@
                 {
                     structuredComments.Add(comment);
                 }
-                else if (commentLookup.TryGetValue(comment.ParentCommentId, out var parent))
-                {
-                    parent.Replies.Add(comment);
-                }
             }
 
             return structuredComments;
+        }
+
+        public void SetUserLikeStatus(CommentViewModel comment, ICollection<Comment> postComments, Guid userGuid)
+        {
+            var isCommentGuidValid = ValidationUtils.TryGetGuid(comment.Id, out Guid commentGuid);
+            if (isCommentGuidValid)
+            {
+                var postComment = postComments.FirstOrDefault(c => c.Id == commentGuid);
+                if (postComment != null)
+                {
+                    comment.IsLikedByCurrentUser = postComment.Likes.Any(l => l.UserId == userGuid);
+                }
+            }
+
+            foreach (var reply in comment.Replies)
+            { 
+                SetUserLikeStatus(reply, postComments, userGuid);
+            }
         }
     }
 }
