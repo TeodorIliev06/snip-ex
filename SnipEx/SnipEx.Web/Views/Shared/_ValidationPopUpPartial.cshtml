@@ -1,0 +1,29 @@
+﻿@using static SnipEx.Common.PopUpMessages
+
+@if (TempData.ContainsKey(ErrorMessage))
+{
+    <script>
+        toastr.error(`@TempData[ErrorMessage]`, "", { timeOut: 5000, closeButton: true });
+    </script>
+}
+ 
+@if (TempData.ContainsKey(WarningMessage))
+{
+    <script>
+        toastr.error(`@TempData[WarningMessage]`, "", { timeOut: 5000, closeButton: true });
+    </script>
+}
+ 
+@if (TempData.ContainsKey(SuccessMessage))
+{
+    <script>
+        toastr.error(`@TempData[SuccessMessage]`, "", { timeOut: 5000, closeButton: true });
+    </script>
+}
+ 
+@if (TempData.ContainsKey(InfoMessage))
+{
+    <script>
+        toastr.error(`@TempData[InfoMessage]`, "", { timeOut: 5000, closeButton: true });
+    </script>
+}
