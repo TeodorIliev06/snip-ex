@@ -94,12 +94,13 @@
 
         public async Task<IEnumerable<CommentViewModel>> GetCommentsByPostIdAsync(Guid postGuid)
         {
-            //TODO: Fix comments not mapping
+            //Materialise the query before mapping
             var comments = await commentRepository.GetAllAttached()
-                .Include(p => p.Post)
-                .Where(c => c.PostId == postGuid && c.ParentCommentId == null)
-                .OrderByDescending(p => p.CreatedAt)
+                .Where(c => c.PostId == postGuid)
+                .ToList()
+                .AsQueryable()
                 .To<CommentViewModel>()
+                .OrderByDescending(c => c.CreatedAt)
                 .ToListAsync();
 
             return comments;
