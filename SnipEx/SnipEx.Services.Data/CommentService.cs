@@ -94,16 +94,18 @@
 
         public async Task<IEnumerable<CommentViewModel>> GetCommentsByPostIdAsync(Guid postGuid)
         {
-            //Materialise the query before mapping
             var comments = await commentRepository.GetAllAttached()
                 .Where(c => c.PostId == postGuid)
-                .ToList()
+                .ToListAsync();
+
+            //Materialise the query before mapping
+            var filteredComments = comments
                 .AsQueryable()
                 .To<CommentViewModel>()
                 .OrderByDescending(c => c.CreatedAt)
-                .ToListAsync();
+                .ToList();
 
-            return comments;
+            return filteredComments;
         }
 
         public void SetUserLikeStatus(CommentViewModel comment, ICollection<Comment> postComments, Guid userGuid)
