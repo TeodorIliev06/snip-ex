@@ -4,35 +4,46 @@
     const cancelButtons = document.querySelectorAll('.cancel-reply');
     const replyForms = document.querySelectorAll('.reply-form');
 
-    // Attach event listeners to reply buttons
-    replyButtons.forEach(button => {
-        button.addEventListener('click', function () {
-            const commentId = this.dataset.commentId || this.closest('.comment').querySelector('.like-button').dataset.commentId;
+    // Attach event listeners to reply buttons with event delegation
+    document.addEventListener('click', function (e) {
+        // Handle reply button clicks
+        if (e.target.closest('.comment-action[title="Reply"]') || e.target.closest('.comment-action.reply-button')) {
+            const button = e.target.closest('.comment-action[title="Reply"]') || e.target.closest('.comment-action.reply-button');
+            const commentId = button.dataset.commentId ||
+                button.closest('.comment').querySelector('.like-button').dataset.commentId;
 
             // Hide all reply forms first
             document.querySelectorAll('.reply-form-container').forEach(form => {
                 form.style.display = 'none';
+                form.classList.remove('visible');
             });
 
-            // Show the specific reply form
+            // Show the specific reply form with animation
             const replyForm = document.getElementById(`reply-form-${commentId}`);
             if (replyForm) {
                 replyForm.style.display = 'block';
-                // Focus on the textarea
-                replyForm.querySelector('textarea').focus();
+                // Small delay for the animation to work properly
+                setTimeout(() => {
+                    replyForm.classList.add('visible');
+                    // Focus on the textarea
+                    replyForm.querySelector('textarea').focus();
+                }, 10);
             }
-        });
-    });
+        }
 
-    // Attach event listeners to cancel buttons
-    cancelButtons.forEach(button => {
-        button.addEventListener('click', function () {
-            const commentId = this.dataset.commentId;
+        // Handle cancel button clicks
+        if (e.target.closest('.cancel-reply')) {
+            const button = e.target.closest('.cancel-reply');
+            const commentId = button.dataset.commentId;
             const replyForm = document.getElementById(`reply-form-${commentId}`);
             if (replyForm) {
-                replyForm.style.display = 'none';
+                replyForm.classList.remove('visible');
+                // Wait for animation to complete before hiding
+                setTimeout(() => {
+                    replyForm.style.display = 'none';
+                }, 300);
             }
-        });
+        }
     });
 
     // Handle form submissions

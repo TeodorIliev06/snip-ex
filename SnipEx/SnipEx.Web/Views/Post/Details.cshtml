@@ -100,15 +100,17 @@
                         @comment.Content
                     </div>
                     
-                    <!-- Reply form (initially hidden) -->
                     <div class="reply-form-container" id="reply-form-@comment.Id" style="display: none;">
                         <form class="reply-form" data-post-id="@Model.Id" data-parent-comment-id="@comment.Id">
-                            <input type="hidden" name="UserId" value="@User.FindFirst(ClaimTypes.NameIdentifier)?.Value" />
+                            <input type="hidden" name="PostId" value="@Model.Id" />
+                            <input type="hidden" name="ParentCommentId" value="@comment.Id" />
                             <div class="form-group">
                                 <textarea name="Content" class="form-control" placeholder="Write your reply..." required></textarea>
                             </div>
-                            <button type="submit" class="btn btn-primary btn-sm">Reply</button>
-                            <button type="button" class="btn btn-secondary btn-sm cancel-reply" data-comment-id="@comment.Id">Cancel</button>
+                            <div class="buttons-container">
+                                <button type="submit" class="btn btn-primary">Reply</button>
+                                <button type="button" class="btn btn-secondary cancel-reply" data-comment-id="@comment.Id">Cancel</button>
+                            </div>
                         </form>
                     </div>
 
@@ -154,8 +156,10 @@
                                     <div class="form-group">
                                         <textarea name="Content" class="form-control" placeholder="Write your reply..." required></textarea>
                                     </div>
-                                    <button type="submit" class="btn btn-primary btn-sm">Reply</button>
-                                    <button type="button" class="btn btn-secondary btn-sm cancel-reply" data-comment-id="@reply.Id">Cancel</button>
+                                    <div class="buttons-container">
+                                        <button type="submit" class="btn btn-primary btn-sm">Reply</button>
+                                        <button type="button" class="btn btn-secondary btn-sm cancel-reply" data-comment-id="@reply.Id">Cancel</button>
+                                    </div>
                                 </form>
                             </div>
                         </div>
