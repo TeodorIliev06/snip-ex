@@ -1,0 +1,151 @@
+﻿/* Reply Form Styling */
+/* Reply Form Dark Theme Styling */
+.reply-form-container {
+    margin-top: 12px;
+    margin-left: 30px;
+    margin-bottom: 12px;
+    background-color: var(--code-background);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+}
+
+.reply-form {
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+}
+
+    .reply-form .form-group {
+        margin-bottom: 12px;
+        width: 100%;
+    }
+
+    .reply-form textarea {
+        width: 100%;
+        min-height: 80px;
+        background-color: var(--background-dark);
+        color: var(--text-primary);
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        padding: 12px;
+        resize: vertical;
+        font-family: inherit;
+        font-size: 0.95rem;
+        transition: all 0.2s ease;
+    }
+
+        .reply-form textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.2);
+        }
+
+        .reply-form textarea::placeholder {
+            color: var(--text-secondary);
+        }
+
+    .reply-form .buttons-container {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+        margin-top: 8px;
+    }
+
+    .reply-form .btn {
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border: none;
+    }
+
+    .reply-form .btn-primary {
+        background-color: var(--accent-color);
+        color: var(--card-background);
+    }
+
+        .reply-form .btn-primary:hover {
+            background-color: #4a8ef1;
+            box-shadow: 0 0 8px rgba(88, 166, 255, 0.4);
+        }
+
+    .reply-form .btn-secondary {
+        background-color: var(--code-background);
+        color: var(--text-secondary);
+        border: 1px solid var(--border-color);
+    }
+
+        .reply-form .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+        }
+
+/* Add smooth animations */
+.reply-form-container {
+    transition: all 0.3s ease;
+}
+
+    .reply-form-container.visible {
+        animation: fadeIn 0.3s ease forwards;
+    }
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Styles for the reply toggle button */
+.replies-toggle {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.toggle-replies-btn {
+    background-color: transparent;
+    border: none;
+    color: #6c757d;
+    cursor: pointer;
+    font-size: 0.9rem;
+    padding: 5px 10px;
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.toggle-replies-btn:hover {
+    background-color: #f8f9fa;
+    color: #495057;
+}
+
+.toggle-replies-btn i {
+    margin-right: 5px;
+    transition: transform 0.2s;
+}
+
+/* Styles for the replies container */
+.replies-container {
+    margin-left: 20px;
+    padding-left: 15px;
+    border-left: 2px solid #e9ecef;
+}
+
+/* Styles for reply comments */
+.comment.reply {
+    margin-top: 10px;
+    padding-bottom: 10px;
+}
+
+.comment.reply:last-child {
+    margin-bottom: 0;
+}

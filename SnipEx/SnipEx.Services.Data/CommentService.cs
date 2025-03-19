@@ -1,7 +1,10 @@
 ﻿namespace SnipEx.Services.Data
 {
     using System.Globalization;
+
     using Microsoft.EntityFrameworkCore;
+
+    using SnipEx.Common;
     using SnipEx.Data.Models;
     using SnipEx.Services.Mapping;
     using SnipEx.Web.ViewModels.Comment;
@@ -9,8 +12,6 @@
     using SnipEx.Data.Repositories.Contracts;
 
     using static Common.EntityValidationConstants.Comment;
-    using SnipEx.Common;
-    using SnipEx.Web.ViewModels.Post;
 
     public class CommentService(
         IRepository<Comment, Guid> commentRepository) : ICommentService

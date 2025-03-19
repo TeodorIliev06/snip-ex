@@ -118,53 +118,60 @@
             <!-- Replies section -->
             @if (comment.Replies != null && comment.Replies.Any())
             {
-                <div class="replies-container">
-                    @foreach (var reply in comment.Replies)
-                    {
-                        <div class="comment reply" id="comment-@reply.Id">
-                            <div class="comment-header">
-                                <div class="comment-author-info">
-                                    <div class="avatar small">@reply.UserName[0]</div>
-                                    <div>
-                                        <div class="comment-author">@reply.UserName</div>
-                                        <div class="comment-date">@reply.CreatedAt</div>
-                                    </div>
-                                </div>
-                                <div class="comment-actions">
-                                    <button class="comment-action reply-button" title="Reply" data-comment-id="@reply.Id">
-                                        <i class="fa fa-reply"></i>
-                                    </button>
-                                    <button class="comment-action like-button @(reply.IsLikedByCurrentUser ? "liked" : "")"
-                                            data-comment-id="@reply.Id">
-                                        <i class="fa fa-thumbs-up"></i>
-                                        @if (reply.LikesCount > 0)
-                                        {
-                                            <span class="count">@reply.LikesCount</span>
-                                        }
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="comment-body">
-                                @reply.Content
-                            </div>
+                <div class="replies-toggle">
+                    <button class="toggle-replies-btn" data-comment-id="@comment.Id">
+                        <i class="fa fa-chevron-down"></i>
+                        <span class="toggle-text">Show Replies (@comment.Replies.Count())</span>
+                    </button>
+                </div>
 
-                            <!-- Reply form for replies (initially hidden) -->
-                            <div class="reply-form-container" id="reply-form-@reply.Id" style="display: none;">
-                                        <form class="reply-form" data-post-id="@Model.Id" data-parent-comment-id="@comment.Id">
-                                    <input type="hidden" name="PostId" value="@Model.Id" />
-                                    <input type="hidden" name="ParentCommentId" value="@reply.Id" />
-                                    <div class="form-group">
-                                        <textarea name="Content" class="form-control" placeholder="Write your reply..." required></textarea>
-                                    </div>
-                                    <div class="buttons-container">
-                                        <button type="submit" class="btn btn-primary btn-sm">Reply</button>
-                                        <button type="button" class="btn btn-secondary btn-sm cancel-reply" data-comment-id="@reply.Id">Cancel</button>
-                                    </div>
-                                </form>
+                <div class="replies-container" id="replies-@comment.Id" style="display: none;">
+                @foreach (var reply in comment.Replies)
+                {
+                    <div class="comment reply" id="comment-@reply.Id">
+                        <div class="comment-header">
+                            <div class="comment-author-info">
+                                <div class="avatar small">@reply.UserName[0]</div>
+                                <div>
+                                    <div class="comment-author">@reply.UserName</div>
+                                    <div class="comment-date">@reply.CreatedAt</div>
+                                </div>
+                            </div>
+                            <div class="comment-actions">
+                                <button class="comment-action reply-button" title="Reply" data-comment-id="@reply.Id">
+                                    <i class="fa fa-reply"></i>
+                                </button>
+                                <button class="comment-action like-button @(reply.IsLikedByCurrentUser ? "liked" : "")"
+                                        data-comment-id="@reply.Id">
+                                    <i class="fa fa-thumbs-up"></i>
+                                    @if (reply.LikesCount > 0)
+                                    {
+                                        <span class="count">@reply.LikesCount</span>
+                                    }
+                                </button>
                             </div>
                         </div>
-                    }
-                </div>
+                        <div class="comment-body">
+                            @reply.Content
+                        </div>
+
+                        <!-- Reply form for replies (initially hidden) -->
+                        <div class="reply-form-container" id="reply-form-@reply.Id" style="display: none;">
+                            <form class="reply-form" data-post-id="@Model.Id" data-parent-comment-id="@reply.Id">
+                                <input type="hidden" name="PostId" value="@Model.Id" />
+                                <input type="hidden" name="ParentCommentId" value="@reply.Id" />
+                                <div class="form-group">
+                                    <textarea name="Content" class="form-control" placeholder="Write your reply..." required></textarea>
+                                </div>
+                                <div class="buttons-container">
+                                    <button type="submit" class="btn btn-primary btn-sm">Reply</button>
+                                    <button type="button" class="btn btn-secondary btn-sm cancel-reply" data-comment-id="@reply.Id">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                }
+            </div>
             }
                 </div>
             }
@@ -176,6 +183,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="~/css/post/details.css" />
+    <link rel="stylesheet" href="~/css/comment/commentsList.css" />
     <link rel="stylesheet" href="~/css/post/responsive.css" />
 }
 
