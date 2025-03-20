@@ -1,0 +1,65 @@
+﻿@using SnipEx.Web.ViewModels.Comment
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+
+@model CommentViewModel
+
+<div class="comment" id="comment-@Model.Id">
+    <div class="comment-header">
+        <div class="comment-author-info">
+            <div class="avatar small">@Model.UserName[0]</div>
+            <div>
+                <div class="comment-author">@Model.UserName</div>
+                <div class="comment-date">@Model.CreatedAt</div>
+            </div>
+        </div>
+        <div class="comment-actions">
+            <button class="comment-action reply-button" title="Reply" data-comment-id="@Model.Id">
+                <i class="fa fa-reply"></i>
+            </button>
+            <button class="comment-action like-button @(Model.IsLikedByCurrentUser ? "liked" : "")"
+                    data-comment-id="@Model.Id">
+                <i class="fa fa-thumbs-up"></i>
+                @if (Model.LikesCount > 0)
+                {
+                    <span class="count">@Model.LikesCount</span>
+                }
+            </button>
+        </div>
+    </div>
+    <div class="comment-body">
+        @Model.Content
+    </div>
+
+    <div class="reply-form-container" id="reply-form-@Model.Id" style="display: none;">
+        <form class="reply-form" data-post-id="@Model.PostId" data-parent-comment-id="@Model.Id">
+            <input type="hidden" name="PostId" value="@Model.PostId" />
+            <input type="hidden" name="ParentCommentId" value="@Model.Id" />
+            <div class="form-group">
+                <textarea name="Content" class="form-control" placeholder="Write your reply..." required></textarea>
+            </div>
+            <div class="buttons-container">
+                <button type="submit" class="btn btn-primary">Reply</button>
+                <button type="button" class="btn btn-secondary cancel-reply" data-comment-id="@Model.Id">Cancel</button>
+            </div>
+        </form>
+    </div>
+
+    @if (Model.Replies != null && Model.Replies.Any())
+    {
+        <div class="replies-toggle">
+            <button class="toggle-replies-btn" data-comment-id="@Model.Id">
+                <i class="fa fa-chevron-down"></i>
+                <span class="toggle-text">Show Replies (@Model.Replies.Count())</span>
+            </button>
+        </div>
+
+        <div class="replies-container" id="replies-@Model.Id" style="display: none;">
+            @foreach (var reply in Model.Replies)
+            {
+                <div class="comment reply">
+                    <partial name="_CommentItem" model="reply" />
+                </div>
+            }
+        </div>
+    }
+</div>

@@ -23,6 +23,8 @@
 
         public bool IsLikedByCurrentUser { get; set; }
 
+        public string PostId { get; set; } = null!;
+
         public string? ParentCommentId { get; set; }
 
         public ICollection<CommentViewModel> Replies { get; set; } 

@@ -28,7 +28,7 @@
 
         public void CreateMappings(IProfileExpression configuration)
         {
-            configuration.CreateMap<CommentViewModel, Comment>()
+            configuration.CreateMap<AddPostCommentFormModel, Comment>()
                 .ForMember(d => d.Id,
                     opt => opt.Ignore())
                 .ForMember(d => d.CreatedAt,
