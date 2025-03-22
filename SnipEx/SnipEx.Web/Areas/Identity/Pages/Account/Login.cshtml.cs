@@ -11,11 +11,15 @@ namespace SnipEx.Web.Areas.Identity.Pages.Account
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Mvc.RazorPages;
 
+    using SnipEx.Common;
     using SnipEx.Data.Models;
+    using SnipEx.Services.Data.Contracts;
 
     public class LoginModel(
         SignInManager<ApplicationUser> signInManager,
-        ILogger<LoginModel> logger) : PageModel
+        UserManager<ApplicationUser> userManager,
+        ILogger<LoginModel> logger,
+        ITokenService tokenService) : PageModel
     {
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -93,6 +97,16 @@ namespace SnipEx.Web.Areas.Identity.Pages.Account
                 var result = await signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
+                    var user = await userManager.FindByEmailAsync(Input.Email);
+
+                    var token = await tokenService.GenerateJwtTokenAsync(user);
+
+                    Response.Cookies.Append("JwtToken", token, new CookieOptions
+                    {
+                        HttpOnly = true,
+                        Expires = DateTime.Now.AddMinutes(JwtSettings.ExpiryMinutes)
+                    });
+
                     logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }
