@@ -17,7 +17,16 @@ namespace SnipEx.Web.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPost(string returnUrl = null)
         {
             await signInManager.SignOutAsync();
+
+            Response.Cookies.Delete("JwtToken", new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.None
+            });
+
             logger.LogInformation("User logged out.");
+
             if (returnUrl != null)
             {
                 return LocalRedirect(returnUrl);

@@ -40,6 +40,8 @@ namespace SnipEx.WebApi
             builder.Services.RegisterRepositories(typeof(ApplicationUser).Assembly);
             builder.Services.RegisterUserDefinedServices(typeof(IPostService).Assembly);
 
+            builder.UseJwtAuthentication();
+
             builder.Services.AddCors(cfg =>
             {
                 cfg.AddPolicy("AllowAll", policyBld =>

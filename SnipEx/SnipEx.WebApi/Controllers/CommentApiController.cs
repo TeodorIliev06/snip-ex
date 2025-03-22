@@ -1,10 +1,13 @@
 ﻿namespace SnipEx.WebApi.Controllers
 {
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+
     using SnipEx.Common;
     using SnipEx.Services.Data.Contracts;
     using SnipEx.Web.ViewModels.Comment;
 
+    [Authorize]
     public class CommentApiController(
         ICommentService commentService) : BaseApiController
     {

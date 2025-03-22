@@ -8,15 +8,13 @@ namespace SnipEx.WebApi.Controllers
     using SnipEx.Data.Models;
     using SnipEx.Services.Data.Contracts;
 
+    [Authorize]
     public class LikeApiController(
         ILikeService likeService,
         UserManager<ApplicationUser> userManager) : BaseApiController
     {
-        /*TODO: 
-            1. introduce authorization via jwt
-            2. introduce SignalR for real-time effect
-        */
-        //[Authorize]
+        /*TODO: introduce SignalR for real-time effect*/
+        
         [HttpPost("[action]/{postId}")]
         public async Task<IActionResult> TogglePostLike(string postId, [FromBody] ToggleLikeRequest request)
         {

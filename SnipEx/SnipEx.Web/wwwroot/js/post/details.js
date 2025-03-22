@@ -115,6 +115,12 @@ function togglePostLike(postId) {
             body: JSON.stringify({ userId })
         })
         .then(response => {
+            if (response.status === 401) {
+                // User is not authenticated
+                window.location.href = '/Identity/Account/Login?returnUrl=' + encodeURIComponent(window.location.pathname);
+                return null;
+            }
+
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -159,6 +165,12 @@ function toggleCommentLike(commentId) {
             body: JSON.stringify({ userId })
         })
         .then(response => {
+            if (response.status === 401) {
+                // User is not authenticated
+                window.location.href = '/Identity/Account/Login?returnUrl=' + encodeURIComponent(window.location.pathname);
+                return null;
+            }
+
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
