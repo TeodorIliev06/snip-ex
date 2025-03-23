@@ -20,5 +20,8 @@
 
         public ICollection<CommentLike> LikedComments { get; set; }
             = new HashSet<CommentLike>();
+
+        public virtual ICollection<Notification> Notifications { get; set; }
+            = new HashSet<Notification>();
     }
 }

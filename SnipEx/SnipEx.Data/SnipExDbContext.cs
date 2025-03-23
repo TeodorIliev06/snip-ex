@@ -23,6 +23,7 @@
         public virtual DbSet<Tag> Tags { get; set; } = null!;
         public virtual DbSet<PostTag> PostsTags { get; set; } = null!;
         public virtual DbSet<Comment> Comments { get; set; } = null!;
+        public virtual DbSet<Notification> Notifications { get; set; } = null!;
         public virtual DbSet<CommentLike> CommentsLikes { get; set; } = null!;
         public virtual DbSet<ProgrammingLanguage> ProgrammingLanguages { get; set; } = null!;
 

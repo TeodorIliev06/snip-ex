@@ -43,5 +43,13 @@
             public const int DescriptionMinLength = 50;
             public const int DescriptionMaxLength = 500;
         }
+
+        public static class Notification
+        {
+            public const int MessageMinLength = 5;
+            public const int MessageMaxLength = 200;
+            public const int EntityTypeMinLength = 2;
+            public const int EntityTypeMaxLength = 50;
+        }
     }
 }
