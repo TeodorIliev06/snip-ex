@@ -1,6 +1,5 @@
 ﻿document.addEventListener('DOMContentLoaded', function () {
     document.addEventListener('click', function (e) {
-        // Handle toggle replies button clicks
         const toggleButton = e.target.closest('.toggle-replies-btn') ||
             e.target.closest('[data-target^="replies-"]');
 
@@ -44,11 +43,13 @@
             }
         }
 
-        // Handle reply button clicks
         if (e.target.closest('.comment-action[title="Reply"]') || e.target.closest('.comment-action.reply-button')) {
             const button = e.target.closest('.comment-action[title="Reply"]') || e.target.closest('.comment-action.reply-button');
-            const commentId = button.dataset.commentId ||
-                button.closest('.comment').querySelector('.like-button').dataset.commentId;
+            const commentElement = button.closest('.comment');
+            const commentId = button.dataset.commentId || commentElement.querySelector('.like-button').dataset.commentId;
+
+            const usernameElement = commentElement.querySelector('.comment-author');
+            const username = usernameElement ? usernameElement.textContent.trim() : '';
 
             document.querySelectorAll('.reply-form-container').forEach(form => {
                 form.style.display = 'none';
@@ -57,15 +58,27 @@
 
             const replyForm = document.getElementById(`reply-form-${commentId}`);
             if (replyForm) {
+                const textarea = replyForm.querySelector('textarea');
+
+                const referenceCommentId = button.dataset.referenceCommentId;
+                const isReplyToReply = referenceCommentId !== undefined && referenceCommentId !== null;
+
+                if (isReplyToReply && username) {
+                    textarea.value = `@${username} `;
+                }
+
                 replyForm.style.display = 'block';
                 setTimeout(() => {
                     replyForm.classList.add('visible');
-                    replyForm.querySelector('textarea').focus();
+                    textarea.focus();
+
+                    if (textarea.value) {
+                        textarea.selectionStart = textarea.selectionEnd = textarea.value.length;
+                    }
                 }, 10);
             }
         }
 
-        // Handle cancel button clicks
         if (e.target.closest('.cancel-reply')) {
             const button = e.target.closest('.cancel-reply');
             const commentId = button.dataset.commentId;
@@ -74,12 +87,12 @@
                 replyForm.classList.remove('visible');
                 setTimeout(() => {
                     replyForm.style.display = 'none';
+                    replyForm.querySelector('textarea').value = '';
                 }, 300);
             }
         }
     });
 
-    // Handle form submissions
     document.querySelectorAll('.reply-form').forEach(form => {
         form.addEventListener('submit', function (e) {
             e.preventDefault();
@@ -89,7 +102,12 @@
             const content = this.querySelector('textarea[name="Content"]').value;
             const userId = document.getElementById('currentUserId').value;
 
-            const replyData = { Content: content, PostId: postId, UserId: userId, ParentCommentId: parentCommentId };
+            const replyData = {
+                Content: content,
+                PostId: postId,
+                UserId: userId,
+                ParentCommentId: parentCommentId
+            };
 
             fetch('https://localhost:7000/CommentApi/AddReply', {
                 method: 'POST',
@@ -119,12 +137,37 @@
         });
     });
 
+    function parseAndHighlightMentions() {
+        document.querySelectorAll('.comment-content, .reply-content').forEach(contentElement => {
+            const content = contentElement.innerHTML;
+            const mentionPattern = /@([\w.]+(?:@[\w.]+\.\w+)?)/g;
+
+            // Replace @mentions with highlighted versions
+            const highlightedContent = content.replace(mentionPattern, '<span class="user-mention">@$1</span>');
+            contentElement.innerHTML = highlightedContent;
+
+            // Add click event listeners to mentions
+            contentElement.querySelectorAll('.user-mention').forEach(mention => {
+                mention.addEventListener('click', function () {
+                    const username = this.textContent.substring(1); // Remove @ symbol
+                    console.log(`Clicked on mention: ${username}`);
+                });
+            });
+        });
+    }
+
     function refreshComments(postId) {
         fetch(`https://localhost:7000/CommentApi/GetComments/${postId}`, {
             credentials: 'include'
         })
             .then(response => response.ok ? response.json() : Promise.reject('Failed to get comments'))
-            .then(() => window.location.reload())
+            .then(() => {
+                window.location.reload();
+
+                window.addEventListener('load', function () {
+                    parseAndHighlightMentions();
+                });
+            })
             .catch(error => console.error('Error refreshing comments:', error));
     }
 
@@ -143,7 +186,17 @@
             .replies-container.visible, .reply-form-container.visible {
                 opacity: 1;
             }
+            .user-mention {
+                color: #1DA1F2;
+                font-weight: 500;
+                cursor: pointer;
+            }
+            .user-mention:hover {
+                text-decoration: underline;
+            }
         `;
         document.head.appendChild(style);
     }
+
+    parseAndHighlightMentions();
 });

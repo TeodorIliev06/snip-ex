@@ -1,8 +1,6 @@
 ﻿@using SnipEx.Web.ViewModels.Comment
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-
 @model CommentViewModel
-
 <div class="comment" id="comment-@Model.Id">
     <div class="comment-header">
         <div class="comment-author-info">
@@ -13,7 +11,7 @@
             </div>
         </div>
         <div class="comment-actions">
-            <button class="comment-action reply-button" title="Reply" data-comment-id="@Model.Id">
+            <button class="comment-action reply-button" title="Reply" data-comment-id="@Model.Id" data-username="@Model.UserName">
                 <i class="fa fa-reply"></i>
             </button>
             <button class="comment-action like-button @(Model.IsLikedByCurrentUser ? "liked" : "")"
@@ -26,12 +24,11 @@
             </button>
         </div>
     </div>
-    <div class="comment-body">
+    <div class="comment-body comment-content">
         @Model.Content
     </div>
-
     <div class="reply-form-container" id="reply-form-@Model.Id" style="display: none;">
-        <form class="reply-form" data-post-id="@Model.PostId" data-parent-comment-id="@Model.Id">
+        <form class="reply-form" data-post-id="@Model.PostId" data-parent-comment-id="@Model.Id" data-parent-username="@Model.UserName">
             <input type="hidden" name="PostId" value="@Model.PostId" />
             <input type="hidden" name="ParentCommentId" value="@Model.Id" />
             <div class="form-group">
@@ -43,7 +40,6 @@
             </div>
         </form>
     </div>
-
     @if (Model.Replies != null && Model.Replies.Any())
     {
         <div class="replies-toggle">
@@ -52,12 +48,38 @@
                 <span class="toggle-text">Show Replies (@Model.Replies.Count())</span>
             </button>
         </div>
-
         <div class="replies-container" id="replies-@Model.Id" style="display: none;">
             @foreach (var reply in Model.Replies)
             {
-                <div class="comment reply">
-                    <partial name="_CommentItem" model="reply" />
+                <div class="comment reply" id="comment-@reply.Id">
+                    <div class="comment-header">
+                        <div class="comment-author-info">
+                            <div class="avatar small">@reply.UserName[0]</div>
+                            <div>
+                                <div class="comment-author">@reply.UserName</div>
+                                <div class="comment-date">@reply.CreatedAt</div>
+                            </div>
+                        </div>
+                        <div class="comment-actions">
+                            <button class="comment-action reply-button" title="Reply"
+                                    data-comment-id="@Model.Id"
+                                    data-reference-comment-id="@reply.Id"
+                                    data-username="@reply.UserName">
+                                <i class="fa fa-reply"></i>
+                            </button>
+                            <button class="comment-action like-button @(reply.IsLikedByCurrentUser ? "liked" : "")"
+                                    data-comment-id="@reply.Id">
+                                <i class="fa fa-thumbs-up"></i>
+                                @if (reply.LikesCount > 0)
+                                {
+                                    <span class="count">@reply.LikesCount</span>
+                                }
+                            </button>
+                        </div>
+                    </div>
+                    <div class="comment-body comment-content">
+                        @reply.Content
+                    </div>
                 </div>
             }
         </div>
