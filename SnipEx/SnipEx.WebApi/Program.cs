@@ -5,10 +5,13 @@ namespace SnipEx.WebApi
 
     using SnipEx.Data;
     using SnipEx.Data.Models;
+    using SnipEx.WebApi.Hubs;
     using SnipEx.Services.Mapping;
     using SnipEx.Web.Infrastructure;
     using SnipEx.Web.ViewModels.Post;
     using SnipEx.Services.Data.Contracts;
+
+    using static SnipEx.Common.SignalRConstants;
 
     public class Program
     {
@@ -40,6 +43,7 @@ namespace SnipEx.WebApi
             builder.Services.RegisterRepositories(typeof(ApplicationUser).Assembly);
             builder.Services.RegisterUserDefinedServices(typeof(IPostService).Assembly);
 
+            builder.Services.AddSignalR();
             builder.UseJwtAuthentication();
 
             builder.Services.AddCors(cfg =>
@@ -68,6 +72,8 @@ namespace SnipEx.WebApi
             var app = builder.Build();
 
             AutoMapperConfig.RegisterMappings(typeof(PostCardViewModel).Assembly);
+
+            app.MapHub<NotificationHub>(HubRoutes.Notifications);
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
