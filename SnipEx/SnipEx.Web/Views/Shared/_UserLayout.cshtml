@@ -1,10 +1,16 @@
-﻿﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using SnipEx.Data.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+﻿
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - SnipEx.Web</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/profile/userSidePanel.css" />
     <link rel="stylesheet" href="~/SnipEx.Web.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
@@ -37,6 +43,21 @@
         </nav>
     </header>
     <div class="container">
+        @if (SignInManager.IsSignedIn(User))
+        {
+            // Authenticated user sidebar
+            var user = await UserManager.GetUserAsync(User);
+            <aside class="sidebar">
+                <partial name="_UserSidePanel" model="user" />
+            </aside>
+        }
+        else
+        {
+            // Non-authenticated user sidebar
+            <aside class="sidebar">
+                <partial name="_GuestSidePanel" />
+            </aside>
+        }
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
@@ -48,6 +69,7 @@
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/profile/userSidePanel.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/signalr/dist/browser/signalr.js"></script>
     <script src="~/lib/signalr/dist/browser/signalr.min.js"></script>

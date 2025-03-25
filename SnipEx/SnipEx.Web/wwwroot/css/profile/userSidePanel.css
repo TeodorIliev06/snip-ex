@@ -1,4 +1,4 @@
-﻿.user-side-panel {
+﻿.side-panel {
     position: absolute;
     left: 0;
     background-color: #1a1d24;
@@ -123,11 +123,42 @@
     transition: all 0.3s ease;
 }
 
-    .logout-link:hover {
-        background-color: rgba(255, 95, 86, 0.1);
-    }
+.logout-link:hover {
+    background-color: rgba(255, 95, 86, 0.1);
+}
 
-    .logout-link i {
-        font-size: 1.25rem;
-        color: #ff5f56;
-    }
+.logout-link i {
+    font-size: 1.25rem;
+    color: #ff5f56;
+}
+
+/*guest*/
+.guest-panel-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.guest-panel-content ul {
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 1rem;
+}
+
+.guest-panel-content li {
+    margin-bottom: 0.5rem;
+    color: #8b949e;
+}
+
+.auth-buttons {
+    display: flex;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.auth-buttons .btn {
+    flex: 1;
+    padding: 0.5rem;
+    border-radius: 6px;
+}

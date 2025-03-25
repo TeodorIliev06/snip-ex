@@ -7,17 +7,7 @@
 @model PostCarouselViewModel
 @{
     ViewData["Title"] = "SnipEx - Share. Learn. Code.";
-}
-
-@if (User.Identity.IsAuthenticated)
-{
-    var user = await UserManager.GetUserAsync(User);
-    if (user != null)
-    {
-        <aside class="sidebar">
-            <partial name="_UserSidePanel" model="user" />
-        </aside>
-    }
+    Layout = "_UserLayout";
 }
 
 <div class="hero-section">
@@ -113,12 +103,10 @@
     <link rel="stylesheet" href="~/css/home/heroSection.css" />
     <link rel="stylesheet" href="~/css/home/featuresSection.css" />
     <link rel="stylesheet" href="~/css/home/responsive.css" />
-    <link rel="stylesheet" href="~/css/profile/userSidePanel.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 }
 
 @section Scripts {
     <script src="~/js/home/heroSection.js"></script>
     <script src="~/js/home/featuresSection.js"></script>
-    <script src="~/js/profile/userSidePanel.js"></script>
 }
