@@ -1,0 +1,69 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model SnipEx.Data.Models.ApplicationUser
+
+<div class="user-side-panel">
+    <div class="user-profile-container">
+        <div class="user-avatar">
+        @*
+            @if (!string.IsNullOrEmpty(Model.ProfilePictureUrl))
+            {
+                <img src="@Model.ProfilePictureUrl" alt="Profile Picture" class="avatar-image"/>
+            }
+            else
+            {
+                <div class="avatar-placeholder">
+                    <i class="bi bi-person-circle"></i>
+                </div>
+            }
+        *@
+            <div class="avatar-placeholder">
+                <i class="bi bi-person-circle"></i>
+            </div>
+        </div>
+
+        <div class="user-info">
+            <h3 class="user-name">@Model.UserName</h3>
+            <p class="user-handle">@Model.Email</p>
+        </div>
+
+        <nav class="user-navigation">
+            <ul>
+                <li>
+                    <a asp-controller="Profile" asp-action="Index">
+                        <i class="bi bi-person"></i> Profile
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="Profile" asp-action="MySnippets">
+                        <i class="bi bi-code-slash"></i> My Snippets
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="Profile" asp-action="Bookmarks">
+                        <i class="bi bi-bookmark"></i> Bookmarks
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="Profile" asp-action="Connections">
+                        <i class="bi bi-people"></i> Connections
+                    </a>
+                </li>
+                <li>
+                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                        <button type="submit" class="logout-link">
+                            <i class="bi bi-box-arrow-right"></i> Logout
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/profile/userSidePanel.css" />
+}
+
+@section Scripts {
+    <script src="~/js/profile/userSidePanel.js"></script>
+}

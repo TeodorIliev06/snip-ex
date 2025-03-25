@@ -1,0 +1,133 @@
+﻿.user-side-panel {
+    position: absolute;
+    left: 0;
+    background-color: #1a1d24;
+    color: #e6edf3;
+    border-radius: 8px;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+    padding: 1.5rem;
+    max-width: 300px;
+    width: 100%;
+    border: 1px solid #30363d;
+}
+
+.user-profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.user-avatar {
+    margin-bottom: 1rem;
+}
+
+.avatar-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #30363d;
+}
+
+.avatar-placeholder {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background-color: #2d333b;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
+    color: #58a6ff;
+}
+
+.user-info {
+    margin-bottom: 1rem;
+}
+
+.user-name {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    color: #e6edf3;
+}
+
+.user-handle {
+    color: #8b949e;
+    font-size: 0.875rem;
+}
+
+.btn-secondary {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background-color: #30363d;
+    color: #e6edf3;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+    .btn-secondary:hover {
+        background-color: #3c444d;
+        transform: translateY(-2px);
+    }
+
+.user-navigation ul {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+}
+
+.user-navigation li {
+    margin-bottom: 0.5rem;
+}
+
+.user-navigation a {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #e6edf3;
+    text-decoration: none;
+    padding: 0.75rem;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+    .user-navigation a:hover {
+        background-color: #30363d;
+    }
+
+    .user-navigation a i {
+        font-size: 1.25rem;
+        color: #58a6ff;
+    }
+
+.logout-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #ff5f56;
+    text-decoration: none;
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    padding: 0.75rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+    .logout-link:hover {
+        background-color: rgba(255, 95, 86, 0.1);
+    }
+
+    .logout-link i {
+        font-size: 1.25rem;
+        color: #ff5f56;
+    }
