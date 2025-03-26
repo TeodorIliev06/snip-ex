@@ -1,0 +1,86 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "SnipEx - User Profile";
+}
+
+<div class="profile-container">
+    <div class="profile-content">
+        <section class="profile-header">
+            <h1>Profile Overview</h1>
+        </section>
+
+        <div class="profile-details">
+            <div class="detail-card">
+                <h3>Personal Information</h3>
+                <div class="detail-item">
+                    <label>Username</label>
+                    <span>HardcodedUser</span>
+                </div>
+                <div class="detail-item">
+                    <label>Email</label>
+                    <span>user@example.com</span>
+                </div>
+                <div class="detail-item">
+                    <label>Join Date</label>
+                    <span>January 1, 2024</span>
+                </div>
+            </div>
+
+            <div class="detail-card">
+                <h3>Activity Summary</h3>
+                <div class="activity-stats">
+                    <div class="stat-item">
+                        <strong>5</strong>
+                        <span>Snippets Created</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong>3</strong>
+                        <span>Bookmarks</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong>10</strong>
+                        <span>Connections</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="recent-activity">
+            <h2>Recent Snippets</h2>
+            <div class="snippet-list">
+                <div class="snippet-card">
+                    <div class="snippet-header">
+                        <h4>Sample Snippet 1</h4>
+                        <span class="snippet-language">C#</span>
+                    </div>
+                    <div class="snippet-content">
+                        Console.WriteLine("Hello, World!");
+                    </div>
+                    <div class="snippet-footer">
+                        <span>Created on March 20, 2025</span>
+                        <a asp-action="Details" asp-controller="Snippet" asp-route-id="1" class="btn btn-secondary btn-sm">View</a>
+                    </div>
+                </div>
+                <div class="snippet-card">
+                    <div class="snippet-header">
+                        <h4>Sample Snippet 2</h4>
+                        <span class="snippet-language">JavaScript</span>
+                    </div>
+                    <div class="snippet-content">
+                        console.log("Hello, World!");
+                    </div>
+                    <div class="snippet-footer">
+                        <span>Created on March 18, 2025</span>
+                        <a asp-action="Details" asp-controller="Snippet" asp-route-id="2" class="btn btn-secondary btn-sm">View</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+@section Styles {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="~/css/profile/index.css" asp-append-version="true">
+}
