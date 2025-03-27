@@ -9,6 +9,8 @@
             this.Id = Guid.NewGuid();
         }
 
+        public string? ProfilePicturePath { get; set; }
+
         public virtual ICollection<Post> Posts { get; set; }
             = new HashSet<Post>();
 

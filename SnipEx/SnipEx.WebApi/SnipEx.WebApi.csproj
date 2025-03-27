@@ -16,6 +16,7 @@
     <ProjectReference Include="..\SnipEx.Services.Data\SnipEx.Services.Data.csproj" />
     <ProjectReference Include="..\SnipEx.Web.Infrastructure\SnipEx.Web.Infrastructure.csproj" />
     <ProjectReference Include="..\SnipEx.Web.ViewModels\SnipEx.Web.ViewModels.csproj" />
+    <ProjectReference Include="..\SnipEx.Web\SnipEx.Web.csproj" />
   </ItemGroup>
 
 </Project>
