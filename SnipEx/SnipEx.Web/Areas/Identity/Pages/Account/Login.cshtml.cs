@@ -13,7 +13,7 @@ namespace SnipEx.Web.Areas.Identity.Pages.Account
 
     using SnipEx.Common;
     using SnipEx.Data.Models;
-    using SnipEx.Services.Data.Contracts;
+    using SnipEx.Services.Data.Contracts.Utils;
 
     public class LoginModel(
         SignInManager<ApplicationUser> signInManager,

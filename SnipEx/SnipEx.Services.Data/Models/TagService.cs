@@ -1,4 +1,4 @@
-﻿namespace SnipEx.Services.Data
+﻿namespace SnipEx.Services.Data.Models
 {
     using Microsoft.EntityFrameworkCore;
     using SnipEx.Data.Models;

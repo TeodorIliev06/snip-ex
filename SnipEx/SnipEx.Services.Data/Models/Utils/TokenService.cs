@@ -1,4 +1,4 @@
-﻿namespace SnipEx.Services.Data
+﻿namespace SnipEx.Services.Data.Models.Utils
 {
     using System.Text;
     using System.Security.Claims;
@@ -9,7 +9,7 @@
 
     using SnipEx.Common;
     using SnipEx.Data.Models;
-    using SnipEx.Services.Data.Contracts;
+    using SnipEx.Services.Data.Contracts.Utils;
 
     public class TokenService(
         UserManager<ApplicationUser> userManager) : ITokenService

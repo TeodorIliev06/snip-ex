@@ -1,4 +1,4 @@
-﻿namespace SnipEx.Services.Data
+﻿namespace SnipEx.Services.Data.Models
 {
     using SnipEx.Data.Models;
     using SnipEx.Services.Data.Contracts;

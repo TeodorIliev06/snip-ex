@@ -1,4 +1,4 @@
-﻿namespace SnipEx.Services.Data
+﻿namespace SnipEx.Services.Data.Models
 {
     using System.Globalization;
 
@@ -35,7 +35,7 @@
             if (!string.IsNullOrEmpty(search))
             {
                 search = search.ToLower();
-                query = query.Where(p => 
+                query = query.Where(p =>
                     p.Title.ToLower().Contains(search) ||
                     p.Content.ToLower().Contains(search));
             }

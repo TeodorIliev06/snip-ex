@@ -1,4 +1,4 @@
-﻿namespace SnipEx.Services.Data
+﻿namespace SnipEx.Services.Data.Models
 {
     using System.Globalization;
 
@@ -122,7 +122,7 @@
             }
 
             foreach (var reply in comment.Replies)
-            { 
+            {
                 SetUserLikeStatus(reply, postComments, userGuid);
             }
         }
