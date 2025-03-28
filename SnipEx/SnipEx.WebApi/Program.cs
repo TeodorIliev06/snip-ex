@@ -17,7 +17,12 @@ namespace SnipEx.WebApi
     {
         public static void Main(string[] args)
         {
-            var builder = WebApplication.CreateBuilder(args);
+            var builder = WebApplication.CreateBuilder(new WebApplicationOptions
+            {
+                ContentRootPath = Directory.GetCurrentDirectory(),
+                WebRootPath = Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "SnipEx.Web", "wwwroot")
+            });
+
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             var appOrigin = builder.Configuration.GetValue<string>("ClientOrigins:SnipEx");
             // Add services to the container.
@@ -89,6 +94,7 @@ namespace SnipEx.WebApi
             }
 
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
 
             app.UseAuthentication();
             app.UseAuthorization();

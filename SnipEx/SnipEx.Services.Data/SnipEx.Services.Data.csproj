@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.34" />
+    <PackageReference Include="System.Drawing.Common" Version="8.0.14" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SnipEx.Data.Models\SnipEx.Data.Models.csproj" />
     <ProjectReference Include="..\SnipEx.Data\SnipEx.Data.csproj" />
     <ProjectReference Include="..\SnipEx.Services.Mapping\SnipEx.Services.Mapping.csproj" />
