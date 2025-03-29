@@ -4,21 +4,7 @@
 <div class="side-panel">
     <div class="user-profile-container">
         <div class="user-avatar">
-        @*
-            @if (!string.IsNullOrEmpty(Model.ProfilePictureUrl))
-            {
-                <img src="@Model.ProfilePictureUrl" alt="Profile Picture" class="avatar-image"/>
-            }
-            else
-            {
-                <div class="avatar-placeholder">
-                    <i class="bi bi-person-circle"></i>
-                </div>
-            }
-        *@
-            <div class="avatar-placeholder">
-                <i class="bi bi-person-circle"></i>
-            </div>
+            <img id="profilePicture" alt="Profile Picture" class="avatar-image" />
         </div>
 
         <div class="user-info">

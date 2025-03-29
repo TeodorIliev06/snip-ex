@@ -16,17 +16,25 @@
         UserManager<ApplicationUser> userManager,
         IWebHostEnvironment environment) : BaseApiController
     {
-        [HttpGet]
+        [HttpGet("GetProfilePicture")]
         [ProducesResponseType(typeof(FileResult), 200)]
         [ProducesResponseType(404)]
         public async Task<IActionResult> GetProfilePicture()
         {
             var user = await userManager.GetUserAsync(User);
-            string relativePath = string.IsNullOrEmpty(user.ProfilePicturePath)
-                ? "images/profile_pics/default_user.png"
-                : user.ProfilePicturePath;
-
-            return File(relativePath, profilePictureService.GetContentType(relativePath));
+            if (string.IsNullOrEmpty(user.ProfilePicturePath))
+            {
+                // Use the relative path from wwwroot
+                string defaultImagePath = "images/profile_pics/default_user1.png";
+                return PhysicalFile(Path.Combine(environment.WebRootPath, defaultImagePath),
+                    profilePictureService.GetContentType(defaultImagePath));
+            }
+            else
+            {
+                // Handle the user's custom profile picture
+                return PhysicalFile(Path.Combine(environment.WebRootPath, user.ProfilePicturePath),
+                    profilePictureService.GetContentType(user.ProfilePicturePath));
+            }
         }
 
         [HttpPost("upload")]

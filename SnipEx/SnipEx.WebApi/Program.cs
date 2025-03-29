@@ -20,7 +20,7 @@ namespace SnipEx.WebApi
             var builder = WebApplication.CreateBuilder(new WebApplicationOptions
             {
                 ContentRootPath = Directory.GetCurrentDirectory(),
-                WebRootPath = Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "SnipEx.Web", "wwwroot")
+                WebRootPath = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "..", "SnipEx.Web", "wwwroot"))
             });
 
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
