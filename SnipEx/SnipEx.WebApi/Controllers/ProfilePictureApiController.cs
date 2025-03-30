@@ -8,7 +8,6 @@
 
     using SnipEx.Data.Models;
     using SnipEx.Services.Data.Contracts.Utils;
-    using System;
 
     [Authorize]
     public class ProfilePictureApiController(
@@ -29,15 +28,12 @@
                 return PhysicalFile(Path.Combine(environment.WebRootPath, defaultImagePath),
                     profilePictureService.GetContentType(defaultImagePath));
             }
-            else
-            {
-                // Handle the user's custom profile picture
-                return PhysicalFile(Path.Combine(environment.WebRootPath, user.ProfilePicturePath),
-                    profilePictureService.GetContentType(user.ProfilePicturePath));
-            }
+
+            return PhysicalFile(Path.Combine(environment.WebRootPath, user.ProfilePicturePath),
+                profilePictureService.GetContentType(user.ProfilePicturePath));
         }
 
-        [HttpPost("upload")]
+        [HttpPost("UploadProfilePicture")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         public async Task<IActionResult> UploadProfilePicture(IFormFile file)
@@ -66,7 +62,7 @@
             }
         }
 
-        [HttpDelete]
+        [HttpDelete("DeleteProfilePicture")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         public async Task<IActionResult> RemoveProfilePicture()

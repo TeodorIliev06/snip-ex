@@ -4,7 +4,11 @@
 <div class="side-panel">
     <div class="user-profile-container">
         <div class="user-avatar">
-            <img id="profilePicture" alt="Profile Picture" class="avatar-image" />
+            <input type="file" id="profilePictureUpload" accept="image/jpeg,image/png,image/gif,image/webp" style="display: none;" />
+            <img id="profilePicture" alt="Profile Picture" class="avatar-image" style="cursor: pointer;" />
+            <div class="avatar-edit-overlay">
+                <i class="bi bi-camera"></i>
+            </div>
         </div>
 
         <div class="user-info">
