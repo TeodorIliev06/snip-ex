@@ -33,6 +33,11 @@
                 profilePictureService.GetContentType(user.ProfilePicturePath));
         }
 
+        /*TODO:
+            Endpoint is working as intended
+            Swagger crashes when uploading
+            Think of a workaround
+        */
         [HttpPost("UploadProfilePicture")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]

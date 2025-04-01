@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.5.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.14" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.2.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
@@ -14,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SnipEx.Services.Data\SnipEx.Services.Data.csproj" />
+    <ProjectReference Include="..\SnipEx.Services.Mediator\SnipEx.Services.Mediator.csproj" />
     <ProjectReference Include="..\SnipEx.Web.Infrastructure\SnipEx.Web.Infrastructure.csproj" />
     <ProjectReference Include="..\SnipEx.Web.ViewModels\SnipEx.Web.ViewModels.csproj" />
     <ProjectReference Include="..\SnipEx.Web\SnipEx.Web.csproj" />
