@@ -1,8 +1,8 @@
-﻿namespace SnipEx.WebApi.Hubs
+﻿namespace SnipEx.Realtime.Hubs
 {
     using Microsoft.AspNetCore.SignalR;
 
-    using static Common.SignalRConstants;
+    using static SnipEx.Common.SignalRConstants;
 
     public class NotificationHub : Hub
     {

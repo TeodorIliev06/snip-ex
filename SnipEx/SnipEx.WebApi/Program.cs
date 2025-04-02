@@ -4,13 +4,15 @@ namespace SnipEx.WebApi
     using Microsoft.EntityFrameworkCore;
 
     using SnipEx.Data;
+    using SnipEx.Realtime;
     using SnipEx.Data.Models;
-    using SnipEx.WebApi.Hubs;
+    using SnipEx.Realtime.Hubs;
     using SnipEx.Services.Mapping;
     using SnipEx.Web.Infrastructure;
     using SnipEx.Web.ViewModels.Post;
     using SnipEx.Services.Data.Contracts;
     using SnipEx.Services.Mediator.Comments.CommentAdded;
+
     using static SnipEx.Common.SignalRConstants;
 
     public class Program
@@ -48,7 +50,7 @@ namespace SnipEx.WebApi
             builder.Services.RegisterRepositories(typeof(ApplicationUser).Assembly);
             builder.Services.RegisterUserDefinedServices(typeof(IPostService).Assembly);
 
-            builder.Services.AddSignalR();
+            builder.Services.AddRealtimeServices();
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CommentAddedEventHandler).Assembly));
             builder.UseJwtAuthentication();
 

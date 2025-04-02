@@ -13,7 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SnipEx.Data.Models\SnipEx.Data.Models.csproj" />
     <ProjectReference Include="..\SnipEx.Data\SnipEx.Data.csproj" />
-    <ProjectReference Include="..\SnipEx.WebApi\SnipEx.WebApi.csproj" />
+    <ProjectReference Include="..\SnipEx.Realtime\SnipEx.Realtime.csproj" />
   </ItemGroup>
 
 </Project>

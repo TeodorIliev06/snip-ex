@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnipEx.WebApi", "SnipEx.Web
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnipEx.Services.Mediator", "SnipEx.Services.Mediator\SnipEx.Services.Mediator.csproj", "{D352581D-51CF-4D5A-81A9-846399B09676}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnipEx.Realtime", "SnipEx.Realtime\SnipEx.Realtime.csproj", "{8BD28BCE-1FF1-4F3B-823B-E0E86258B157}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{D352581D-51CF-4D5A-81A9-846399B09676}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D352581D-51CF-4D5A-81A9-846399B09676}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D352581D-51CF-4D5A-81A9-846399B09676}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BD28BCE-1FF1-4F3B-823B-E0E86258B157}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BD28BCE-1FF1-4F3B-823B-E0E86258B157}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BD28BCE-1FF1-4F3B-823B-E0E86258B157}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BD28BCE-1FF1-4F3B-823B-E0E86258B157}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

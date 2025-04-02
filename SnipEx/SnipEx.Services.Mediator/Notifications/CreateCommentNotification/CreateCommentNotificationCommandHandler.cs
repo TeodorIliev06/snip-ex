@@ -3,7 +3,7 @@
     using MediatR;
     using Microsoft.AspNetCore.SignalR;
 
-    using SnipEx.WebApi.Hubs;
+    using SnipEx.Realtime.Hubs;
     using SnipEx.Data.Models;
     using SnipEx.Data.Repositories.Contracts;
     using SnipEx.Data.Models.Enums;
