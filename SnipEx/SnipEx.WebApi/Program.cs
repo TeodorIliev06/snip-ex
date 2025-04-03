@@ -8,10 +8,10 @@ namespace SnipEx.WebApi
     using SnipEx.Data.Models;
     using SnipEx.Realtime.Hubs;
     using SnipEx.Services.Mapping;
+    using SnipEx.Services.Mediator;
     using SnipEx.Web.Infrastructure;
     using SnipEx.Web.ViewModels.Post;
     using SnipEx.Services.Data.Contracts;
-    using SnipEx.Services.Mediator.Comments.CommentAdded;
 
     using static SnipEx.Common.SignalRConstants;
 
@@ -51,7 +51,8 @@ namespace SnipEx.WebApi
             builder.Services.RegisterUserDefinedServices(typeof(IPostService).Assembly);
 
             builder.Services.AddRealtimeServices();
-            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CommentAddedEventHandler).Assembly));
+            builder.Services.AddMediator();
+
             builder.UseJwtAuthentication();
 
             builder.Services.AddCors(cfg =>

@@ -93,7 +93,7 @@
             bool isAdded = await commentService.AddCommentAsync(model, userId);
             if (!isAdded)
             {
-                //Add model errors
+                TempData[ErrorMessage] = PopUpError.InvalidOperation; 
                 return RedirectToAction(nameof(Details), new { id = model.PostId });
             }
 

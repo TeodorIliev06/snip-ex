@@ -4,11 +4,13 @@ namespace SnipEx.Web
     using Microsoft.EntityFrameworkCore;
 
     using SnipEx.Data;
+    using SnipEx.Realtime;
     using SnipEx.Data.Models;
-    using SnipEx.Web.Infrastructure;
-    using SnipEx.Services.Data.Contracts;
     using SnipEx.Services.Mapping;
+    using SnipEx.Services.Mediator;
+    using SnipEx.Web.Infrastructure;
     using SnipEx.Web.ViewModels.Post;
+    using SnipEx.Services.Data.Contracts;
 
     public class Program
     {
@@ -38,6 +40,10 @@ namespace SnipEx.Web
             {
                 options.LoginPath = "/Identity/Account/Login";
             });
+
+            //Register SignalR before using mediator
+            builder.Services.AddRealtimeServices();
+            builder.Services.AddMediator();
 
             builder.Services.RegisterRepositories(typeof(ApplicationUser).Assembly);
             builder.Services.RegisterUserDefinedServices(typeof(IPostService).Assembly);

@@ -1,7 +1,7 @@
 ﻿namespace SnipEx.Services.Data.Models
 {
     using System.Globalization;
-
+    using MediatR;
     using Microsoft.EntityFrameworkCore;
 
     using SnipEx.Common;
@@ -10,11 +10,13 @@
     using SnipEx.Web.ViewModels.Comment;
     using SnipEx.Services.Data.Contracts;
     using SnipEx.Data.Repositories.Contracts;
+    using SnipEx.Services.Mediator.Comments.CommentAdded;
 
     using static Common.EntityValidationConstants.Comment;
 
     public class CommentService(
-        IRepository<Comment, Guid> commentRepository) : ICommentService
+        IRepository<Comment, Guid> commentRepository,
+        IMediator mediator) : ICommentService
     {
         public async Task<bool> AddCommentAsync(AddPostCommentFormModel model, string userId)
         {
@@ -41,6 +43,9 @@
 
             await commentRepository.AddAsync(comment);
             await commentRepository.SaveChangesAsync();
+
+            var commentAddedEvent = new CommentAddedEvent(comment.Id, comment.PostId, userGuid);
+            await mediator.Publish(commentAddedEvent);
 
             return true;
         }
