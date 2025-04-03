@@ -94,11 +94,16 @@ namespace SnipEx.Web.Areas.Identity.Pages.Account
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                var user = await userManager.FindByEmailAsync(Input.Email);
+                if (user == null)
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid Email!");
+                    return Page();
+                }
+
+                var result = await signInManager.PasswordSignInAsync(user.UserName!, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    var user = await userManager.FindByEmailAsync(Input.Email);
-
                     var token = await tokenService.GenerateJwtTokenAsync(user);
 
                     Response.Cookies.Append("JwtToken", token, new CookieOptions

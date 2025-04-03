@@ -1,50 +1,90 @@
 ﻿@page
 @model LoginModel
-
 @{
     ViewData["Title"] = "Log in";
 }
 
-<h1>@ViewData["Title"]</h1>
-<div class="row">
-    <div class="col-md-4">
-        <section>
+<div class="login-container">
+    <div class="login-card">
+        <div class="login-header">
+            <h1 class="login-title">Welcome Back</h1>
+            <p class="login-subtitle">Log in to share snippets and continue your coding journey</p>
+        </div>
+
+        <div class="login-form-container">
             <form id="account" method="post">
-                <h2>Use a local account to log in.</h2>
-                <hr />
-                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                    <label asp-for="Input.Email" class="form-label">Email</label>
-                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                <div asp-validation-summary="ModelOnly" class="text-danger validation-summary" role="alert"></div>
+
+                <div class="form-group">
+                    <div class="input-with-icon">
+                        <i class="fas fa-envelope"></i>
+                        <input asp-for="Input.Email" class="custom-input" autocomplete="username" aria-required="true" placeholder="Email address" />
+                    </div>
+                    <span asp-validation-for="Input.Email" class="text-danger validation-message"></span>
                 </div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
-                    <label asp-for="Input.Password" class="form-label">Password</label>
-                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+
+                <div class="form-group">
+                    <div class="input-with-icon">
+                        <i class="fas fa-lock"></i>
+                        <input asp-for="Input.Password" class="custom-input" autocomplete="current-password" aria-required="true" placeholder="Password" type="password" />
+                    </div>
+                    <span asp-validation-for="Input.Password" class="text-danger validation-message"></span>
                 </div>
-                <div class="checkbox mb-3">
-                    <label asp-for="Input.RememberMe" class="form-label">
-                        <input class="form-check-input" asp-for="Input.RememberMe" />
-                        @Html.DisplayNameFor(m => m.Input.RememberMe)
-                    </label>
+
+                <div class="form-options">
+                    <div class="remember-me">
+                        <label asp-for="Input.RememberMe" class="custom-checkbox">
+                            <input class="form-check-input" asp-for="Input.RememberMe" />
+                            <span class="checkmark"></span>
+                            <span class="checkbox-label">Remember me</span>
+                        </label>
+                    </div>
+                    <a id="forgot-password" asp-page="./ForgotPassword" class="forgot-link">Forgot password?</a>
                 </div>
-                <div>
-                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
-                </div>
-                <div>
-                    <p>
-                        <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
-                    </p>
-                    <p>
-                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
-                    </p>
+
+                <div class="login-actions">
+                    <button id="login-submit" type="submit" class="btn-login">
+                        <span>Sign In</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
                 </div>
             </form>
-        </section>
+        </div>
+
+        <div class="register-section">
+            <p>Don't have an account yet? <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="register-link">Register now</a></p>
+        </div>
+    </div>
+
+    <div class="code-decoration">
+        <div class="terminal-window">
+            <div class="terminal-header">
+                <div class="terminal-buttons">
+                    <span class="terminal-button close"></span>
+                    <span class="terminal-button minimize"></span>
+                    <span class="terminal-button maximize"></span>
+                </div>
+                <div class="terminal-title">~/login</div>
+            </div>
+            <div class="terminal-content login-terminal-content">
+                <div class="terminal-line">const user = await auth.signIn(email, password);</div>
+                <div class="terminal-line">if (user) {</div>
+                <div class="terminal-line">  console.log("Authentication successful!");</div>
+                <div class="terminal-line">  redirect("/snippets");</div>
+                <div class="terminal-line">} else {</div>
+                <div class="terminal-line">  console.error("Invalid credentials");</div>
+                <div class="terminal-line">}</div>
+            </div>
+        </div>
     </div>
 </div>
 
+@section Styles {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="~/css/profile/login.css" />
+}
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/profile/login.js"></script>
 }
