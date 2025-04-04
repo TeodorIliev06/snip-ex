@@ -1,5 +1,5 @@
 ﻿document.addEventListener('DOMContentLoaded', function () {
-    const lines = document.querySelectorAll('.terminal-line');
+    const lines = document.querySelectorAll('.register-terminal-content .terminal-line');
     lines.forEach((line, index) => {
         setTimeout(() => {
             line.classList.add('visible');
@@ -8,16 +8,16 @@
 
     createCodeParticles();
 
-    const loginButton = document.querySelector('.btn-login');
-    if (loginButton) {
-        loginButton.addEventListener('mouseenter', function () {
+    const registerBtn = document.querySelector('.btn-register');
+    if (registerBtn) {
+        registerBtn.addEventListener('mouseenter', function () {
             this.style.transition = 'all 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease';
         });
     }
 });
 
 function createCodeParticles() {
-    const container = document.querySelector('.login-container');
+    const container = document.querySelector('.register-container');
     const codeSnippets = ['*', '*', '*'];
 
     const particleCount = Math.floor(Math.random() * 6) + 30;
