@@ -1,4 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using SnipEx.Web.ViewModels.User
+@model ProfileInformationViewModel
 
 @{
     ViewData["Title"] = "SnipEx - User Profile";
@@ -15,15 +17,15 @@
                 <h3>Personal Information</h3>
                 <div class="detail-item">
                     <label>Username</label>
-                    <span>HardcodedUser</span>
+                    <span>@Model.Username</span>
                 </div>
                 <div class="detail-item">
                     <label>Email</label>
-                    <span>user@example.com</span>
+                    <span>@Model.Email</span>
                 </div>
                 <div class="detail-item">
                     <label>Join Date</label>
-                    <span>January 1, 2024</span>
+                    <span>January 1, 2024</span> @*TODO: Add JoinDate to ApplicationUser*@
                 </div>
             </div>
 
@@ -31,12 +33,12 @@
                 <h3>Activity Summary</h3>
                 <div class="activity-stats">
                     <div class="stat-item">
-                        <strong>5</strong>
+                        <strong>@Model.SnippetsCount</strong>
                         <span>Snippets Created</span>
                     </div>
                     <div class="stat-item">
-                        <strong>3</strong>
-                        <span>Bookmarks</span>
+                        <strong>5</strong>
+                        <span>Bookmarks</span> @*TODO: Fix hardcoded values*@
                     </div>
                     <div class="stat-item">
                         <strong>10</strong>

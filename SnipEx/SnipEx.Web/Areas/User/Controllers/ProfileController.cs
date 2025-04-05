@@ -2,12 +2,19 @@
 
 namespace SnipEx.Web.Areas.User.Controllers
 {
+    using SnipEx.Services.Data.Contracts;
+    using System.Security.Claims;
+
     [Area("User")]
-    public class ProfileController : Controller
+    public class ProfileController(
+        IUserService userService) : Controller
     {
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+            var profileInformation = await userService.GetProfileInformationAsync(userId);
+
+            return View(profileInformation);
         }
     }
 }
