@@ -16,7 +16,7 @@ namespace SnipEx.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var featuredPosts = await postService.GetFeaturedPostsAsync();
+            var featuredPosts = await postService.GetPostsCardsAsync();
             var trendingTags = await tagService.GetTrendingTagsAsync();
 
             var viewModel = new PostCarouselViewModel()

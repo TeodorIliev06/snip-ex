@@ -3,6 +3,10 @@
     color: #e6edf3;
 }
 
+a {
+    text-decoration: none !important;
+}
+
 .profile-container {
     display: flex;
     min-height: 100vh;

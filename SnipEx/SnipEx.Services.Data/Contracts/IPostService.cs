@@ -6,7 +6,9 @@
     {
         Task<PostIndexViewModel> GetPostsAsync(string? tag, string? search, string? sort);
 
-        Task<IEnumerable<PostCardViewModel>> GetFeaturedPostsAsync();
+        Task<IEnumerable<PostCardViewModel>> GetPostsCardsAsync();
+
+        Task<IEnumerable<PostCardViewModel>> GetPostsCardsByIdAsync(string userId);
 
         Task<bool> AddPostAsync(AddPostFormModel model, string userId);
 

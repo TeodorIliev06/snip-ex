@@ -33,7 +33,7 @@
                 <h3>Activity Summary</h3>
                 <div class="activity-stats">
                     <div class="stat-item">
-                        <strong>@Model.SnippetsCount</strong>
+                        <strong>@Model.PostsCount</strong>
                         <span>Snippets Created</span>
                     </div>
                     <div class="stat-item">
@@ -51,32 +51,10 @@
         <section class="recent-activity">
             <h2>Recent Snippets</h2>
             <div class="snippet-list">
-                <div class="snippet-card">
-                    <div class="snippet-header">
-                        <h4>Sample Snippet 1</h4>
-                        <span class="snippet-language">C#</span>
-                    </div>
-                    <div class="snippet-content">
-                        Console.WriteLine("Hello, World!");
-                    </div>
-                    <div class="snippet-footer">
-                        <span>Created on March 20, 2025</span>
-                        <a asp-action="Details" asp-controller="Snippet" asp-route-id="1" class="btn btn-secondary btn-sm">View</a>
-                    </div>
-                </div>
-                <div class="snippet-card">
-                    <div class="snippet-header">
-                        <h4>Sample Snippet 2</h4>
-                        <span class="snippet-language">JavaScript</span>
-                    </div>
-                    <div class="snippet-content">
-                        console.log("Hello, World!");
-                    </div>
-                    <div class="snippet-footer">
-                        <span>Created on March 18, 2025</span>
-                        <a asp-action="Details" asp-controller="Snippet" asp-route-id="2" class="btn btn-secondary btn-sm">View</a>
-                    </div>
-                </div>
+                @foreach (var snippet in Model.RecentPosts)
+                {
+                    <partial name="Post/_PostCardItem" model="snippet" />
+                }
             </div>
         </section>
     </div>
@@ -85,4 +63,5 @@
 @section Styles {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="~/css/profile/index.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/post/postCard.css" />
 }

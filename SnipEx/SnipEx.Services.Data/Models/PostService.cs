@@ -82,15 +82,29 @@
             };
         }
 
-        public async Task<IEnumerable<PostCardViewModel>> GetFeaturedPostsAsync()
+        public async Task<IEnumerable<PostCardViewModel>> GetPostsCardsAsync()
         {
-            var featuredPosts = await postRepository.GetAllAttached()
+            var postsCards = await postRepository.GetAllAttached()
                 .Include(p => p.Language)
                 .OrderByDescending(p => p.CreatedAt)
                 .To<PostCardViewModel>()
                 .ToListAsync();
 
-            return featuredPosts;
+            return postsCards;
+        }
+
+        public async Task<IEnumerable<PostCardViewModel>> GetPostsCardsByIdAsync(string userId)
+        {
+            var userGuid = Guid.Parse(userId);
+
+            var postsCards = await postRepository.GetAllAttached()
+                .Where(p => p.UserId == userGuid)
+                .Include(p => p.Language)
+                .OrderByDescending(p => p.CreatedAt)
+                .To<PostCardViewModel>()
+                .ToListAsync();
+
+            return postsCards;
         }
 
         public async Task<bool> AddPostAsync(AddPostFormModel model, string userId)

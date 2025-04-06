@@ -82,68 +82,6 @@ a {
     width: 100%;
 }
 
-.snippet-card {
-    min-width: 350px;
-    width: 350px;
-    height: 280px;
-    background-color: #1a1d24;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
-    transition: all 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    cursor: pointer;
-    flex-shrink: 0;
-    margin-right: 20px;
-}
-
-    .snippet-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4);
-    }
-
-.snippet-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-}
-
-.snippet-title {
-    font-size: 1.2rem;
-    color: #e6edf3;
-    font-weight: 600;
-}
-
-.snippet-language {
-    background-color: #30363d;
-    color: #58a6ff;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 0.8rem;
-}
-
-.snippet-content {
-    flex-grow: 1;
-    background-color: #0d1117;
-    border-radius: 6px;
-    padding: 10px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 13px;
-    color: #a5d6ff;
-    overflow: hidden;
-    border: 1px solid #30363d;
-}
-
-.snippet-footer {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 15px;
-    color: #8b949e;
-    font-size: 0.85rem;
-}
-
 .carousel-controls {
     display: flex;
     justify-content: center;

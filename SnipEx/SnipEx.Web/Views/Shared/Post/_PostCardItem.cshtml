@@ -1,0 +1,14 @@
+﻿@using SnipEx.Web.ViewModels.Post
+@model PostCardViewModel
+
+<a asp-area="" asp-controller="Post" asp-action="Details" asp-route-id="@Model.Id" class="snippet-card">
+    <div class="snippet-header">
+        <div class="snippet-title">@Model.Title</div>
+        <div class="snippet-language">@Model.LanguageName</div>
+    </div>
+    <div class="snippet-content">@Model.Content</div>
+    <div class="snippet-footer">
+        <div>@Model.UserName</div>
+        <div>@Model.CreatedAt</div>
+    </div>
+</a>
