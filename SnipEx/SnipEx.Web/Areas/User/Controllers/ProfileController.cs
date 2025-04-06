@@ -22,5 +22,10 @@ namespace SnipEx.Web.Areas.User.Controllers
 
             return View(profileInformation);
         }
+
+        public IActionResult Notifications()
+        {
+            return View();
+        }
     }
 }
