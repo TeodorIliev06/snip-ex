@@ -34,6 +34,8 @@
 
         public bool IsLikedByCurrentUser { get; set; }
 
+        public bool IsBookmarkedByCurrentUser { get; set; }
+
         public List<string> Tags { get; set; } = new List<string>();
 
         public List<CommentViewModel> Comments { get; set; } = new List<CommentViewModel>();
@@ -45,7 +47,9 @@
                 .ForMember(d => d.UserName, opt =>
                     opt.MapFrom(p => p.User != null ? p.User.UserName : NoUserName))
                 .ForMember(d => d.IsLikedByCurrentUser,
-                opt => opt.Ignore());
+                opt => opt.Ignore())
+                .ForMember(d => d.IsBookmarkedByCurrentUser,
+                    opt => opt.Ignore());
         }
     }
 }

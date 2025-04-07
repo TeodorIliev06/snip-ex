@@ -14,6 +14,9 @@
         public virtual ICollection<Post> Posts { get; set; }
             = new HashSet<Post>();
 
+        public virtual ICollection<Post> Bookmarks { get; set; }
+            = new HashSet<Post>();
+
         public ICollection<PostLike> LikedPosts { get; set; }
             = new HashSet<PostLike>();
 

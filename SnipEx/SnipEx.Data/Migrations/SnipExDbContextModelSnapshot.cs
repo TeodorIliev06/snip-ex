@@ -373,6 +373,9 @@ namespace SnipEx.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("ApplicationUserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasMaxLength(5000)
@@ -402,6 +405,8 @@ namespace SnipEx.Data.Migrations
                         .HasDefaultValue(0);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("LanguageId");
 
@@ -822,6 +827,10 @@ namespace SnipEx.Data.Migrations
 
             modelBuilder.Entity("SnipEx.Data.Models.Post", b =>
                 {
+                    b.HasOne("SnipEx.Data.Models.ApplicationUser", null)
+                        .WithMany("Bookmarks")
+                        .HasForeignKey("ApplicationUserId");
+
                     b.HasOne("SnipEx.Data.Models.ProgrammingLanguage", "Language")
                         .WithMany("Posts")
                         .HasForeignKey("LanguageId")
@@ -878,6 +887,8 @@ namespace SnipEx.Data.Migrations
 
             modelBuilder.Entity("SnipEx.Data.Models.ApplicationUser", b =>
                 {
+                    b.Navigation("Bookmarks");
+
                     b.Navigation("Comments");
 
                     b.Navigation("LikedComments");

@@ -12,7 +12,7 @@
     {
         public static void RegisterRepositories(this IServiceCollection services, Assembly modelsAssembly)
         {
-            Type[] typesToExclude = { typeof(ApplicationUser) };
+            Type[] typesToExclude = {  };
             Type[] modelsTypes = modelsAssembly
                 .GetTypes()
                 .Where(t =>
