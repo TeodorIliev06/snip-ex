@@ -48,14 +48,14 @@
             // Authenticated user sidebar
             var user = await UserManager.GetUserAsync(User);
             <aside class="sidebar">
-                <partial name="_UserSidePanel" model="user" />
+                <partial name="_UserSidePanel" model="user"/>
             </aside>
         }
         else
         {
             // Non-authenticated user sidebar
             <aside class="sidebar">
-                <partial name="_GuestSidePanel" />
+                <partial name="_GuestSidePanel"/>
             </aside>
         }
         <main role="main" class="pb-3">

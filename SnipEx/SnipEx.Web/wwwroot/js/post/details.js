@@ -17,6 +17,14 @@
         });
     }
 
+    const postSaveButton = document.querySelector('.save-button[data-post-id]');
+    if (postLikeButton) {
+        const postId = postSaveButton.getAttribute('data-post-id');
+        postSaveButton.addEventListener('click', function () {
+            togglePostSave(postId);
+        });
+    }
+
     const commentLikeButtons = document.querySelectorAll('.like-button[data-comment-id]');
     commentLikeButtons.forEach(button => {
         const commentId = button.getAttribute('data-comment-id');
@@ -147,6 +155,43 @@ function togglePostLike(postId) {
             }
 
             likeButton.classList.toggle('liked', data.isLiked);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
+function togglePostSave(postId) {
+    const userId = document.getElementById('currentUserId').value;
+
+    fetch(`https://localhost:7000/LikeApi/TogglePostSave/${postId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            body: JSON.stringify({ userId })
+        })
+        .then(response => {
+            if (response.status === 401) {
+                // User is not authenticated
+                window.location.href = '/Identity/Account/Login?returnUrl=' + encodeURIComponent(window.location.pathname);
+                return null;
+            }
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const saveButton = document.querySelector(`.save-button[data-post-id="${postId}"]`);
+            saveButton.classList.toggle('saved', data.isLiked);
+
+            const spanElement = saveButton.querySelector('span');
+            if (spanElement) {
+                spanElement.textContent = data.isSaved ? 'Saved' : 'Save';
+            }
         })
         .catch(error => {
             console.error('Error:', error);

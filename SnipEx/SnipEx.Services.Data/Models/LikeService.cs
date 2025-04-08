@@ -1,11 +1,14 @@
 ﻿namespace SnipEx.Services.Data.Models
 {
+    using Microsoft.EntityFrameworkCore;
+
     using SnipEx.Data.Models;
     using SnipEx.Services.Data.Contracts;
     using SnipEx.Data.Repositories.Contracts;
-    using Microsoft.EntityFrameworkCore;
 
     public class LikeService(
+        IRepository<Post, Guid> postRepository,
+        IRepository<ApplicationUser, Guid> userRepository,
         IRepository<PostLike, Guid> postLikeRepository,
         IRepository<CommentLike, Guid> commentLikeRepository) : ILikeService
     {
@@ -105,6 +108,57 @@
                 .CountAsync(pl => pl.CommentId == commentGuid);
 
             return postLikesCount;
+        }
+
+        public async Task<bool> TogglePostSaveAsync(Guid postGuid, string userId)
+        {
+            var userGuid = Guid.Parse(userId);
+
+            var user = await userRepository
+                .GetAllAttached()
+                .Include(au => au.Bookmarks)
+                .FirstOrDefaultAsync(au => au.Id == userGuid);
+
+            if (user == null)
+            {
+                //TODO: Throw an appropriate error
+                return false;
+            }
+
+            var post = await postRepository.GetByIdAsync(postGuid);
+            if (post == null)
+            {
+                //TODO: Throw an appropriate error
+                return false;
+            }
+
+            var existingBookmark = user.Bookmarks
+                .FirstOrDefault(b => b.Id == postGuid);
+
+            if (existingBookmark != null)
+            {
+                user.Bookmarks.Remove(existingBookmark);
+                await userRepository.SaveChangesAsync();
+
+                return false;
+            }
+
+            user.Bookmarks.Add(post);
+            await userRepository.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> IsPostSavedByUserAsync(Guid postGuid, string userId)
+        {
+            var userGuid = Guid.Parse(userId);
+
+            var user = await userRepository
+                .GetAllAttached()
+                .Include(au => au.Bookmarks)
+                .FirstOrDefaultAsync(au => au.Id == userGuid);
+
+            return user!.Bookmarks.Any(p => p.Id == postGuid);
         }
     }
 }

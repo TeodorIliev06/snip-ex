@@ -3,15 +3,13 @@
 namespace SnipEx.WebApi.Controllers
 {
     using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Identity;
+
     using SnipEx.Common;
-    using SnipEx.Data.Models;
     using SnipEx.Services.Data.Contracts;
 
     [Authorize]
     public class LikeApiController(
-        ILikeService likeService,
-        UserManager<ApplicationUser> userManager) : BaseApiController
+        ILikeService likeService) : BaseApiController
     {
         /*TODO: introduce SignalR for real-time effect*/
         
@@ -33,6 +31,24 @@ namespace SnipEx.WebApi.Controllers
             var likesCount = await likeService.GetPostLikesCountAsync(postGuid);
 
             return Ok(new { isLiked, likesCount });
+        }
+
+        [HttpPost("[action]/{postId}")]
+        public async Task<IActionResult> TogglePostSave(string postId, [FromBody] ToggleLikeRequest request)
+        {
+            var isGuidValid = ValidationUtils.TryGetGuid(postId, out Guid postGuid);
+            if (!isGuidValid)
+            {
+                return BadRequest();
+            }
+
+            if (string.IsNullOrEmpty(request.UserId))
+            {
+                return Unauthorized();
+            }
+
+            var isSaved = await likeService.TogglePostSaveAsync(postGuid, request.UserId);
+            return Ok(new { isSaved });
         }
 
         [HttpPost("[action]/{commentId}")]

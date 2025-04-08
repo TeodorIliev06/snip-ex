@@ -13,5 +13,9 @@
         Task<bool> IsCommentLikedByUserAsync(Guid commentGuid, string userId);
 
         Task<int> GetCommentLikesCountAsync(Guid commentGuid);
+
+        Task<bool> TogglePostSaveAsync(Guid postGuid, string userId);
+
+        Task<bool> IsPostSavedByUserAsync(Guid postGuid, string userId);
     }
 }

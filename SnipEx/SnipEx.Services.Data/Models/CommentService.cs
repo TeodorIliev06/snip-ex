@@ -114,8 +114,10 @@
             return filteredComments;
         }
 
-        public void SetUserLikeStatus(CommentViewModel comment, ICollection<Comment> postComments, Guid userGuid)
+        public void SetUserLikeStatus(CommentViewModel comment, ICollection<Comment> postComments, string userId)
         {
+            var userGuid = Guid.Parse(userId);
+
             var isCommentGuidValid = ValidationUtils.TryGetGuid(comment.Id, out Guid commentGuid);
             if (isCommentGuidValid)
             {
@@ -128,7 +130,7 @@
 
             foreach (var reply in comment.Replies)
             {
-                SetUserLikeStatus(reply, postComments, userGuid);
+                SetUserLikeStatus(reply, postComments, userId);
             }
         }
     }

@@ -13,6 +13,6 @@
 
         Task<IEnumerable<CommentViewModel>> GetCommentsByPostIdAsync(Guid postGuid);
 
-        void SetUserLikeStatus(CommentViewModel comment, ICollection<Comment> postComments, Guid userGuid);
+        void SetUserLikeStatus(CommentViewModel comment, ICollection<Comment> postComments, string userId);
     }
 }

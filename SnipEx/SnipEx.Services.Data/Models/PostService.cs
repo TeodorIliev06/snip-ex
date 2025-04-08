@@ -17,7 +17,8 @@
     public class PostService(
         IRepository<Post, Guid> postRepository,
         IRepository<Tag, Guid> tagRepository,
-        ICommentService commentService) : IPostService
+        ICommentService commentService,
+        ILikeService likeService) : IPostService
     {
         public async Task<PostIndexViewModel> GetPostsAsync(string? tag, string? search, string? sort)
         {
@@ -101,6 +102,7 @@
                 .Where(p => p.UserId == userGuid)
                 .Include(p => p.Language)
                 .OrderByDescending(p => p.CreatedAt)
+                .Take(3)
                 .To<PostCardViewModel>()
                 .ToListAsync();
 
@@ -158,12 +160,12 @@
 
             if (!string.IsNullOrEmpty(userId))
             {
-                var userGuid = Guid.Parse(userId);
-                viewModel.IsLikedByCurrentUser = post.Likes.Any(l => l.UserId == userGuid);
+                viewModel.IsLikedByCurrentUser = await likeService.IsPostLikedByUserAsync(post.Id, userId);
+                viewModel.IsBookmarkedByCurrentUser = await likeService.IsPostSavedByUserAsync(post.Id, userId);
 
                 foreach (var comment in viewModel.Comments)
                 {
-                    commentService.SetUserLikeStatus(comment, post.Comments, userGuid);
+                    commentService.SetUserLikeStatus(comment, post.Comments, userId);
                 }
             }
 

@@ -51,8 +51,10 @@
                     <span class="count">@Model.LikesCount</span>
                 }
             </button>
-            <button class="action-button save-button" data-post-id="@Model.Id">
-                <i class="fa fa-bookmark"></i> Save
+            <button class="action-button save-button @(Model.IsBookmarkedByCurrentUser ? "saved" : "")"
+                    data-post-id="@Model.Id">
+                <i class="fa fa-bookmark"></i>
+                <span>@(Model.IsBookmarkedByCurrentUser ? "Saved" : "Save")</span>
             </button>
             <button class="action-button share-button">
                 <i class="fa fa-share-alt"></i> Share

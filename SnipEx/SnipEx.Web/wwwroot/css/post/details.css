@@ -368,6 +368,11 @@ body {
     color: #1E88E5 !important;
 }
 
+/*Save buttons*/
+.save-button.saved i {
+    color: #FF8F00 !important;
+}
+
 .like-button.liked i,
 .comment-action.liked i {
     font-weight: bold !important;
