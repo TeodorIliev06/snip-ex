@@ -1,12 +1,35 @@
 ﻿namespace SnipEx.Web.ViewModels.User
 {
+    using System.Globalization;
+
+    using AutoMapper;
     using SnipEx.Data.Models;
+    using SnipEx.Web.ViewModels.Post;
     using SnipEx.Services.Mapping.Contracts;
 
-    public class ProfileInformationViewModel : IMapFrom<ApplicationUser>
+    using static Common.EntityValidationConstants.User;
+
+    public class ProfileInformationViewModel : IMapFrom<ApplicationUser>, IHaveCustomMappings
     {
-        public string Username { get; set; }
-        public string Email { get; set; }
-        public int SnippetsCount { get; set; }
+        public string Username { get; set; } = null!;
+
+        public string Email { get; set; } = null!;
+
+        public string JoinDate { get; set; } = null!;
+
+        public int PostsCount { get; set; }
+
+        public int BookmarksCount { get; set; }
+
+        public IEnumerable<PostCardViewModel> RecentPosts { get; set; }
+            = new HashSet<PostCardViewModel>();
+
+        public void CreateMappings(IProfileExpression configuration)
+        {
+            configuration.CreateMap<ApplicationUser, ProfileInformationViewModel>()
+                .ForMember(d => d.JoinDate,
+                    opt =>
+                        opt.MapFrom(c => c.JoinDate.ToString(JoinDateFormat, CultureInfo.InvariantCulture)));
+        }
     }
 }

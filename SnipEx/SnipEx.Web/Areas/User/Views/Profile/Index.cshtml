@@ -25,7 +25,7 @@
                 </div>
                 <div class="detail-item">
                     <label>Join Date</label>
-                    <span>January 1, 2024</span> @*TODO: Add JoinDate to ApplicationUser*@
+                    <span>@Model.JoinDate</span>
                 </div>
             </div>
 
@@ -37,12 +37,12 @@
                         <span>Snippets Created</span>
                     </div>
                     <div class="stat-item">
-                        <strong>5</strong>
-                        <span>Bookmarks</span> @*TODO: Fix hardcoded values*@
+                        <strong>@Model.BookmarksCount</strong>
+                        <span>Bookmarks</span> 
                     </div>
                     <div class="stat-item">
                         <strong>10</strong>
-                        <span>Connections</span>
+                        <span>Connections</span> @*TODO: Fix hardcoded values*@
                     </div>
                 </div>
             </div>

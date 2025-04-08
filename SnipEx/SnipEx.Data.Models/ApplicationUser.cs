@@ -7,9 +7,12 @@
         public ApplicationUser()
         {
             this.Id = Guid.NewGuid();
+            this.JoinDate = DateTime.UtcNow;
         }
 
         public string? ProfilePicturePath { get; set; }
+
+        public DateTime JoinDate { get; set; }
 
         public virtual ICollection<Post> Posts { get; set; }
             = new HashSet<Post>();

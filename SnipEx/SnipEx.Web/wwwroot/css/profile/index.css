@@ -116,6 +116,7 @@ a {
 }
 
 .activity-stats {
+    margin-top: 2.5rem;
     display: flex;
     justify-content: space-between;
 }

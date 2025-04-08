@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SnipEx.Data;
 
@@ -11,9 +12,11 @@ using SnipEx.Data;
 namespace SnipEx.Data.Migrations
 {
     [DbContext(typeof(SnipExDbContext))]
-    partial class SnipExDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250408191557_AddJoinDate_ApplicationUserModel")]
+    partial class AddJoinDate_ApplicationUserModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -257,7 +260,7 @@ namespace SnipEx.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comments", (string)null);
+                    b.ToTable("Comments");
 
                     b.HasData(
                         new
@@ -319,7 +322,7 @@ namespace SnipEx.Data.Migrations
                     b.HasIndex("CommentId", "UserId")
                         .IsUnique();
 
-                    b.ToTable("CommentsLikes", (string)null);
+                    b.ToTable("CommentsLikes");
                 });
 
             modelBuilder.Entity("SnipEx.Data.Models.Notification", b =>
@@ -367,7 +370,7 @@ namespace SnipEx.Data.Migrations
 
                     b.HasIndex("RecipientId", "IsRead");
 
-                    b.ToTable("Notifications", (string)null);
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("SnipEx.Data.Models.Post", b =>
@@ -415,7 +418,7 @@ namespace SnipEx.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Posts", (string)null);
+                    b.ToTable("Posts");
 
                     b.HasData(
                         new
@@ -492,7 +495,7 @@ namespace SnipEx.Data.Migrations
                     b.HasIndex("PostId", "UserId")
                         .IsUnique();
 
-                    b.ToTable("PostsLikes", (string)null);
+                    b.ToTable("PostsLikes");
                 });
 
             modelBuilder.Entity("SnipEx.Data.Models.PostTag", b =>
@@ -507,7 +510,7 @@ namespace SnipEx.Data.Migrations
 
                     b.HasIndex("TagId");
 
-                    b.ToTable("PostsTags", (string)null);
+                    b.ToTable("PostsTags");
 
                     b.HasData(
                         new
@@ -555,7 +558,7 @@ namespace SnipEx.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProgrammingLanguages", (string)null);
+                    b.ToTable("ProgrammingLanguages");
 
                     b.HasData(
                         new
@@ -613,7 +616,7 @@ namespace SnipEx.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tags", (string)null);
+                    b.ToTable("Tags");
 
                     b.HasData(
                         new
