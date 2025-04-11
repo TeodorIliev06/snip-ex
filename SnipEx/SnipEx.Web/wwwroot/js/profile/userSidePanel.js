@@ -9,9 +9,6 @@
         }
     });
 
-    console.log("Profile picture element:", document.getElementById("profilePicture"));
-    console.log("File input element:", document.getElementById("profilePictureUpload"));
-
     const profilePicture = document.getElementById("profilePicture");
     const fileInput = document.getElementById("profilePictureUpload");
 

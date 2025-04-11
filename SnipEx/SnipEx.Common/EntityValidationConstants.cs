@@ -52,6 +52,7 @@
             public const int MessageMaxLength = 200;
             public const int EntityTypeMinLength = 2;
             public const int EntityTypeMaxLength = 50;
+            public const string CreatedAtFormat = "dd/MM/yyyy";
         }
     }
 }

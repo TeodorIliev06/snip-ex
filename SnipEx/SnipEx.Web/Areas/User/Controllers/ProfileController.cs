@@ -5,11 +5,13 @@ namespace SnipEx.Web.Areas.User.Controllers
     using System.Security.Claims;
 
     using SnipEx.Services.Data.Contracts;
+    using SnipEx.Web.ViewModels.Notification;
 
     [Area("User")]
     public class ProfileController(
         IUserService userService,
-        IPostService postService) : Controller
+        IPostService postService,
+        INotificationService notificationService) : Controller
     {
         public async Task<IActionResult> Index()
         {
@@ -23,9 +25,16 @@ namespace SnipEx.Web.Areas.User.Controllers
             return View(profileInformation);
         }
 
-        public IActionResult Notifications()
+        public async Task<IActionResult> Notifications()
         {
-            return View();
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+
+            var viewModel = new UserNotificationsViewModel()
+            {
+                Notifications = await notificationService.GetUserNotificationsAsync(userId)
+            };
+
+            return View(viewModel);
         }
     }
 }
