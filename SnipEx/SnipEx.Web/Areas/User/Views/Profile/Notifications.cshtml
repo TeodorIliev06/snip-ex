@@ -1,4 +1,8 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using SnipEx.Web.ViewModels.Notification
+@model UserNotificationsViewModel
+
+@{
     ViewData["Title"] = "SnipEx - Notifications";
 }
 
@@ -17,6 +21,47 @@
         </div>
 
         <div class="notifications-list">
+            @if (Model.Notifications.Any())
+            {
+                @foreach (var notification in Model.Notifications)
+                {
+                    <div class="notification-item @notification.CssType">
+                        <div class="notification-avatar">
+                            <img src="@notification.ActorAvatar" alt="@notification.ActorUsername" onerror="this.src='/images/profile_pics/default-avatar1.png'">
+                        </div>
+                        <div class="notification-content">
+                            <div class="notification-text">
+                                <strong>@notification.ActorUsername</strong> @notification.Message
+                            </div>
+                            <div class="notification-meta">
+                                <span class="notification-time">@notification.CreatedAt</span>
+                                @*
+                                    TODO: showcase relative time
+
+                                @if (!string.IsNullOrEmpty(notification.RelatedItemId))
+                                {
+                                    <a href="@notification.RelatedLink" class="notification-link">View</a>
+                                }*@
+                            </div>
+                        </div>
+                        @if (!notification.IsRead)
+                        {
+                            <div class="notification-badge">
+                                <span class="unread-indicator"></span>
+                            </div>
+                        }
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="empty-state">
+                    <i class="fa-regular fa-bell-slash"></i>
+                    <p>No notifications yet</p>
+                    <span>When you receive notifications, they'll appear here.</span>
+                </div>
+            }
+
             <!-- Like notification -->
             <div class="notification-item like" data-id="1">
                 <div class="notification-avatar">
@@ -126,11 +171,9 @@
     </div>
 </div>
 
-@*
 @section Scripts {
-    <script src="~/js/notifications.js" asp-append-version="true"></script>
+    <script src="~/js/profile/notifications.js" asp-append-version="true"></script>
 }
-*@
 
 @section Styles {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">

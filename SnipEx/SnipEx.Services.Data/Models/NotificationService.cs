@@ -14,6 +14,7 @@
         public async Task<IEnumerable<NotificationViewModel>> GetUserNotificationsAsync(string userId)
         {
             var userGuid = Guid.Parse(userId);
+
             var viewModel = await notificationRepository
                 .GetAllAttached()
                 .Include(n => n.Recipient)
