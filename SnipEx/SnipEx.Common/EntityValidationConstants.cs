@@ -8,6 +8,7 @@
             public const int UsernameMaxLength = 100;
             public const int ProfilePicturePathMaxLength = 500;
             public const string JoinDateFormat = "MMMM d, yyyy";
+            public const string DefaultProfilePicturePath = "images/profile_pics/default_user1.png";
         }
 
         public static class Comment

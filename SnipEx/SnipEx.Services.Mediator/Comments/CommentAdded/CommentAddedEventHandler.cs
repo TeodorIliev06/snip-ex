@@ -23,7 +23,7 @@
                  post.UserId.Value,
                  notification.ActorGuid,
                  notification.CommentGuid,
-                 "Someone commented on your post!"
+                 "liked your snippet"
              ), cancellationToken);
         }
     }

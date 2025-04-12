@@ -135,7 +135,7 @@
     // Function to create a notification element
     function createNotificationElement(notification) {
         const div = document.createElement('div');
-        div.className = `notification-item ${notification.type.toLowerCase()}`;
+        div.className = `notification-item ${notification.cssType}`;
 
         // Create avatar
         const avatarDiv = document.createElement('div');

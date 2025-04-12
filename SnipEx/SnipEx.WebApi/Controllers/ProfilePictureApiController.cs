@@ -21,13 +21,6 @@
         public async Task<IActionResult> GetProfilePicture()
         {
             var user = await userManager.GetUserAsync(User);
-            if (string.IsNullOrEmpty(user.ProfilePicturePath))
-            {
-                // Use the relative path from wwwroot
-                string defaultImagePath = "images/profile_pics/default_user1.png";
-                return PhysicalFile(Path.Combine(environment.WebRootPath, defaultImagePath),
-                    profilePictureService.GetContentType(defaultImagePath));
-            }
 
             return PhysicalFile(Path.Combine(environment.WebRootPath, user.ProfilePicturePath),
                 profilePictureService.GetContentType(user.ProfilePicturePath));

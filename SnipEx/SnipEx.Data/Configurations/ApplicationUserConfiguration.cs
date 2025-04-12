@@ -14,6 +14,10 @@
             builder
                 .Property(u => u.ProfilePicturePath)
                 .HasMaxLength(ProfilePicturePathMaxLength);
+
+            builder
+                .Property(u => u.ProfilePicturePath)
+                .HasDefaultValue(DefaultProfilePicturePath);
         }
     }
 }

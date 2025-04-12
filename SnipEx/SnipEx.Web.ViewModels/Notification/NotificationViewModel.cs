@@ -53,7 +53,7 @@
                         opt.MapFrom(n => n.CreatedAt.ToString(CreatedAtFormat, CultureInfo.InvariantCulture)))
                 .ForMember(d => d.ActorAvatar,
                     opt =>
-                        opt.MapFrom(n => n.Actor.ProfilePicturePath));
+                        opt.MapFrom(n => "/" + n.Actor.ProfilePicturePath));
         }
     }
 }

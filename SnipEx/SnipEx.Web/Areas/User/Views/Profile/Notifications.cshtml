@@ -27,7 +27,7 @@
                 {
                     <div class="notification-item @notification.CssType">
                         <div class="notification-avatar">
-                            <img src="@notification.ActorAvatar" alt="@notification.ActorUsername" onerror="this.src='/images/profile_pics/default-avatar1.png'">
+                            <img src="@notification.ActorAvatar" alt="@notification.ActorUsername">
                         </div>
                         <div class="notification-content">
                             <div class="notification-text">
@@ -165,9 +165,12 @@
             </div>
         </div>
 
-        <div class="load-more">
-            <button id="load-more-btn" class="btn-load-more">Load more</button>
-        </div>
+        @if (Model.Notifications.Any())
+        {
+            <div class="load-more">
+                <button id="load-more-btn" class="btn-load-more">Load more</button>
+            </div>
+        }
     </div>
 </div>
 
