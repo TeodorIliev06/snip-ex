@@ -25,5 +25,56 @@
 
             return viewModel;
         }
+
+        public async Task<int> GetUnreadNotificationsCountAsync(string userId)
+        {
+            var userGuid = Guid.Parse(userId);
+
+            return await notificationRepository
+                .GetAllAttached()
+                .Where(n => n.RecipientId == userGuid && !n.IsRead)
+                .CountAsync();
+        }
+
+        public async Task<bool> MarkNotificationAsReadAsync(Guid notificationGuid, string userId)
+        {
+            var userGuid = Guid.Parse(userId);
+            var notification = await notificationRepository
+                .FirstOrDefaultAsync(n =>
+                    n.Id == notificationGuid &&
+                    n.RecipientId == userGuid);
+
+            if (notification == null)
+            {
+                return false;
+            }
+
+            notification.IsRead = true;
+            await notificationRepository.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> MarkAllNotificationsAsReadAsync(string userId)
+        {
+            var userGuid = Guid.Parse(userId);
+            var unreadNotifications = await notificationRepository
+                .GetAllAttached()
+                .Where(n => n.RecipientId == userGuid && !n.IsRead)
+                .ToListAsync();
+
+            if (!unreadNotifications.Any())
+            {
+                return false;
+            }
+
+            foreach (var notification in unreadNotifications)
+            {
+                notification.IsRead = true;
+            }
+
+            await notificationRepository.SaveChangesAsync();
+            return true;
+        }
     }
 }

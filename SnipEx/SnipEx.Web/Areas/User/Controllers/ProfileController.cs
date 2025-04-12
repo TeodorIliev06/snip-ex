@@ -5,6 +5,7 @@ namespace SnipEx.Web.Areas.User.Controllers
     using System.Security.Claims;
 
     using SnipEx.Services.Data.Contracts;
+    using SnipEx.Services.Data.Models;
     using SnipEx.Web.ViewModels.Notification;
 
     [Area("User")]
@@ -31,7 +32,8 @@ namespace SnipEx.Web.Areas.User.Controllers
 
             var viewModel = new UserNotificationsViewModel()
             {
-                Notifications = await notificationService.GetUserNotificationsAsync(userId)
+                Notifications = await notificationService.GetUserNotificationsAsync(userId),
+                UnreadCount = await notificationService.GetUnreadNotificationsCountAsync(userId)
             };
 
             return View(viewModel);

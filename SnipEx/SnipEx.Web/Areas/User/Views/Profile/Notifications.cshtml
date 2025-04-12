@@ -10,6 +10,10 @@
     <div class="notifications-content">
         <section class="notifications-header">
             <h1>Notifications</h1>
+            @if (Model.UnreadCount > 0)
+            {
+                <button id="mark-all-read" class="btn-mark-all">Mark all as read</button>
+            }
         </section>
 
         <div class="filter-bar">
@@ -25,7 +29,7 @@
             {
                 @foreach (var notification in Model.Notifications)
                 {
-                    <div class="notification-item @notification.CssType">
+                    <div class="notification-item @notification.CssType" data-id="@notification.Id">
                         <div class="notification-avatar">
                             <img src="@notification.ActorAvatar">
                         </div>

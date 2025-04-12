@@ -62,9 +62,65 @@ function getSenderUsernameFromNotification(notificationTextElement) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    // Filter buttons functionality
     const filterButtons = document.querySelectorAll('.filter-button');
     const notificationItems = document.querySelectorAll('.notification-item');
+
+    notificationItems.forEach(item => {
+        item.addEventListener('click', function () {
+            const notificationId = this.getAttribute('data-id');
+            const unreadBadge = this.querySelector('.notification-badge');
+
+            if (unreadBadge) {
+                fetch(`https://localhost:7000/NotificationApi/MarkAsRead/${notificationId}`, {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        credentials: 'include'
+                    })
+                    .then(() => {
+                        unreadBadge.style.opacity = '0';
+                        setTimeout(() => {
+                            unreadBadge.remove();
+                        }, 300);
+                    })
+                    .catch(error => console.error('Error marking notification as read:', error));
+            }
+
+            const relatedLink = this.querySelector('.notification-link');
+            if (relatedLink) {
+                window.location.href = relatedLink.getAttribute('href');
+            }
+        });
+    });
+
+    const markAllReadBtn = document.getElementById('mark-all-read');
+    if (markAllReadBtn) {
+        markAllReadBtn.addEventListener('click', function () {
+            fetch('https://localhost:7000/NotificationApi/MarkAllAsRead', {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.querySelectorAll('.notification-badge').forEach(badge => {
+                            badge.style.opacity = '0';
+                            setTimeout(() => {
+                                badge.remove();
+                            }, 300);
+                        });
+
+                        // Hide the mark all as read button
+                        markAllReadBtn.style.display = 'none';
+                    }
+                })
+                .catch(error => console.error('Error marking all notifications as read:', error));
+        });
+    }
 
     const notificationMessages = document.querySelectorAll('.notification-text');
     notificationMessages.forEach(message => {
@@ -207,43 +263,4 @@ document.addEventListener('DOMContentLoaded', function () {
 
         return div;
     }
-
-    // Mark notifications as read when they're visible
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const notificationItem = entry.target;
-                const unreadBadge = notificationItem.querySelector('.notification-badge');
-
-                if (unreadBadge) {
-                    // Get notification ID
-                    const notificationId = notificationItem.getAttribute('data-id');
-
-                    // Call API to mark as read
-                    fetch(`/User/MarkNotificationAsRead/${notificationId}`, {
-                        method: 'POST',
-                        headers: {
-                            'X-Requested-With': 'XMLHttpRequest'
-                        }
-                    })
-                        .then(() => {
-                            // Remove the unread badge with animation
-                            unreadBadge.style.opacity = '0';
-                            setTimeout(() => {
-                                unreadBadge.remove();
-                            }, 300);
-                        })
-                        .catch(error => console.error('Error marking notification as read:', error));
-                }
-
-                // Stop observing this notification
-                observer.unobserve(notificationItem);
-            }
-        });
-    }, { threshold: 0.5 });
-
-    // Start observing all unread notifications
-    document.querySelectorAll('.notification-item:has(.notification-badge)').forEach(item => {
-        observer.observe(item);
-    });
 });

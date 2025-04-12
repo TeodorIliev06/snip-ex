@@ -4,5 +4,7 @@
     {
         public IEnumerable<NotificationViewModel> Notifications { get; set; } 
             = new HashSet<NotificationViewModel>();
+
+        public int UnreadCount { get; set; }
     }
 }
