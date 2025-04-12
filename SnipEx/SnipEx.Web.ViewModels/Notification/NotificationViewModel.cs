@@ -14,8 +14,6 @@
     {
         public string Id { get; set; } = null!;
 
-        public string ActorUsername { get; set; } = null!;
-
         public string ActorAvatar { get; set; } = null!;
 
         public string Message { get; set; } = null!;

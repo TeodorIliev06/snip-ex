@@ -8,6 +8,7 @@
 
     public class CommentAddedEventHandler(
         IRepository<Post, Guid> postRepository,
+        IRepository<ApplicationUser, Guid> userRepository,
         IMediator mediator) : INotificationHandler<CommentAddedEvent>
     {
         public async Task Handle(CommentAddedEvent notification, CancellationToken cancellationToken)
@@ -19,11 +20,17 @@
                 return;
             }
 
+            var actor = await userRepository.GetByIdAsync(notification.ActorGuid);
+            if (actor == null)
+            {
+                return;
+            }
+
             await mediator.Send(new CreateCommentNotificationCommand(
                  post.UserId.Value,
                  notification.ActorGuid,
                  notification.CommentGuid,
-                 "liked your snippet"
+                 $"{actor.UserName} commented on your snippet \"{post.Title}\""
              ), cancellationToken);
         }
     }

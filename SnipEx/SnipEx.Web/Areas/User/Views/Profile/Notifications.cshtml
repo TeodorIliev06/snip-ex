@@ -27,17 +27,18 @@
                 {
                     <div class="notification-item @notification.CssType">
                         <div class="notification-avatar">
-                            <img src="@notification.ActorAvatar" alt="@notification.ActorUsername">
+                            <img src="@notification.ActorAvatar">
                         </div>
                         <div class="notification-content">
                             <div class="notification-text">
-                                <strong>@notification.ActorUsername</strong> @notification.Message
+                                @notification.Message
                             </div>
                             <div class="notification-meta">
-                                <span class="notification-time">@notification.CreatedAt</span>
+                                <span class="notification-time"
+                                      data-timestamp="@notification.CreatedAt">
+                                    @notification.CreatedAt
+                                </span>
                                 @*
-                                    TODO: showcase relative time
-
                                 @if (!string.IsNullOrEmpty(notification.RelatedItemId))
                                 {
                                     <a href="@notification.RelatedLink" class="notification-link">View</a>
@@ -73,25 +74,6 @@
                     </div>
                     <div class="notification-meta">
                         <span class="notification-time">5 minutes ago</span>
-                        <a href="#" class="notification-link">View</a>
-                    </div>
-                </div>
-                <div class="notification-badge">
-                    <span class="unread-indicator"></span>
-                </div>
-            </div>
-
-            <!-- Comment notification -->
-            <div class="notification-item comment" data-id="2">
-                <div class="notification-avatar">
-                    <img src="/images/default-avatar.png" alt="user2">
-                </div>
-                <div class="notification-content">
-                    <div class="notification-text">
-                        <strong>sarahmiller</strong> commented on your snippet "CSS Flexbox Grid Template"
-                    </div>
-                    <div class="notification-meta">
-                        <span class="notification-time">1 hour ago</span>
                         <a href="#" class="notification-link">View</a>
                     </div>
                 </div>
@@ -143,22 +125,6 @@
                     </div>
                     <div class="notification-meta">
                         <span class="notification-time">3 days ago</span>
-                        <a href="#" class="notification-link">View</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Another comment notification -->
-            <div class="notification-item comment" data-id="6">
-                <div class="notification-avatar">
-                    <img src="/images/default-avatar.png" alt="user6">
-                </div>
-                <div class="notification-content">
-                    <div class="notification-text">
-                        <strong>emilyweb</strong> commented on your snippet "Database Connection Pattern"
-                    </div>
-                    <div class="notification-meta">
-                        <span class="notification-time">5 days ago</span>
                         <a href="#" class="notification-link">View</a>
                     </div>
                 </div>
