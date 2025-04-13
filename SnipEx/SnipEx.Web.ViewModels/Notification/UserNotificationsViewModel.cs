@@ -6,5 +6,11 @@
             = new HashSet<NotificationViewModel>();
 
         public int UnreadCount { get; set; }
+
+        public int TotalCount { get; set; }
+
+        public bool HasMoreNotifications { get; set; }
+
+        public int CurrentPage { get; set; } = 1;
     }
 }

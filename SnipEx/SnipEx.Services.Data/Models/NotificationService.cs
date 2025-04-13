@@ -3,15 +3,16 @@
     using Microsoft.EntityFrameworkCore;
 
     using SnipEx.Data.Models;
-    using SnipEx.Data.Repositories.Contracts;
-    using SnipEx.Services.Data.Contracts;
     using SnipEx.Services.Mapping;
+    using SnipEx.Services.Data.Contracts;
+    using SnipEx.Data.Repositories.Contracts;
     using SnipEx.Web.ViewModels.Notification;
 
     public class NotificationService(
         IRepository<Notification, Guid> notificationRepository) : INotificationService
     {
-        public async Task<IEnumerable<NotificationViewModel>> GetUserNotificationsAsync(string userId)
+        public async Task<IEnumerable<NotificationViewModel>> GetUserNotificationsAsync(string userId,
+            int page = 1, int pageSize = 10)
         {
             var userGuid = Guid.Parse(userId);
 
@@ -20,6 +21,9 @@
                 .Include(n => n.Recipient)
                 .Include(n => n.Actor)
                 .Where(n => n.RecipientId == userGuid)
+                .OrderByDescending(n => n.CreatedAt)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
                 .To<NotificationViewModel>()
                 .ToListAsync();
 
@@ -33,6 +37,16 @@
             return await notificationRepository
                 .GetAllAttached()
                 .Where(n => n.RecipientId == userGuid && !n.IsRead)
+                .CountAsync();
+        }
+
+        public async Task<int> GetTotalNotificationsCountAsync(string userId)
+        {
+            var userGuid = Guid.Parse(userId);
+
+            return await notificationRepository
+                .GetAllAttached()
+                .Where(n => n.RecipientId == userGuid)
                 .CountAsync();
         }
 

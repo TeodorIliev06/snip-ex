@@ -31,10 +31,34 @@
         [HttpPatch("[action]")]
         public async Task<IActionResult> MarkAllAsRead()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
             var result = await notificationService.MarkAllNotificationsAsReadAsync(userId);
 
             return Ok(new { success = result });
+        }
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetMoreNotifications(int page = 1)
+        {
+            if (page < 1)
+            {
+                page = 1;
+            }
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+            var pageSize = 10;
+
+            var notifications = await notificationService
+                .GetUserNotificationsAsync(userId, page, pageSize);
+            var totalCount = await notificationService.GetTotalNotificationsCountAsync(userId);
+
+            var result = new
+            {
+                notifications = notifications,
+                hasMore = (page * pageSize) < totalCount
+            };
+
+            return Ok(result);
         }
     }
 }

@@ -30,10 +30,18 @@ namespace SnipEx.Web.Areas.User.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
 
+            var notifications = await notificationService
+                .GetUserNotificationsAsync(userId);
+            var unreadCount = await notificationService.GetUnreadNotificationsCountAsync(userId);
+            var totalCount = await notificationService.GetTotalNotificationsCountAsync(userId);
+
             var viewModel = new UserNotificationsViewModel()
             {
-                Notifications = await notificationService.GetUserNotificationsAsync(userId),
-                UnreadCount = await notificationService.GetUnreadNotificationsCountAsync(userId)
+                Notifications = notifications,
+                UnreadCount = unreadCount,
+                TotalCount = totalCount,
+                HasMoreNotifications = totalCount > notifications.Count(),
+                CurrentPage = 1
             };
 
             return View(viewModel);

@@ -61,37 +61,99 @@ function getSenderUsernameFromNotification(notificationTextElement) {
     notificationTextElement.innerHTML = `<strong>${firstWord}</strong> ${restOfMessage}`;
 }
 
+function createNotificationElement(notification) {
+    const div = document.createElement('div');
+    div.className = `notification-item ${notification.cssType}`;
+    div.setAttribute('data-id', notification.id);
+
+    const avatarDiv = document.createElement('div');
+    avatarDiv.className = 'notification-avatar';
+    const img = document.createElement('img');
+    img.src = notification.actorAvatar || '/images/profile_pics/default_user1.png';
+    img.alt = 'User avatar';
+    img.onerror = function () { this.src = '/images/profile_pics/default_user1.png'; };
+    avatarDiv.appendChild(img);
+
+    const contentDiv = document.createElement('div');
+    contentDiv.className = 'notification-content';
+
+    const textDiv = document.createElement('div');
+    textDiv.className = 'notification-text';
+
+    textDiv.textContent = notification.message;
+    getSenderUsernameFromNotification(textDiv);
+
+    const metaDiv = document.createElement('div');
+    metaDiv.className = 'notification-meta';
+
+    const timeSpan = document.createElement('span');
+    timeSpan.className = 'notification-time';
+    timeSpan.setAttribute('data-timestamp', notification.createdAt);
+    timeSpan.textContent = getRelativeTimeString(notification.createdAt);
+    metaDiv.appendChild(timeSpan);
+
+    if (notification.relatedLink) {
+        const link = document.createElement('a');
+        link.href = notification.relatedLink;
+        link.className = 'notification-link';
+        link.textContent = 'View';
+        metaDiv.appendChild(link);
+    }
+
+    contentDiv.appendChild(textDiv);
+    contentDiv.appendChild(metaDiv);
+
+    if (!notification.isRead) {
+        const badgeDiv = document.createElement('div');
+        badgeDiv.className = 'notification-badge';
+        const unreadSpan = document.createElement('span');
+        unreadSpan.className = 'unread-indicator';
+        badgeDiv.appendChild(unreadSpan);
+        div.appendChild(badgeDiv);
+    }
+
+    div.appendChild(avatarDiv);
+    div.appendChild(contentDiv);
+
+    div.addEventListener('click', handleNotificationClick);
+
+    return div;
+}
+
+function handleNotificationClick(event) {
+    const element = event.currentTarget;
+    const notificationId = element.getAttribute('data-id');
+    const unreadBadge = element.querySelector('.notification-badge');
+
+    if (unreadBadge) {
+        fetch(`https://localhost:7000/NotificationApi/MarkAsRead/${notificationId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include'
+            })
+            .then(() => {
+                unreadBadge.style.opacity = '0';
+                setTimeout(() => {
+                    unreadBadge.remove();
+                }, 300);
+            })
+            .catch(error => console.error('Error marking notification as read:', error));
+    }
+
+    const relatedLink = element.querySelector('.notification-link');
+    if (relatedLink) {
+        window.location.href = relatedLink.getAttribute('href');
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     const filterButtons = document.querySelectorAll('.filter-button');
     const notificationItems = document.querySelectorAll('.notification-item');
 
     notificationItems.forEach(item => {
-        item.addEventListener('click', function () {
-            const notificationId = this.getAttribute('data-id');
-            const unreadBadge = this.querySelector('.notification-badge');
-
-            if (unreadBadge) {
-                fetch(`https://localhost:7000/NotificationApi/MarkAsRead/${notificationId}`, {
-                        method: 'PATCH',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        credentials: 'include'
-                    })
-                    .then(() => {
-                        unreadBadge.style.opacity = '0';
-                        setTimeout(() => {
-                            unreadBadge.remove();
-                        }, 300);
-                    })
-                    .catch(error => console.error('Error marking notification as read:', error));
-            }
-
-            const relatedLink = this.querySelector('.notification-link');
-            if (relatedLink) {
-                window.location.href = relatedLink.getAttribute('href');
-            }
-        });
+        item.addEventListener('click', handleNotificationClick);
     });
 
     const markAllReadBtn = document.getElementById('mark-all-read');
@@ -127,23 +189,59 @@ document.addEventListener('DOMContentLoaded', function () {
         getSenderUsernameFromNotification(message);
     });
 
-    const timestamps = document.querySelectorAll('.notification-time');
-    timestamps.forEach(dateSpan => {
-        const timestampStr = dateSpan.getAttribute('data-timestamp');
-        dateSpan.textContent = getRelativeTimeString(timestampStr);
-    });
+    const loadMoreBtn = document.getElementById('load-more-btn');
+    if (loadMoreBtn) {
+        let page = 1;
+
+        loadMoreBtn.addEventListener('click', function () {
+            page++;
+
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+            this.disabled = true;
+
+            fetch(`https://localhost:7000/NotificationApi/GetMoreNotifications?page=${page}`, {
+                    credentials: 'include'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.notifications && data.notifications.length > 0) {
+                        const notificationsList = document.querySelector('.notifications-list');
+
+                        data.notifications.forEach(notification => {
+                            const notificationElement = createNotificationElement(notification);
+                            notificationsList.appendChild(notificationElement);
+                        });
+
+                        loadMoreBtn.innerHTML = 'Load more';
+                        loadMoreBtn.disabled = false;
+
+                        if (data.hasMore === false) {
+                            loadMoreBtn.style.display = 'none';
+                        }
+                    } else {
+                        loadMoreBtn.innerHTML = 'No more notifications';
+                        loadMoreBtn.disabled = true;
+                        setTimeout(() => {
+                            loadMoreBtn.style.display = 'none';
+                        }, 2000);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading more notifications:', error);
+                    loadMoreBtn.innerHTML = 'Error loading more. Try again';
+                    loadMoreBtn.disabled = false;
+                });
+        });
+    }
 
     filterButtons.forEach(button => {
         button.addEventListener('click', function () {
-            // Remove active class from all buttons
             filterButtons.forEach(btn => btn.classList.remove('active'));
 
-            // Add active class to clicked button
             this.classList.add('active');
 
             const filter = this.getAttribute('data-filter');
 
-            // Show/hide notifications based on filter
             notificationItems.forEach(item => {
                 if (filter === 'all') {
                     item.style.display = 'flex';
@@ -156,111 +254,9 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Load more functionality
-    //const loadMoreBtn = document.getElementById('load-more-btn');
-    //if (loadMoreBtn) {
-    //    let page = 1;
-
-    //    loadMoreBtn.addEventListener('click', function () {
-    //        page++;
-
-    //        // Show loading state
-    //        this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
-    //        this.disabled = true;
-
-    //        // Simulate loading more notifications with AJAX
-    //        fetch(`/User/GetMoreNotifications?page=${page}`, {
-    //            headers: {
-    //                'X-Requested-With': 'XMLHttpRequest'
-    //            }
-    //        })
-    //            .then(response => response.json())
-    //            .then(data => {
-    //                if (data.notifications && data.notifications.length > 0) {
-    //                    // Append new notifications
-    //                    const notificationsList = document.querySelector('.notifications-list');
-
-    //                    data.notifications.forEach(notification => {
-    //                        const notificationElement = createNotificationElement(notification);
-    //                        notificationsList.appendChild(notificationElement);
-    //                    });
-
-    //                    // Reset button state
-    //                    loadMoreBtn.innerHTML = 'Load more';
-    //                    loadMoreBtn.disabled = false;
-
-    //                    // If no more notifications, hide the button
-    //                    if (data.hasMore === false) {
-    //                        loadMoreBtn.style.display = 'none';
-    //                    }
-    //                } else {
-    //                    // No more notifications
-    //                    loadMoreBtn.innerHTML = 'No more notifications';
-    //                    loadMoreBtn.disabled = true;
-    //                    setTimeout(() => {
-    //                        loadMoreBtn.style.display = 'none';
-    //                    }, 2000);
-    //                }
-    //            })
-    //            .catch(error => {
-    //                console.error('Error loading more notifications:', error);
-    //                loadMoreBtn.innerHTML = 'Error loading more. Try again';
-    //                loadMoreBtn.disabled = false;
-    //            });
-    //    });
-    //}
-
-    // Function to create a notification element
-    function createNotificationElement(notification) {
-        const div = document.createElement('div');
-        div.className = `notification-item ${notification.cssType}`;
-
-        const avatarDiv = document.createElement('div');
-        avatarDiv.className = 'notification-avatar';
-        const img = document.createElement('img');
-        img.src = notification.senderAvatar || '/images/profile_pics/default_user1.png';
-        img.alt = notification.senderUsername;
-        img.onerror = function () { this.src = '/images/profile_pics/default_user1.png'; };
-        avatarDiv.appendChild(img);
-
-        const contentDiv = document.createElement('div');
-        contentDiv.className = 'notification-content';
-
-        const textDiv = document.createElement('div');
-        textDiv.className = 'notification-text';
-
-        textDiv.textContent = notification.message;
-        getSenderUsernameFromNotification(textDiv);
-
-        const metaDiv = document.createElement('div');
-        metaDiv.className = 'notification-meta';
-        metaDiv.innerHTML = `<span class="notification-time">${getRelativeTimeString(notification.createdAt)}</span>`;
-
-        if (notification.relatedLink) {
-            const link = document.createElement('a');
-            link.href = notification.relatedLink;
-            link.className = 'notification-link';
-            link.textContent = 'View';
-            metaDiv.appendChild(link);
-        }
-
-        contentDiv.appendChild(textDiv);
-        contentDiv.appendChild(metaDiv);
-
-        // Create unread badge if needed
-        if (!notification.isRead) {
-            const badgeDiv = document.createElement('div');
-            badgeDiv.className = 'notification-badge';
-            const unreadSpan = document.createElement('span');
-            unreadSpan.className = 'unread-indicator';
-            badgeDiv.appendChild(unreadSpan);
-            div.appendChild(badgeDiv);
-        }
-
-        // Assemble the notification item
-        div.appendChild(avatarDiv);
-        div.appendChild(contentDiv);
-
-        return div;
-    }
+    const timestamps = document.querySelectorAll('.notification-time');
+    timestamps.forEach(dateSpan => {
+        const timestampStr = dateSpan.getAttribute('data-timestamp');
+        dateSpan.textContent = getRelativeTimeString(timestampStr);
+    });
 });
