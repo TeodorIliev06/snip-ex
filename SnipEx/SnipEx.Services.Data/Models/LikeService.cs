@@ -1,16 +1,20 @@
 ﻿namespace SnipEx.Services.Data.Models
 {
+    using MediatR;
     using Microsoft.EntityFrameworkCore;
 
     using SnipEx.Data.Models;
     using SnipEx.Services.Data.Contracts;
     using SnipEx.Data.Repositories.Contracts;
+    using SnipEx.Services.Mediator.Comments.CommentLiked;
+    using SnipEx.Services.Mediator.Posts.PostLiked;
 
     public class LikeService(
         IRepository<Post, Guid> postRepository,
         IRepository<ApplicationUser, Guid> userRepository,
         IRepository<PostLike, Guid> postLikeRepository,
-        IRepository<CommentLike, Guid> commentLikeRepository) : ILikeService
+        IRepository<CommentLike, Guid> commentLikeRepository,
+        IMediator mediator) : ILikeService
     {
         public async Task<bool> TogglePostLikeAsync(Guid postGuid, string userId)
         {
@@ -38,6 +42,9 @@
 
             await postLikeRepository.AddAsync(newLike);
             await postLikeRepository.SaveChangesAsync();
+
+            var postLikedEvent = new PostLikedEvent(postGuid, userGuid);
+            await mediator.Publish(postLikedEvent);
 
             return true;
         }
@@ -87,6 +94,9 @@
 
             await commentLikeRepository.AddAsync(newLike);
             await commentLikeRepository.SaveChangesAsync();
+
+            var postLikedEvent = new CommentLikedEvent(commentGuid, userGuid);
+            await mediator.Publish(postLikedEvent);
 
             return true;
         }
