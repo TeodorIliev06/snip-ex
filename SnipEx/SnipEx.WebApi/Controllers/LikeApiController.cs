@@ -11,8 +11,6 @@ namespace SnipEx.WebApi.Controllers
     public class LikeApiController(
         ILikeService likeService) : BaseApiController
     {
-        /*TODO: introduce SignalR for real-time effect*/
-        
         [HttpPost("[action]/{postId}")]
         public async Task<IActionResult> TogglePostLike(string postId, [FromBody] ToggleLikeRequest request)
         {

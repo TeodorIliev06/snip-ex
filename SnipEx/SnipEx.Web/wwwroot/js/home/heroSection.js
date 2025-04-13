@@ -1,8 +1,4 @@
-﻿
-
-
-document.addEventListener('DOMContentLoaded', function () {
-    // Terminal animation
+﻿document.addEventListener('DOMContentLoaded', function () {
     const terminalContent = document.getElementById('terminal-content');
     const terminalLines = [
         { text: 'Welcome to SnipEx', delay: 0 },
@@ -18,7 +14,6 @@ document.addEventListener('DOMContentLoaded', function () {
             const lineElement = document.createElement('div');
             lineElement.classList.add('terminal-line');
 
-            // Simulate typing effect
             let i = 0;
             const typing = setInterval(() => {
                 lineElement.textContent = line.text.substring(0, i);

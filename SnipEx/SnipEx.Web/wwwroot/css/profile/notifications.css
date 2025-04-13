@@ -28,7 +28,7 @@
         position: absolute;
         bottom: -10px;
         left: 0;
-        width: 80px;
+        width: 280px;
         height: 3px;
         background: linear-gradient(90deg, #58a6ff, #bc8cff);
     }
@@ -209,6 +209,29 @@
     .btn-load-more:hover {
         background-color: #30363d;
         color: #e6edf3;
+    }
+
+#mark-all-read {
+    background-color: #2d2d36;
+    color: #4d9ce6;
+    border: 1px solid #4d9ce6;
+    border-radius: 4px;
+    padding: 6px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    outline: none;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+    #mark-all-read:hover {
+        background-color: #363642;
+        box-shadow: 0 0 5px rgba(77, 156, 230, 0.4);
+    }
+
+    #mark-all-read:active {
+        transform: translateY(1px);
     }
 
 /* Responsive adjustments */

@@ -7,7 +7,6 @@
 
     using SnipEx.Common;
     using SnipEx.Services.Data.Contracts;
-    using SnipEx.Services.Data.Models;
 
     [Authorize]
     public class NotificationApiController(
@@ -59,6 +58,16 @@
             };
 
             return Ok(result);
+        }
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> ShowNewNotification()
+        {
+            //TODO: Cache the response for optimisation
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+            var likesCount = await notificationService.GetUnreadNotificationsCountAsync(userId);
+
+            return Ok(new { likesCount });
         }
     }
 }

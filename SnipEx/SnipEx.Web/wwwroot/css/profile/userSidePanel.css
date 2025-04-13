@@ -197,3 +197,25 @@
     padding: 0.5rem;
     border-radius: 6px;
 }
+
+/*notification badge styles*/
+.notification-container {
+    position: relative;
+}
+
+.notification-container .notification-badge {
+    position: absolute;
+    top: -6px;
+    right: 120px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    font-size: 12px;
+    min-width: 18px;
+    text-align: center;
+    height: inherit !important;
+}
+
+.d-none {
+    display: none;
+}

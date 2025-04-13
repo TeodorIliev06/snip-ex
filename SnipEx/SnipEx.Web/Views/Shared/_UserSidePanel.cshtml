@@ -1,4 +1,5 @@
-﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+﻿@using System.Security.Claims
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model SnipEx.Data.Models.ApplicationUser
 
 <div class="side-panel">
@@ -15,6 +16,8 @@
             <h3 class="user-name">@Model.UserName</h3>
             <p class="user-handle">@Model.Email</p>
         </div>
+
+        <input type="hidden" id="currentUserId" value="@User.FindFirstValue(ClaimTypes.NameIdentifier)" />
 
         <nav class="user-navigation">
             <ul>
@@ -35,7 +38,10 @@
                 </li>
                 <li>
                     <a asp-area="User" asp-controller="Profile" asp-action="Notifications">
+                    <div class="notification-container">
                         <i class="bi bi-heart"></i> Notifications
+                        <span id="notification-count" class="notification-badge d-none">0</span>
+                    </div>
                     </a>
                 </li>
                 <li>

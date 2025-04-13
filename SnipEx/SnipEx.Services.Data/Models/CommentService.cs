@@ -1,6 +1,7 @@
 ﻿namespace SnipEx.Services.Data.Models
 {
     using System.Globalization;
+
     using MediatR;
     using Microsoft.EntityFrameworkCore;
 

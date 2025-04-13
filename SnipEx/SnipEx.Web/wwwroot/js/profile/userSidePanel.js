@@ -9,6 +9,24 @@
         }
     });
 
+    updateNotificationCount();
+
+    // Set up SignalR connection
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("https://localhost:7024/notificationHub")
+        .withAutomaticReconnect()
+        .build();
+
+    connection.on("ReceiveNotification", function (notification) {
+        // Update notification count when a new notification is received
+        updateNotificationCount();
+        console.log("New notification received:", notification);
+    });
+
+    connection.start()
+        .then(() => console.log("SignalR Connected"))
+        .catch(err => console.error(err));
+
     const profilePicture = document.getElementById("profilePicture");
     const fileInput = document.getElementById("profilePictureUpload");
 
@@ -82,5 +100,39 @@ function uploadProfilePicture(file) {
         .catch(error => {
             console.error('Error uploading profile picture:', error);
             // TODO: Display error message
+        });
+}
+
+function updateNotificationCount() {
+    const userId = document.getElementById('currentUserId')?.value;
+    if (!userId) return;
+
+    fetch('https://localhost:7000/NotificationApi/ShowNewNotification', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include'
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const notificationBadge = document.getElementById('notification-count');
+            if (notificationBadge) {
+                if (data.likesCount > 0) {
+                    // Display "9+" if there are more than 9 notifications
+                    notificationBadge.textContent = data.likesCount > 9 ? "9+" : data.likesCount;
+                    notificationBadge.classList.remove('d-none');
+                } else {
+                    notificationBadge.classList.add('d-none');
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error updating notification count:', error);
         });
 }
