@@ -5,5 +5,7 @@
     public interface IUserService
     {
         Task<ProfileInformationViewModel> GetProfileInformationAsync(string userId);
+
+        Task<BookmarkViewModel> GetUserBookmarksAsync(string userId);
     }
 }

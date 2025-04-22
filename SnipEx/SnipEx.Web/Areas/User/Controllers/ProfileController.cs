@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace SnipEx.Web.Areas.User.Controllers
+﻿namespace SnipEx.Web.Areas.User.Controllers
 {
     using System.Security.Claims;
 
+    using Microsoft.AspNetCore.Mvc;
+
     using SnipEx.Services.Data.Contracts;
-    using SnipEx.Services.Data.Models;
     using SnipEx.Web.ViewModels.Notification;
 
     [Area("User")]
@@ -43,6 +42,15 @@ namespace SnipEx.Web.Areas.User.Controllers
                 HasMoreNotifications = totalCount > notifications.Count(),
                 CurrentPage = 1
             };
+
+            return View(viewModel);
+        }
+
+        public async Task<IActionResult> Bookmarks()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+
+            var viewModel = await userService.GetUserBookmarksAsync(userId);
 
             return View(viewModel);
         }

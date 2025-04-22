@@ -1,0 +1,59 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using SnipEx.Web.ViewModels.User
+@model BookmarkViewModel
+
+@{
+    ViewData["Title"] = "SnipEx - My Bookmarks";
+}
+
+<div class="bookmarks-container">
+    <div class="bookmarks-content">
+        <section class="bookmarks-header">
+            <h1>My Bookmarks</h1>
+        </section>
+        <div class="bookmarks-details">
+            <div class="detail-card bookmarks-summary">
+                <h3>Bookmarks Summary</h3>
+                <div class="activity-stats">
+                    <div class="stat-item">
+                        <strong>@Model.TotalBookmarks</strong>
+                        <span>Total Bookmarks</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong>@Model.RecentBookmarksCount</strong>
+                        <span>Recent (Last 30 Days)</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong>@Model.MostCommonLanguage</strong>
+                        <span>Most Common Language</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <section class="bookmarked-snippets">
+            <h2>Bookmarked Snippets</h2>
+            @if (Model.Bookmarks.Any())
+            {
+                <div class="snippet-list">
+                    @foreach (var snippet in Model.Bookmarks)
+                    {
+                        <partial name="Post/_PostCardItem" model="snippet" />
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="empty-state">
+                    <i class="fas fa-bookmark"></i>
+                    <p>You haven't bookmarked any snippets yet.</p>
+                    <a href="/Posts" class="empty-state-action">Browse Snippets</a>
+                </div>
+            }
+        </section>
+    </div>
+</div>
+@section Styles {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="~/css/profile/bookmarks.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/post/postCard.css" />
+}
