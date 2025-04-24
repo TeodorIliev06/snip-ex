@@ -1,0 +1,113 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using SnipEx.Web.ViewModels.User
+@model UserSnippetsViewModel
+
+@{
+    ViewData["Title"] = "SnipEx - My Snippets";
+}
+
+<div class="snippets-container">
+    <div class="snippets-content">
+        <section class="snippets-header">
+            <h1>My Snippets</h1>
+        </section>
+
+        <div class="snippets-stats">
+            <div class="stats-card">
+                <h3>Snippets Overview</h3>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <strong>@Model.TotalSnippets</strong>
+                        <span>Total Snippets</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong>@Model.TotalComments</strong>
+                        <span>Comments Received</span>
+                    </div>
+                    <div class="stat-item">
+                        <strong>@Model.MostPopularLanguage</strong>
+                        <span>Top Language</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="language-distribution">
+            <h3>Your Languages</h3>
+            <div class="language-tags">
+                @foreach (var lang in Model.LanguageDistribution)
+                {
+                    <div class="language-tag">
+                        <span class="language-name">@lang.Name</span>
+                        <span class="language-count">@lang.Count</span>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <section class="snippets-filters">
+            <div class="filter-container">
+                <div class="filter-group">
+                    <label for="languageFilter">Language:</label>
+                    <select id="languageFilter" class="filter-select">
+                        <option value="">All Languages</option>
+                        @foreach (var language in Model.AvailableLanguages)
+                        {
+                            <option value="@language">@language</option>
+                        }
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="sortBy">Sort by:</label>
+                    <select id="sortBy" class="filter-select">
+                        <option value="newest">Newest</option>
+                        <option value="oldest">Oldest</option>
+                        <option value="az">A-Z</option>
+                        <option value="za">Z-A</option>
+                    </select>
+                </div>
+                <div class="filter-group search-group">
+                    <input type="text" id="searchSnippets" placeholder="Search snippets..." class="search-input">
+                    <button type="button" class="search-button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section class="snippets-gallery">
+            <div class="snippet-list">
+                @if (Model.UserSnippets.Any())
+                {
+                    @foreach (var snippet in Model.UserSnippets)
+                    {
+                        <partial name="Post/_PostCardItem" model="snippet" />
+                    }
+                }
+                else
+                {
+                    <div class="no-snippets">
+                        <div class="empty-state">
+                            <i class="fas fa-code fa-3x"></i>
+                            <h3>No snippets found</h3>
+                            <p>You haven't created any snippets yet. Start by creating your first code snippet!</p>
+                            <a asp-area="" asp-controller="Post" asp-action="Create" class="btn-create">
+                                Create Snippet
+                            </a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/profile/mySnippets.js" asp-append-version="true"></script>
+}
+
+@section Styles {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="~/css/profile/mySnippets.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/post/postCard.css" />
+}

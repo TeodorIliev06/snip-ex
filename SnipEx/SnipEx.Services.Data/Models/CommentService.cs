@@ -17,6 +17,7 @@
 
     public class CommentService(
         IRepository<Comment, Guid> commentRepository,
+        IRepository<Post, Guid> postRepository,
         IMediator mediator) : ICommentService
     {
         public async Task<bool> AddCommentAsync(AddPostCommentFormModel model, string userId)
@@ -133,6 +134,25 @@
             {
                 SetUserLikeStatus(reply, postComments, userId);
             }
+        }
+
+        public async Task<int> GetReceivedCommentsCountAsync(string userId)
+        {
+            var userGuid = Guid.Parse(userId);
+
+            var userPostIds = postRepository
+                .GetAllAttached()
+                .Where(p => p.UserId == userGuid)
+                .Select(p => p.Id)
+                .ToHashSet();
+
+            var receivedComments = await commentRepository
+                .GetAllAttached()
+                .CountAsync(c => 
+                    c.UserId != userGuid && c.UserId != null &&
+                    userPostIds.Contains(c.PostId));
+
+            return receivedComments;
         }
     }
 }

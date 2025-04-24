@@ -4,6 +4,7 @@
 
     using Microsoft.AspNetCore.Mvc;
 
+    using SnipEx.Web.ViewModels.User;
     using SnipEx.Services.Data.Contracts;
     using SnipEx.Web.ViewModels.Notification;
 
@@ -11,6 +12,8 @@
     public class ProfileController(
         IUserService userService,
         IPostService postService,
+        ICommentService commentService,
+        ILanguageService languageService,
         INotificationService notificationService) : Controller
     {
         public async Task<IActionResult> Index()
@@ -53,6 +56,31 @@
             var viewModel = await userService.GetUserBookmarksAsync(userId);
 
             return View(viewModel);
+        }
+
+        public async Task<IActionResult> MySnippets()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+
+            var postCards = await postService.GetPostsCardsByIdAsync(userId);
+            var receivedComments = await commentService.GetReceivedCommentsCountAsync(userId);
+            var languageDistribution =  languageService
+                .GetUserPostsLanguagesDistribution(postCards);
+            var mostPopularLanguage = languageDistribution.Any() 
+                ? languageDistribution.First().Name
+                : "None";
+
+            var mySnippetsViewModel = new UserSnippetsViewModel()
+            {
+                UserSnippets = postCards,
+                TotalSnippets = postCards.Count(),
+                TotalComments = receivedComments,
+                LanguageDistribution = languageDistribution,
+                AvailableLanguages = languageDistribution.Select(l => l.Name),
+                MostPopularLanguage = mostPopularLanguage
+            };
+
+            return View(mySnippetsViewModel);
         }
     }
 }

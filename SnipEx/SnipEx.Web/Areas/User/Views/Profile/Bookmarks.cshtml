@@ -46,7 +46,9 @@
                 <div class="empty-state">
                     <i class="fas fa-bookmark"></i>
                     <p>You haven't bookmarked any snippets yet.</p>
-                    <a href="/Posts" class="empty-state-action">Browse Snippets</a>
+                    <a asp-area="" asp-controller="Post" asp-action="Index" class="empty-state-action">
+                        Browse Snippets
+                    </a>
                 </div>
             }
         </section>
