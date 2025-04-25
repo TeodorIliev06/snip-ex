@@ -16,9 +16,10 @@
         ILanguageService languageService,
         INotificationService notificationService) : Controller
     {
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? id)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+            var userId = string.IsNullOrEmpty(id) ? currentUserId : id;
 
             var profileInformation = await userService.GetProfileInformationAsync(userId);
             var postCards = await postService.GetPostsCardsByIdAsync(userId);

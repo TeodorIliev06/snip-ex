@@ -4,8 +4,8 @@
 
     using AutoMapper;
     using SnipEx.Data.Models;
-    using SnipEx.Services.Mapping.Contracts;
     using SnipEx.Web.ViewModels.Comment;
+    using SnipEx.Services.Mapping.Contracts;
 
     using static Common.ApplicationConstants;
     using static Common.EntityValidationConstants.Post;
@@ -19,6 +19,8 @@
         }
 
         public string Id { get; set; } = null!;
+
+        public string AuthorId { get; set; } = null!;
 
         public string Title { get; set; } = null!;
 
@@ -44,6 +46,8 @@
         {
             configuration.CreateMap<Post, PostDetailsViewModel>()
                 .ForMember(d => d.CreatedAt, opt => opt.Ignore())
+                .ForMember(d => d.AuthorId, opt => 
+                    opt.MapFrom(s => s.UserId))
                 .ForMember(d => d.UserName, opt =>
                     opt.MapFrom(p => p.User != null ? p.User.UserName : NoUserName))
                 .ForMember(d => d.IsLikedByCurrentUser,

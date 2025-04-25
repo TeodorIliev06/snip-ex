@@ -25,15 +25,15 @@ a {
     position: relative;
 }
 
-    .snippets-header h1::after {
-        content: '';
-        position: absolute;
-        bottom: -10px;
-        left: 0;
-        width: 240px;
-        height: 3px;
-        background: linear-gradient(90deg, #58a6ff, #bc8cff);
-    }
+.snippets-header h1::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 240px;
+    height: 3px;
+    background: linear-gradient(90deg, #58a6ff, #bc8cff);
+}
 
 /* Stats Section */
 .snippets-stats {
@@ -57,11 +57,11 @@ a {
     text-align: center;
 }
 
-    .stat-item strong {
-        display: block;
-        font-size: 1.5rem;
-        color: #58a6ff;
-    }
+.stat-item strong {
+    display: block;
+    font-size: 1.5rem;
+    color: #58a6ff;
+}
 
 /* Filters Section */
 .snippets-filters {
@@ -118,15 +118,14 @@ a {
     transition: background-color 0.3s ease;
 }
 
-    .search-button:hover {
-        background-color: #3fb950;
-    }
+.search-button:hover {
+    background-color: #3fb950;
+}
 
 /* Snippets Gallery */
 .snippet-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 1.5rem;
 }
 
 /* Empty State */
@@ -146,20 +145,20 @@ a {
     box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
 }
 
-    .empty-state i {
-        color: #58a6ff;
-        margin-bottom: 1rem;
-    }
+.empty-state i {
+    color: #58a6ff;
+    margin-bottom: 1rem;
+}
 
-    .empty-state h3 {
-        margin-bottom: 0.5rem;
-        color: #e6edf3;
-    }
+.empty-state h3 {
+    margin-bottom: 0.5rem;
+    color: #e6edf3;
+}
 
-    .empty-state p {
-        color: #8b949e;
-        margin-bottom: 1.5rem;
-    }
+.empty-state p {
+    color: #8b949e;
+    margin-bottom: 1.5rem;
+}
 
 .btn-create {
     background-color: #2ea043;
