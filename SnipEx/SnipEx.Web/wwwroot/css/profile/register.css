@@ -195,13 +195,56 @@ body {
 
 .code-particle {
     position: absolute;
-    color: rgba(88, 166, 255, 0.6);
     font-family: 'JetBrains Mono', monospace;
     font-size: 14px;
     pointer-events: none;
     user-select: none;
     white-space: nowrap;
     z-index: 1000;
+    --move-x: 15%;
+    --move-y: -10%;
+    --duration: 6s;
+    color: rgba(128, 220, 255, 0.7);
+    font-size: 1.2rem;
+    animation: float-particle var(--duration) ease-in-out infinite, fade-in 1s ease-in forwards, fade-out 1s ease-out forwards var(--fade-out-delay, 7s);
+}
+
+@keyframes float-particle {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    33% {
+        transform: translate(var(--move-x, 15%), var(--move-y, -10%));
+    }
+
+    66% {
+        transform: translate(calc(var(--move-x) * -0.5), calc(var(--move-y) * -0.5));
+    }
+
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: var(--particle-opacity, 0.3);
+    }
+}
+
+@keyframes fade-out {
+    from {
+        opacity: var(--particle-opacity, 0.3);
+    }
+
+    to {
+        opacity: 0;
+    }
 }
 
 @media (min-width: 992px) {

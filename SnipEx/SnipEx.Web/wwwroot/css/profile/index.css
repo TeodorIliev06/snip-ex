@@ -20,12 +20,12 @@ a {
     margin-bottom: 1.5rem;
 }
 
-    .profile-avatar img {
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        background-color: #30363d;
-    }
+.profile-avatar img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background-color: #30363d;
+}
 
 .user-info {
     text-align: center;
@@ -50,11 +50,11 @@ a {
     transition: background-color 0.3s ease;
 }
 
-    .profile-navigation a:hover,
-    .profile-navigation a.active {
-        background-color: #30363d;
-        color: #58a6ff;
-    }
+.profile-navigation a:hover,
+.profile-navigation a.active {
+    background-color: #30363d;
+    color: #58a6ff;
+}
 
 .badge {
     background-color: #30363d;
@@ -83,15 +83,15 @@ a {
     position: relative;
 }
 
-    .profile-header h1::after {
-        content: '';
-        position: absolute;
-        bottom: -10px;
-        left: 0;
-        width: 80px;
-        height: 3px;
-        background: linear-gradient(90deg, #58a6ff, #bc8cff);
-    }
+.profile-header h1::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 350px;
+    height: 3px;
+    background: linear-gradient(90deg, #58a6ff, #bc8cff);
+}
 
 .profile-details {
     display: grid;
@@ -125,11 +125,11 @@ a {
     text-align: center;
 }
 
-    .stat-item strong {
-        display: block;
-        font-size: 1.5rem;
-        color: #58a6ff;
-    }
+.stat-item strong {
+    display: block;
+    font-size: 1.5rem;
+    color: #58a6ff;
+}
 
 .snippet-list {
     display: grid;

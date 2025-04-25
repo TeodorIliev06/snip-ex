@@ -6,8 +6,7 @@
         }, 300 * index);
     });
 
-    createCodeParticles();
-
+    createLightweightParticles();
     const registerBtn = document.querySelector('.btn-register');
     if (registerBtn) {
         registerBtn.addEventListener('mouseenter', function () {
@@ -16,67 +15,47 @@
     }
 });
 
-function createCodeParticles() {
-    const container = document.querySelector('.register-container');
+function createLightweightParticles() {
+    const particleCount = 6;
     const codeSnippets = ['*', '*', '*'];
+    const container = document.querySelector('.register-container');
 
-    const particleCount = Math.floor(Math.random() * 6) + 30;
+    createParticleBatch();
 
-    for (let i = 0; i < particleCount; i++) {
-        createParticle(container, codeSnippets);
-    }
-}
+    setInterval(() => {
+        createParticleBatch();
+    }, 2700);
 
-function createParticle(container, codeSnippets) {
-    const particle = document.createElement('div');
-    particle.classList.add('code-particle');
+    function createParticleBatch() {
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('code-particle');
+            
+            const posX = Math.random() * 100;
+            const posY = Math.random() * 100;
+            
+            const snippetIndex = Math.floor(Math.random() * codeSnippets.length);
 
-    const posX = Math.random() * 100;
-    const posY = Math.random() * 100;
+            particle.textContent = codeSnippets[snippetIndex];
+            particle.style.left = `${posX}%`;
+            particle.style.top = `${posY}%`;
 
-    const snippetIndex = Math.floor(Math.random() * codeSnippets.length);
-    particle.textContent = codeSnippets[snippetIndex];
+            const particleOpacity = (Math.random() * 0.4) + 0.2;
+            particle.style.setProperty('--particle-opacity', particleOpacity);
+            particle.style.setProperty('--move-x', `${(Math.random() * 30) - 15}%`);
+            particle.style.setProperty('--move-y', `${(Math.random() * 30) - 15}%`);
 
-    particle.style.left = `${posX}%`;
-    particle.style.top = `${posY}%`;
-
-    particle.style.opacity = (Math.random() * 0.4) + 0.2;
-
-    container.appendChild(particle);
-
-    animateParticle(particle);
-}
-
-function animateParticle(particle) {
-    const startX = parseFloat(particle.style.left);
-    const startY = parseFloat(particle.style.top);
-
-    const targetX = startX + (Math.random() * 20) - 5;
-    const targetY = startY + (Math.random() * 20) - 5;
-
-    const duration = Math.random() * 8000 + 8000;
-    const startTime = Date.now();
-
-    function update() {
-        const elapsed = Date.now() - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-
-        const easeProgress = progress < 0.5
-            ? 2 * progress * progress
-            : 1 - Math.pow(-2 * progress + 2, 2) / 2;
-
-        const currentX = startX + (targetX - startX) * easeProgress;
-        const currentY = startY + (targetY - startY) * easeProgress;
-
-        particle.style.left = `${currentX}%`;
-        particle.style.top = `${currentY}%`;
-
-        if (progress < 1) {
-            requestAnimationFrame(update);
-        } else {
-            animateParticle(particle);
+            const duration = Math.random() * 3 + 5;
+            particle.style.setProperty('--duration', `${duration}s`);
+            particle.style.setProperty('--fade-out-delay', `${6}s`);
+            
+            container.appendChild(particle);
+            
+            setTimeout(() => {
+                if (particle.parentNode === container) {
+                    container.removeChild(particle);
+                }
+            }, 8000);
         }
     }
-
-    requestAnimationFrame(update);
 }

@@ -30,7 +30,7 @@ a {
         position: absolute;
         bottom: -10px;
         left: 0;
-        width: 80px;
+        width: 240px;
         height: 3px;
         background: linear-gradient(90deg, #58a6ff, #bc8cff);
     }
@@ -171,9 +171,10 @@ a {
     transition: background-color 0.3s ease;
 }
 
-    .btn-create:hover {
-        background-color: #3fb950;
-    }
+.btn-create:hover {
+    background-color: #3fb950;
+    color: white;
+}
 
 /* Language Distribution Section */
 .language-distribution {
