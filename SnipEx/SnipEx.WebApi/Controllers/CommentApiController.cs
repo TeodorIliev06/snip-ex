@@ -16,6 +16,8 @@
         ICommentService commentService) : BaseApiController
     {
         [HttpPost("[action]")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PopUpError), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> AddComment([FromBody] AddPostCommentFormModel model)
         {
             if (!this.ModelState.IsValid)
@@ -32,18 +34,21 @@
             bool isAdded = await commentService.AddCommentAsync(model, userId);
             if (!isAdded)
             {
-                return BadRequest(ApiResponse.Fail(PopUpError.InvalidOperation));
+                return BadRequest(ApiResponse.Fail(PopUpError.InvalidCommentOperation));
             }
 
             return Ok(new { success = true });
         }
 
         [HttpPost("[action]")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PopUpError), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> AddReply([FromBody] AddCommentReplyFormModel model)
         {
             if (!this.ModelState.IsValid)
             {
-                return BadRequest(this.ModelState);
+                return BadRequest(ApiResponse.Fail(PopUpError.InvalidCommentLength));
             }
 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -56,20 +61,21 @@
 
             if (!isReplyAdded)
             {
-                //Add error
-                return BadRequest(this.ModelState);
+                return BadRequest(ApiResponse.Fail(PopUpError.InvalidCommentOperation));
             }
 
             return Ok();
         }
 
         [HttpGet("[action]/{postId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PopUpError), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetComments(string postId)
         {
             var isPostGuidValid = ValidationUtils.TryGetGuid(postId, out Guid postGuid);
             if (!isPostGuidValid)
             {
-                return BadRequest(new { message = "Invalid Post ID." });
+                return BadRequest(ApiResponse.Fail(PopUpError.NonExistingPost));
             }
 
             var comments = await commentService.GetCommentsByPostIdAsync(postGuid);

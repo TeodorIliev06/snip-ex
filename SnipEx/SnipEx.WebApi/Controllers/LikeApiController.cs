@@ -1,78 +1,96 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace SnipEx.WebApi.Controllers
+﻿namespace SnipEx.WebApi.Controllers
 {
     using Microsoft.AspNetCore.Authorization;
-
+    using Microsoft.AspNetCore.Mvc;
     using SnipEx.Common;
     using SnipEx.Services.Data.Contracts;
+    using System.Security.Claims;
+    using static SnipEx.Common.PopUpMessages;
+    using static SnipEx.Web.ViewModels.DTOs.ApiResponses;
 
     [Authorize]
     public class LikeApiController(
         ILikeService likeService) : BaseApiController
     {
         [HttpPost("[action]/{postId}")]
-        public async Task<IActionResult> TogglePostLike(string postId, [FromBody] ToggleLikeRequest request)
+        [ProducesResponseType(typeof(TogglePostLikeResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PopUpError), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> TogglePostLike(string postId)
         {
             var isGuidValid = ValidationUtils.TryGetGuid(postId, out Guid postGuid);
             if (!isGuidValid)
             {
-                return BadRequest();
+                return BadRequest(ApiResponse.Fail(PopUpError.NonExistingPost));
             }
 
-            if (string.IsNullOrEmpty(request.UserId))
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
             {
                 return Unauthorized();
             }
 
-            var isLiked = await likeService.TogglePostLikeAsync(postGuid, request.UserId);
+            var isLiked = await likeService.TogglePostLikeAsync(postGuid, userId);
             var likesCount = await likeService.GetPostLikesCountAsync(postGuid);
 
-            return Ok(new { isLiked, likesCount });
+            return Ok(new TogglePostLikeResponse
+            {
+                IsLiked = isLiked,
+                LikesCount = likesCount
+            });
         }
 
         [HttpPost("[action]/{postId}")]
-        public async Task<IActionResult> TogglePostSave(string postId, [FromBody] ToggleLikeRequest request)
+        [ProducesResponseType(typeof(TogglePostSaveResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PopUpError), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> TogglePostSave(string postId)
         {
             var isGuidValid = ValidationUtils.TryGetGuid(postId, out Guid postGuid);
             if (!isGuidValid)
             {
-                return BadRequest();
+                return BadRequest(ApiResponse.Fail(PopUpError.NonExistingPost));
             }
 
-            if (string.IsNullOrEmpty(request.UserId))
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
             {
                 return Unauthorized();
             }
 
-            var isSaved = await likeService.TogglePostSaveAsync(postGuid, request.UserId);
-            return Ok(new { isSaved });
+            var isSaved = await likeService.TogglePostSaveAsync(postGuid, userId);
+            return Ok(new TogglePostSaveResponse()
+            {
+                IsSaved = isSaved
+            });
         }
 
         [HttpPost("[action]/{commentId}")]
-        public async Task<IActionResult> ToggleCommentLike(string commentId, [FromBody] ToggleLikeRequest request)
+        [ProducesResponseType(typeof(ToggleCommentLikeResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PopUpError), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> ToggleCommentLike(string commentId)
         {
             var isGuidValid = ValidationUtils.TryGetGuid(commentId, out Guid commentGuid);
             if (!isGuidValid)
             {
-                return BadRequest();
+                return BadRequest(ApiResponse.Fail(PopUpError.NonExistingComment));
             }
 
-            if (string.IsNullOrEmpty(request.UserId))
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
             {
                 return Unauthorized();
             }
 
-            var isLiked = await likeService.ToggleCommentLikeAsync(commentGuid, request.UserId);
+            var isLiked = await likeService.ToggleCommentLikeAsync(commentGuid, userId);
             var likesCount = await likeService.GetCommentLikesCountAsync(commentGuid);
 
-            return Ok(new { isLiked, likesCount });
-        }
-
-        // DTO class
-        public class ToggleLikeRequest
-        {
-            public string UserId { get; set; }
+            return Ok(new ToggleCommentLikeResponse()
+            {
+                IsLiked = isLiked,
+                LikesCount = likesCount
+            });
         }
     }
 }

@@ -8,13 +8,9 @@
     using SnipEx.Data.Models;
     using SnipEx.Web.ViewModels.Post;
     using SnipEx.Services.Data.Contracts;
-    using SnipEx.Web.ViewModels.Comment;
-
-    using static Common.PopUpMessages;
 
     public class PostController(
         IPostService postService,
-        ICommentService commentService,
         ILanguageService languageService,
         UserManager<ApplicationUser> userManager) : Controller
     {

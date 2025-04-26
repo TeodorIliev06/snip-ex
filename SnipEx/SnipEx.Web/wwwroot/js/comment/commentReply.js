@@ -94,7 +94,7 @@
     });
 
     document.querySelectorAll('.reply-form').forEach(form => {
-        form.addEventListener('submit', function (e) {
+        form.addEventListener('submit', async function (e) {
             e.preventDefault();
 
             const postId = this.dataset.postId;
@@ -107,31 +107,19 @@
                 ParentCommentId: parentCommentId
             };
 
-            fetch('https://localhost:7000/CommentApi/AddReply', {
+            const result = await fetchWithToastr('https://localhost:7000/CommentApi/AddReply', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
                 body: JSON.stringify(replyData)
-            })
-            .then(response => {
-                if (response.status === 401) {
-                    // User is not authenticated
-                    window.location.href = '/Identity/Account/Login?returnUrl=' + encodeURIComponent(window.location.pathname);
-                    return null;
-                }
-                return response.ok ? response.ok : Promise.reject('Failed to add reply');
-            })
-            .then(success => {
-                if (success) {
-                    refreshComments(postId);
-                    this.querySelector('textarea').value = '';
-                    this.closest('.reply-form-container').style.display = 'none';
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Failed to add reply. Please try again.');
             });
+
+            if (result && result.success) {
+                refreshComments(postId);
+                this.querySelector('textarea').value = '';
+                this.closest('.reply-form-container').style.display = 'none';
+                toastr.success("Comment added successfully!", "", { timeOut: 3000, closeButton: true });
+            }
         });
     });
 
@@ -227,39 +215,3 @@
 
     parseAndHighlightMentions();
 });
-
-async function fetchWithToastr(url, options = {}) {
-    try {
-        const response = await fetch(url, options);
-
-        if (response.status === 401) {
-            window.location.href = '/Identity/Account/Login?returnUrl=' + encodeURIComponent(window.location.pathname);
-            return null;
-        }
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            let errorMessage = "An error occurred.";
-
-            if (data?.errors) {
-                // Take the first error we find
-                const firstField = Object.keys(data.errors)[0];
-                errorMessage = data.errors[firstField][0];
-            }
-            else if (data?.message) {
-                errorMessage = data.message;
-            }
-
-            toastr.error(errorMessage, "", { timeOut: 5000, closeButton: true });
-            return null;
-        }
-
-
-        return data;
-    } catch (error) {
-        console.error('Fetch Error:', error);
-        toastr.error("Something went wrong. Please try again.", "", { timeOut: 5000, closeButton: true });
-        return null;
-    }
-}

@@ -16,8 +16,8 @@
         IWebHostEnvironment environment) : BaseApiController
     {
         [HttpGet("GetProfilePicture")]
-        [ProducesResponseType(typeof(FileResult), 200)]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetProfilePicture()
         {
             var user = await userManager.GetUserAsync(User);
@@ -32,8 +32,8 @@
             Think of a workaround
         */
         [HttpPost("UploadProfilePicture")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(400)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UploadProfilePicture(IFormFile file)
         {
             try

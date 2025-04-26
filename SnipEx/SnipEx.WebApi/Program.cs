@@ -1,5 +1,6 @@
 namespace SnipEx.WebApi
 {
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
 
@@ -41,6 +42,11 @@ namespace SnipEx.WebApi
                 })
                 .AddEntityFrameworkStores<SnipExDbContext>()
                 .AddDefaultTokenProviders();
+
+            builder.Services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
