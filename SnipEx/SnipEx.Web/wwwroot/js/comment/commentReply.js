@@ -100,12 +100,10 @@
             const postId = this.dataset.postId;
             const parentCommentId = this.dataset.parentCommentId;
             const content = this.querySelector('textarea[name="Content"]').value;
-            const userId = document.getElementById('currentUserId').value;
 
             const replyData = {
                 Content: content,
                 PostId: postId,
-                UserId: userId,
                 ParentCommentId: parentCommentId
             };
 
@@ -134,6 +132,35 @@
                 console.error('Error:', error);
                 alert('Failed to add reply. Please try again.');
             });
+        });
+    });
+
+    const commentForm = document.querySelectorAll('.comment-form');
+
+    commentForm.forEach(form => {
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const postId = this.querySelector('[name="PostId"]').value;
+            const content = this.querySelector('[name="Content"]').value;
+
+            const commentData = {
+                Content: content,
+                PostId: postId
+            };
+
+            const result = await fetchWithToastr('https://localhost:7000/CommentApi/AddComment', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify(commentData)
+            });
+
+            if (result && result.success) {
+                refreshComments(postId);
+                this.querySelector('textarea').value = '';
+                toastr.success("Comment added successfully!", "", { timeOut: 3000, closeButton: true });
+            }
         });
     });
 
@@ -200,3 +227,39 @@
 
     parseAndHighlightMentions();
 });
+
+async function fetchWithToastr(url, options = {}) {
+    try {
+        const response = await fetch(url, options);
+
+        if (response.status === 401) {
+            window.location.href = '/Identity/Account/Login?returnUrl=' + encodeURIComponent(window.location.pathname);
+            return null;
+        }
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            let errorMessage = "An error occurred.";
+
+            if (data?.errors) {
+                // Take the first error we find
+                const firstField = Object.keys(data.errors)[0];
+                errorMessage = data.errors[firstField][0];
+            }
+            else if (data?.message) {
+                errorMessage = data.message;
+            }
+
+            toastr.error(errorMessage, "", { timeOut: 5000, closeButton: true });
+            return null;
+        }
+
+
+        return data;
+    } catch (error) {
+        console.error('Fetch Error:', error);
+        toastr.error("Something went wrong. Please try again.", "", { timeOut: 5000, closeButton: true });
+        return null;
+    }
+}

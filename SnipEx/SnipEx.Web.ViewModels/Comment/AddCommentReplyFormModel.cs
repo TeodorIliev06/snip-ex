@@ -26,8 +26,6 @@
         [Required]
         public string PostId { get; set; } = null!;
 
-        public string? UserId { get; set; }
-
         [Required]
         public string ParentCommentId { get; set; } = null!;
 

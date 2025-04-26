@@ -78,26 +78,5 @@
 
             return View(viewModel);
         }
-
-        [HttpPost]
-        [Authorize]
-        public async Task<IActionResult> AddComment(AddPostCommentFormModel model)
-        {
-            if (!this.ModelState.IsValid)
-            {
-                TempData[ErrorMessage] = PopUpError.InvalidCommentLength;
-                return RedirectToAction(nameof(Details), new { id = model.PostId });
-            }
-
-            var userId = userManager.GetUserId(User)!;
-            bool isAdded = await commentService.AddCommentAsync(model, userId);
-            if (!isAdded)
-            {
-                TempData[ErrorMessage] = PopUpError.InvalidOperation; 
-                return RedirectToAction(nameof(Details), new { id = model.PostId });
-            }
-
-            return RedirectToAction(nameof(Details), new { id = model.PostId });
-        }
     }
 }

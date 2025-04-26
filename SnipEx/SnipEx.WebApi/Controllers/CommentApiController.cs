@@ -1,16 +1,43 @@
 ﻿namespace SnipEx.WebApi.Controllers
 {
-    using Microsoft.AspNetCore.Authorization;
+    using System.Security.Claims;
+
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Authorization;
 
     using SnipEx.Common;
-    using SnipEx.Services.Data.Contracts;
     using SnipEx.Web.ViewModels.Comment;
+    using SnipEx.Services.Data.Contracts;
+
+    using static SnipEx.Common.PopUpMessages;
 
     [Authorize]
     public class CommentApiController(
         ICommentService commentService) : BaseApiController
     {
+        [HttpPost("[action]")]
+        public async Task<IActionResult> AddComment([FromBody] AddPostCommentFormModel model)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return BadRequest(ApiResponse.Fail(PopUpError.InvalidCommentLength));
+            }
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
+            bool isAdded = await commentService.AddCommentAsync(model, userId);
+            if (!isAdded)
+            {
+                return BadRequest(ApiResponse.Fail(PopUpError.InvalidOperation));
+            }
+
+            return Ok(new { success = true });
+        }
+
         [HttpPost("[action]")]
         public async Task<IActionResult> AddReply([FromBody] AddCommentReplyFormModel model)
         {
@@ -19,7 +46,13 @@
                 return BadRequest(this.ModelState);
             }
 
-            var isReplyAdded = await commentService.AddReplyAsync(model, model.UserId!);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
+            var isReplyAdded = await commentService.AddReplyAsync(model, userId);
 
             if (!isReplyAdded)
             {

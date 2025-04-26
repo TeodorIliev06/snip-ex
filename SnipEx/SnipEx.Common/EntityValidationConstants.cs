@@ -13,7 +13,7 @@
 
         public static class Comment
         {
-            public const int ContentMinLength = 50;
+            public const int ContentMinLength = 10;
             public const int ContentMaxLength = 2000;
             public const string CreatedAtFormat = "dd/MM/yyyy";
         }
