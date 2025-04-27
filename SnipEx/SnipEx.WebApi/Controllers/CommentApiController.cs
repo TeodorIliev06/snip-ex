@@ -64,7 +64,7 @@
                 return BadRequest(ApiResponse.Fail(PopUpError.InvalidCommentOperation));
             }
 
-            return Ok();
+            return Ok(new { success = true });
         }
 
         [HttpGet("[action]/{postId}")]

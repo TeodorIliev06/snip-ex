@@ -45,28 +45,44 @@
 
         if (e.target.closest('.comment-action[title="Reply"]') || e.target.closest('.comment-action.reply-button')) {
             const button = e.target.closest('.comment-action[title="Reply"]') || e.target.closest('.comment-action.reply-button');
-            const commentElement = button.closest('.comment');
-            const commentId = button.dataset.commentId || commentElement.querySelector('.like-button').dataset.commentId;
 
-            const usernameElement = commentElement.querySelector('.comment-author');
-            const username = usernameElement ? usernameElement.textContent.trim() : '';
+            // Get the parent comment ID (where the reply form is located)
+            const commentId = button.dataset.commentId;
 
+            // Get the reference comment ID (if replying to a reply)
+            const referenceCommentId = button.dataset.referenceCommentId;
+
+            // Get the username to mention
+            const username = button.dataset.username;
+
+            // Hide all existing reply forms
             document.querySelectorAll('.reply-form-container').forEach(form => {
                 form.style.display = 'none';
                 form.classList.remove('visible');
             });
 
+            // Find the reply form for the parent comment
             const replyForm = document.getElementById(`reply-form-${commentId}`);
+
             if (replyForm) {
                 const textarea = replyForm.querySelector('textarea');
+                const form = replyForm.querySelector('form');
 
-                const referenceCommentId = button.dataset.referenceCommentId;
-                const isReplyToReply = referenceCommentId !== undefined && referenceCommentId !== null;
-
-                if (isReplyToReply && username) {
+                // If we're replying to a specific reply, add the @username mention
+                if (referenceCommentId) {
                     textarea.value = `@${username} `;
+
+                    // Set the reference comment ID as a data attribute on the form
+                    form.dataset.referenceCommentId = referenceCommentId;
+                } else {
+                    textarea.value = '';
+                    // Remove any existing reference comment ID
+                    if (form.dataset.referenceCommentId) {
+                        delete form.dataset.referenceCommentId;
+                    }
                 }
 
+                // Show the reply form
                 replyForm.style.display = 'block';
                 setTimeout(() => {
                     replyForm.classList.add('visible');
@@ -88,6 +104,12 @@
                 setTimeout(() => {
                     replyForm.style.display = 'none';
                     replyForm.querySelector('textarea').value = '';
+
+                    // Clear any reference comment ID
+                    const form = replyForm.querySelector('form');
+                    if (form.dataset.referenceCommentId) {
+                        delete form.dataset.referenceCommentId;
+                    }
                 }, 300);
             }
         }
@@ -99,13 +121,19 @@
 
             const postId = this.dataset.postId;
             const parentCommentId = this.dataset.parentCommentId;
+            const referenceCommentId = this.dataset.referenceCommentId; // Get the reference comment ID if it exists
             const content = this.querySelector('textarea[name="Content"]').value;
 
             const replyData = {
                 Content: content,
                 PostId: postId,
-                ParentCommentId: parentCommentId
+                ParentCommentId: referenceCommentId
             };
+
+            // Add reference comment ID if it exists (for mentions/replies to replies)
+            if (referenceCommentId) {
+                replyData.ReferenceCommentId = referenceCommentId;
+            }
 
             const result = await fetchWithToastr('https://localhost:7000/CommentApi/AddReply', {
                 method: 'POST',
@@ -117,6 +145,12 @@
             if (result && result.success) {
                 refreshComments(postId);
                 this.querySelector('textarea').value = '';
+
+                // Clear the reference comment ID
+                if (this.dataset.referenceCommentId) {
+                    delete this.dataset.referenceCommentId;
+                }
+
                 this.closest('.reply-form-container').style.display = 'none';
                 toastr.success("Comment added successfully!", "", { timeOut: 3000, closeButton: true });
             }

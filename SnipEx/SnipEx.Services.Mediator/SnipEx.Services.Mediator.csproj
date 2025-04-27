@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Notifications\CreateReplyNotificationCommand\**" />
+    <EmbeddedResource Remove="Notifications\CreateReplyNotificationCommand\**" />
+    <None Remove="Notifications\CreateReplyNotificationCommand\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MediatR" Version="12.5.0" />
   </ItemGroup>
 

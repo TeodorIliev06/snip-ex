@@ -11,6 +11,7 @@
     using SnipEx.Web.ViewModels.Comment;
     using SnipEx.Services.Data.Contracts;
     using SnipEx.Data.Repositories.Contracts;
+    using SnipEx.Services.Mediator.Comments.ReplyAdded;
     using SnipEx.Services.Mediator.Comments.CommentAdded;
 
     using static Common.EntityValidationConstants.Comment;
@@ -69,6 +70,12 @@
                 return false;
             }
 
+            var parentComment = await commentRepository.GetByIdAsync(parentCommentGuid);
+            if (parentComment == null)
+            {
+                return false;
+            }
+
             var userGuid = Guid.Parse(userId);
 
             var reply = new Comment();
@@ -80,6 +87,11 @@
 
             await commentRepository.AddAsync(reply);
             await commentRepository.SaveChangesAsync();
+
+            bool isMention = parentComment.ParentCommentId.HasValue;
+
+            var replyAddedEvent = new ReplyAddedEvent(reply.Id, parentCommentGuid, userGuid, isMention);
+            await mediator.Publish(replyAddedEvent);
 
             return true;
         }

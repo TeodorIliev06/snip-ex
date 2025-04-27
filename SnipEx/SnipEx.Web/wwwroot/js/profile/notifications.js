@@ -1,11 +1,9 @@
 ﻿function getRelativeTimeString(dateStr) {
-    // Parse the date string (assuming format is dd/MM/yyyy)
     const parts = dateStr.split('/');
     if (parts.length !== 3) {
-        return dateStr; // Return original if format doesn't match
+        return dateStr;
     }
 
-    // Create date object (month is 0-indexed in JavaScript Date)
     const day = parseInt(parts[0], 10);
     const month = parseInt(parts[1], 10) - 1;
     const year = parseInt(parts[2], 10);
@@ -13,12 +11,10 @@
     const date = new Date(year, month, day);
     const now = new Date();
 
-    // Check if date is valid
     if (isNaN(date.getTime())) {
-        return dateStr; // Return original if date is invalid
+        return dateStr;
     }
 
-    // Calculate difference in milliseconds
     const diffInMs = now - date;
     const diffInSeconds = Math.floor(diffInMs / 1000);
 
