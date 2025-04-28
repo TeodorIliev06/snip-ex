@@ -31,5 +31,9 @@
 
         public virtual ICollection<Notification> Notifications { get; set; }
             = new HashSet<Notification>();
+
+        public ICollection<UserConnection> Connections { get; set; }
+            = new HashSet<UserConnection>();
+
     }
 }

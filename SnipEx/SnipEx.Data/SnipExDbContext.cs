@@ -26,6 +26,7 @@
         public virtual DbSet<Notification> Notifications { get; set; } = null!;
         public virtual DbSet<CommentLike> CommentsLikes { get; set; } = null!;
         public virtual DbSet<ProgrammingLanguage> ProgrammingLanguages { get; set; } = null!;
+        public virtual DbSet<UserConnection> UsersConnections { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
