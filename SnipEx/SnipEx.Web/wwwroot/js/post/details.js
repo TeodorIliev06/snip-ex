@@ -114,7 +114,7 @@ function handleLongCode() {
 function togglePostLike(postId) {
     const userId = document.getElementById('currentUserId').value;
 
-    fetch(`https://localhost:7000/LikeApi/TogglePostLike/${postId}`, {
+    fetch(`https://localhost:7000/UserActionApi/TogglePostLike/${postId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -164,7 +164,7 @@ function togglePostLike(postId) {
 function togglePostSave(postId) {
     const userId = document.getElementById('currentUserId').value;
 
-    fetch(`https://localhost:7000/LikeApi/TogglePostSave/${postId}`, {
+    fetch(`https://localhost:7000/UserActionApi/TogglePostSave/${postId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -201,7 +201,7 @@ function togglePostSave(postId) {
 function toggleCommentLike(commentId) {
     const userId = document.getElementById('currentUserId').value;
 
-    fetch(`https://localhost:7000/LikeApi/ToggleCommentLike/${commentId}`, {
+    fetch(`https://localhost:7000/UserActionApi/ToggleCommentLike/${commentId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

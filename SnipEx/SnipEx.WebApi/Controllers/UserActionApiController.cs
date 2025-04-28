@@ -1,16 +1,19 @@
 ﻿namespace SnipEx.WebApi.Controllers
 {
-    using Microsoft.AspNetCore.Authorization;
+    using System.Security.Claims;
+
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Authorization;
+
     using SnipEx.Common;
     using SnipEx.Services.Data.Contracts;
-    using System.Security.Claims;
+
     using static SnipEx.Common.PopUpMessages;
     using static SnipEx.Web.ViewModels.DTOs.ApiResponses;
 
     [Authorize]
-    public class LikeApiController(
-        ILikeService likeService) : BaseApiController
+    public class UserActionApiController(
+        IUserActionService userActionService) : BaseApiController
     {
         [HttpPost("[action]/{postId}")]
         [ProducesResponseType(typeof(TogglePostLikeResponse), StatusCodes.Status200OK)]
@@ -30,8 +33,8 @@
                 return Unauthorized();
             }
 
-            var isLiked = await likeService.TogglePostLikeAsync(postGuid, userId);
-            var likesCount = await likeService.GetPostLikesCountAsync(postGuid);
+            var isLiked = await userActionService.TogglePostLikeAsync(postGuid, userId);
+            var likesCount = await userActionService.GetPostLikesCountAsync(postGuid);
 
             return Ok(new TogglePostLikeResponse
             {
@@ -58,7 +61,7 @@
                 return Unauthorized();
             }
 
-            var isSaved = await likeService.TogglePostSaveAsync(postGuid, userId);
+            var isSaved = await userActionService.TogglePostSaveAsync(postGuid, userId);
             return Ok(new TogglePostSaveResponse()
             {
                 IsSaved = isSaved
@@ -83,8 +86,8 @@
                 return Unauthorized();
             }
 
-            var isLiked = await likeService.ToggleCommentLikeAsync(commentGuid, userId);
-            var likesCount = await likeService.GetCommentLikesCountAsync(commentGuid);
+            var isLiked = await userActionService.ToggleCommentLikeAsync(commentGuid, userId);
+            var likesCount = await userActionService.GetCommentLikesCountAsync(commentGuid);
 
             return Ok(new ToggleCommentLikeResponse()
             {
@@ -92,5 +95,4 @@
                 LikesCount = likesCount
             });
         }
-    }
-}
+

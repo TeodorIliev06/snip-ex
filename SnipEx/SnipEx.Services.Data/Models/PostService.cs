@@ -18,7 +18,7 @@
         IRepository<Post, Guid> postRepository,
         IRepository<Tag, Guid> tagRepository,
         ICommentService commentService,
-        ILikeService likeService) : IPostService
+        IUserActionService userActionService) : IPostService
     {
         public async Task<PostIndexViewModel> GetPostsAsync(string? tag, string? search, string? sort)
         {
@@ -160,8 +160,8 @@
 
             if (!string.IsNullOrEmpty(userId))
             {
-                viewModel.IsLikedByCurrentUser = await likeService.IsPostLikedByUserAsync(post.Id, userId);
-                viewModel.IsBookmarkedByCurrentUser = await likeService.IsPostSavedByUserAsync(post.Id, userId);
+                viewModel.IsLikedByCurrentUser = await userActionService.IsPostLikedByUserAsync(post.Id, userId);
+                viewModel.IsBookmarkedByCurrentUser = await userActionService.IsPostSavedByUserAsync(post.Id, userId);
 
                 foreach (var comment in viewModel.Comments)
                 {

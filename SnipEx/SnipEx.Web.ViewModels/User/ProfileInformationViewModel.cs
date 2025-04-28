@@ -21,6 +21,8 @@
 
         public int BookmarksCount { get; set; }
 
+        public int ConnectionsCount { get; set; }
+
         public IEnumerable<PostCardViewModel> RecentPosts { get; set; }
             = new HashSet<PostCardViewModel>();
 

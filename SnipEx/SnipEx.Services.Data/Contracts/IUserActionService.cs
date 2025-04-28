@@ -1,6 +1,6 @@
 ﻿namespace SnipEx.Services.Data.Contracts
 {
-    public interface ILikeService
+    public interface IUserActionService
     {
         Task<bool> TogglePostLikeAsync(Guid postGuid, string userId);
 

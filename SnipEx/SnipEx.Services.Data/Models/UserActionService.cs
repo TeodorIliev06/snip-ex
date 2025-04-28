@@ -9,12 +9,12 @@
     using SnipEx.Services.Mediator.Comments.CommentLiked;
     using SnipEx.Services.Mediator.Posts.PostLiked;
 
-    public class LikeService(
+    public class UserActionService(
         IRepository<Post, Guid> postRepository,
         IRepository<ApplicationUser, Guid> userRepository,
         IRepository<PostLike, Guid> postLikeRepository,
         IRepository<CommentLike, Guid> commentLikeRepository,
-        IMediator mediator) : ILikeService
+        IMediator mediator) : IUserActionService
     {
         public async Task<bool> TogglePostLikeAsync(Guid postGuid, string userId)
         {
