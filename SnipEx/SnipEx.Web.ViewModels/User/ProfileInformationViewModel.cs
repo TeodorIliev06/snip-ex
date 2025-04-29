@@ -13,6 +13,8 @@
     {
         public string Username { get; set; } = null!;
 
+        public string UserId { get; set; } = null!;
+
         public string Email { get; set; } = null!;
 
         public string JoinDate { get; set; } = null!;
@@ -23,6 +25,10 @@
 
         public int ConnectionsCount { get; set; }
 
+        public bool IsCurrentUser { get; set; }
+
+        public bool IsConnected { get; set; }
+
         public IEnumerable<PostCardViewModel> RecentPosts { get; set; }
             = new HashSet<PostCardViewModel>();
 
@@ -31,7 +37,8 @@
             configuration.CreateMap<ApplicationUser, ProfileInformationViewModel>()
                 .ForMember(d => d.JoinDate,
                     opt =>
-                        opt.MapFrom(c => c.JoinDate.ToString(JoinDateFormat, CultureInfo.InvariantCulture)));
+                        opt.MapFrom(c => c.JoinDate.ToString(JoinDateFormat, CultureInfo.InvariantCulture)))
+                .ForMember(d => d.IsConnected, opt => opt.Ignore());
         }
     }
 }

@@ -10,6 +10,19 @@
     <div class="profile-content">
         <section class="profile-header">
             <h1>Profile Overview</h1>
+            
+            @if (!Model.IsCurrentUser)
+            {
+                <div class="connect-action">
+                    <button 
+                        type="button" 
+                        class="connect-button @(Model.IsConnected ? "btn-disconnect" : "btn-connect")" 
+                        data-target-user-id="@Model.UserId">
+                        <i class="fa-solid @(Model.IsConnected ? "fa-user-minus" : "fa-user-plus")"></i>
+                        @(Model.IsConnected ? "Disconnect" : "Connect")
+                    </button>
+                </div>
+            }
         </section>
 
         <div class="profile-details">

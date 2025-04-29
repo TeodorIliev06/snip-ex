@@ -11,6 +11,7 @@
     [Area("User")]
     public class ProfileController(
         IUserService userService,
+        IUserActionService userActionService,
         IPostService postService,
         ICommentService commentService,
         ILanguageService languageService,
@@ -25,6 +26,13 @@
             var postCards = await postService.GetPostsCardsByIdAsync(userId);
 
             profileInformation.RecentPosts = postCards;
+            profileInformation.IsCurrentUser = userId == currentUserId;
+
+            if (!profileInformation.IsCurrentUser)
+            {
+                profileInformation.IsConnected = await userActionService
+                    .DoesConnectionExistAsync(currentUserId, userId);
+            }
 
             return View(profileInformation);
         }

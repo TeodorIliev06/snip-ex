@@ -96,3 +96,32 @@
             });
         }
 
+        [HttpPost("[action]/{targetUserId}")]
+        [ProducesResponseType(typeof(ToggleConnectionResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PopUpError), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> ToggleConnection(string targetUserId)
+        {
+            var isGuidValid = ValidationUtils.TryGetGuid(targetUserId, out Guid targetUserGuid);
+            if (!isGuidValid)
+            {
+                return BadRequest(ApiResponse.Fail(PopUpError.NonExistingUser));
+            }
+
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(currentUserId))
+            {
+                return Unauthorized();
+            }
+
+            var isConnected = await userActionService.ToggleConnectionAsync(targetUserGuid, currentUserId);
+            var connectionsCount = await userActionService.GetConnectionsCountAsync(targetUserGuid);
+
+            return Ok(new ToggleConnectionResponse
+            {
+                IsConnected = isConnected,
+                ConnectionsCount = connectionsCount
+            });
+        }
+    }
+}

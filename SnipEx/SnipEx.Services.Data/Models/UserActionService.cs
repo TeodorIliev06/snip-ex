@@ -14,6 +14,7 @@
         IRepository<ApplicationUser, Guid> userRepository,
         IRepository<PostLike, Guid> postLikeRepository,
         IRepository<CommentLike, Guid> commentLikeRepository,
+        IRepository<UserConnection, object> userConnectionRepository,
         IMediator mediator) : IUserActionService
     {
         public async Task<bool> TogglePostLikeAsync(Guid postGuid, string userId)
@@ -169,6 +170,78 @@
                 .FirstOrDefaultAsync(au => au.Id == userGuid);
 
             return user!.Bookmarks.Any(p => p.Id == postGuid);
+        }
+
+        public async Task<bool> ToggleConnectionAsync(Guid targetUserGuid, string currentUserId)
+        {
+            var currentUserGuid = Guid.Parse(currentUserId);
+
+            if (targetUserGuid == currentUserGuid)
+            {
+                return false;
+            }
+
+            var (smallerId, largerId) = OrderUserIds(currentUserGuid, targetUserGuid);
+
+            var existingConnection = await userConnectionRepository
+                .FirstOrDefaultAsync(uc =>
+                    uc.UserId == smallerId &&
+                    uc.ConnectedUserId == largerId);
+
+            if (existingConnection != null)
+            {
+                await userConnectionRepository
+                    .DeleteAsync(new {existingConnection.UserId, existingConnection.ConnectedUserId});
+                await userConnectionRepository.SaveChangesAsync();
+                return false;
+            }
+
+            var newConnection = new UserConnection
+            {
+                UserId = smallerId,
+                ConnectedUserId = largerId,
+                ConnectedOn = DateTime.UtcNow
+            };
+
+            await userConnectionRepository.AddAsync(newConnection);
+            await userConnectionRepository.SaveChangesAsync();
+
+            // var connectionCreatedEvent = new ConnectionCreatedEvent(smallerId, largerId);
+            // await mediator.Publish(connectionCreatedEvent);
+
+            return true;
+        }
+
+        public async Task<bool> DoesConnectionExistAsync(string currentUserId, string targetUserId)
+        {
+            var currentUserGuid = Guid.Parse(currentUserId);
+            var targetUserGuid = Guid.Parse(targetUserId);
+
+            var (smallerId, largerId) = OrderUserIds(currentUserGuid, targetUserGuid);
+
+            return await userConnectionRepository
+                .GetAllAttached()
+                .AnyAsync(uc => uc.UserId == smallerId && uc.ConnectedUserId == largerId);
+        }
+
+        public async Task<int> GetConnectionsCountAsync(Guid targetUserGuid)
+        {
+            var connectionsCount = await userConnectionRepository
+                .GetAllAttached()
+                .CountAsync(uc => 
+                    uc.UserId == targetUserGuid ||
+                    uc.ConnectedUserId == targetUserGuid);
+
+            return connectionsCount;
+        }
+
+        private (Guid smallerId, Guid largerId) OrderUserIds(Guid user1Guid, Guid user2Guid)
+        {
+            if (user1Guid.CompareTo(user2Guid) < 0)
+            {
+                return (user1Guid, user2Guid);
+            }
+            return (user2Guid, user1Guid);
         }
     }
 }

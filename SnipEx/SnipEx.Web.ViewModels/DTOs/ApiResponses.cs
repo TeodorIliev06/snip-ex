@@ -18,5 +18,11 @@
             public bool IsLiked { get; set; }
             public int LikesCount { get; set; }
         }
+
+        public class ToggleConnectionResponse
+        {
+            public bool IsConnected { get; set; }
+            public int ConnectionsCount { get; set; }
+        }
     }
 }

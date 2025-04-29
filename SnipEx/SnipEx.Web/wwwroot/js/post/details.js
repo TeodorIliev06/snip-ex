@@ -12,26 +12,34 @@
     const postLikeButton = document.querySelector('.like-button[data-post-id]');
     if (postLikeButton) {
         const postId = postLikeButton.getAttribute('data-post-id');
-        postLikeButton.addEventListener('click', function () {
-            togglePostLike(postId);
+        postLikeButton.addEventListener('click', async function () {
+            await togglePostLike(postId);
         });
     }
 
     const postSaveButton = document.querySelector('.save-button[data-post-id]');
-    if (postLikeButton) {
+    if (postSaveButton) {
         const postId = postSaveButton.getAttribute('data-post-id');
-        postSaveButton.addEventListener('click', function () {
-            togglePostSave(postId);
+        postSaveButton.addEventListener('click', async function () {
+            await togglePostSave(postId);
         });
     }
 
     const commentLikeButtons = document.querySelectorAll('.like-button[data-comment-id]');
     commentLikeButtons.forEach(button => {
         const commentId = button.getAttribute('data-comment-id');
-        button.addEventListener('click', function () {
-            toggleCommentLike(commentId);
+        button.addEventListener('click', async function () {
+            await toggleCommentLike(commentId);
         });
     });
+
+    //const connectButton = document.querySelector('.connect-button[data-target-user-id]');
+    //if (connectButton) {
+    //    const targetUserId = button.getAttribute('data-target-user-id');
+    //    button.addEventListener('click', function () {
+    //        toggleConnection(targetUserId);
+    //    });
+    //}
 });
 
 function copyToClipboard() {
@@ -111,141 +119,92 @@ function handleLongCode() {
     }
 }
 
-function togglePostLike(postId) {
+async function togglePostLike(postId) {
     const userId = document.getElementById('currentUserId').value;
 
-    fetch(`https://localhost:7000/UserActionApi/TogglePostLike/${postId}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            credentials: 'include',
-            body: JSON.stringify({ userId })
-        })
-        .then(response => {
-            if (response.status === 401) {
-                // User is not authenticated
-                window.location.href = '/Identity/Account/Login?returnUrl=' + encodeURIComponent(window.location.pathname);
-                return null;
+    await fetchWithToastr(`https://localhost:7000/UserActionApi/TogglePostLike/${postId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ userId })
+    })
+    .then(data => {
+        if (!data) return;
+
+        const likeButton = document.querySelector(`.like-button[data-post-id="${postId}"]`);
+        let likeCountSpan = likeButton.querySelector('.count');
+
+        let currentCount = parseInt(likeCountSpan?.textContent || "0", 10);
+        let newCount = data.isLiked ? currentCount + 1 : currentCount - 1;
+
+        if (newCount >= 1) {
+            if (!likeCountSpan) {
+                likeCountSpan = document.createElement("span");
+                likeCountSpan.classList.add("count");
+                likeButton.appendChild(likeCountSpan);
             }
+            likeCountSpan.textContent = newCount;
+        } else if (likeCountSpan) {
+            likeCountSpan.remove();
+        }
 
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            const likeButton = document.querySelector(`.like-button[data-post-id="${postId}"]`);
-            let likeCountSpan = likeButton.querySelector('.count');
-
-            let currentCount = parseInt(likeCountSpan?.textContent || "0", 10);
-            let newCount = data.isLiked ? currentCount + 1 : currentCount - 1;
-
-            if (newCount >= 1) {
-                if (!likeCountSpan) {
-                    likeCountSpan = document.createElement("span");
-                    likeCountSpan.classList.add("count");
-                    likeButton.appendChild(likeCountSpan);
-                }
-                likeCountSpan.textContent = newCount;
-            } else {
-                if (likeCountSpan) {
-                    likeCountSpan.remove();
-                }
-            }
-
-            likeButton.classList.toggle('liked', data.isLiked);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
+        likeButton.classList.toggle('liked', data.isLiked);
+    });
 }
 
-function togglePostSave(postId) {
+async function togglePostSave(postId) {
     const userId = document.getElementById('currentUserId').value;
 
-    fetch(`https://localhost:7000/UserActionApi/TogglePostSave/${postId}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            credentials: 'include',
-            body: JSON.stringify({ userId })
-        })
-        .then(response => {
-            if (response.status === 401) {
-                // User is not authenticated
-                window.location.href = '/Identity/Account/Login?returnUrl=' + encodeURIComponent(window.location.pathname);
-                return null;
-            }
+    await fetchWithToastr(`https://localhost:7000/UserActionApi/TogglePostSave/${postId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ userId })
+    })
+    .then(data => {
+        if (!data) return;
 
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            const saveButton = document.querySelector(`.save-button[data-post-id="${postId}"]`);
-            saveButton.classList.toggle('saved', data.isLiked);
+        const saveButton = document.querySelector(`.save-button[data-post-id="${postId}"]`);
+        saveButton.classList.toggle('saved', data.isLiked);
 
-            const spanElement = saveButton.querySelector('span');
-            if (spanElement) {
-                spanElement.textContent = data.isSaved ? 'Saved' : 'Save';
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
+        const spanElement = saveButton.querySelector('span');
+        if (spanElement) {
+            spanElement.textContent = data.isSaved ? 'Saved' : 'Save';
+        }
+    });
 }
 
-function toggleCommentLike(commentId) {
+async function toggleCommentLike(commentId) {
     const userId = document.getElementById('currentUserId').value;
 
-    fetch(`https://localhost:7000/UserActionApi/ToggleCommentLike/${commentId}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            credentials: 'include',
-            body: JSON.stringify({ userId })
-        })
-        .then(response => {
-            if (response.status === 401) {
-                // User is not authenticated
-                window.location.href = '/Identity/Account/Login?returnUrl=' + encodeURIComponent(window.location.pathname);
-                return null;
+    await fetchWithToastr(`https://localhost:7000/UserActionApi/ToggleCommentLike/${commentId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ userId })
+    })
+    .then(data => {
+        if (!data) return;
+
+        const likeButton = document.querySelector(`.like-button[data-comment-id="${commentId}"]`);
+        let likeCountSpan = likeButton.querySelector('.count');
+
+        let currentCount = parseInt(likeCountSpan?.textContent || "0", 10);
+        let newCount = data.isLiked ? currentCount + 1 : currentCount - 1;
+
+        if (newCount >= 1) {
+            if (!likeCountSpan) {
+                likeCountSpan = document.createElement("span");
+                likeCountSpan.classList.add("count");
+                likeButton.appendChild(likeCountSpan);
             }
+            likeCountSpan.textContent = newCount;
+        } else if (likeCountSpan) {
+            likeCountSpan.remove();
+        }
 
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            const likeButton = document.querySelector(`.like-button[data-comment-id="${commentId}"]`);
-            let likeCountSpan = likeButton.querySelector('.count');
-
-            let currentCount = parseInt(likeCountSpan?.textContent || "0", 10);
-            let newCount = data.isLiked ? currentCount + 1 : currentCount - 1;
-
-            if (newCount >= 1) {
-                if (!likeCountSpan) {
-                    likeCountSpan = document.createElement("span");
-                    likeCountSpan.classList.add("count");
-                    likeButton.appendChild(likeCountSpan);
-                }
-                likeCountSpan.textContent = newCount;
-            } else {
-                if (likeCountSpan) {
-                    likeCountSpan.remove();
-                }
-            }
-
-            likeButton.classList.toggle('liked', data.isLiked);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
+        likeButton.classList.toggle('liked', data.isLiked);
+    });
 }
 
 // Run all code enhancements after the document is ready
