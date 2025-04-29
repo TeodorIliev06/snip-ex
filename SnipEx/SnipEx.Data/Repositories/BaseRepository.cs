@@ -101,6 +101,18 @@
             return true;
         }
 
+        public async Task<bool> DeleteAsync(TType entity)
+        {
+            if (entity == null)
+            {
+                return false;
+            }
+
+            dbSet.Remove(entity);
+
+            return true;
+        }
+
         public bool Update(TType item)
         {
             try

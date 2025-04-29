@@ -30,6 +30,8 @@
 
         Task<bool> DeleteAsync(TId id);
 
+        Task<bool> DeleteAsync(TType entity);
+
         bool Update(TType item);
 
         Task<bool> UpdateAsync(TType item);

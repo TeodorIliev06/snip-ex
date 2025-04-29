@@ -25,11 +25,11 @@ async function toggleConnection(targetUserId) {
         if (data.isConnected) {
             connectButton.classList.remove('btn-connect');
             connectButton.classList.add('btn-disconnect');
-            connectButton.innerHTML = '<i class="fa-solid fa-user-minus"></i> Disconnect';
+            connectButton.innerHTML = 'Disconnect';
         } else {
             connectButton.classList.remove('btn-disconnect');
             connectButton.classList.add('btn-connect');
-            connectButton.innerHTML = '<i class="fa-solid fa-user-plus"></i> Connect';
+            connectButton.innerHTML = 'Connect';
         }
     });
 }
