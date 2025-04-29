@@ -114,8 +114,8 @@
                 return Unauthorized();
             }
 
-            var isConnected = await userActionService.ToggleConnectionAsync(targetUserGuid, currentUserId);
-            var connectionsCount = await userActionService.GetConnectionsCountAsync(targetUserGuid);
+            var isConnected = await userActionService.ToggleConnectionAsync(targetUserId, currentUserId);
+            var connectionsCount = await userActionService.GetConnectionsCountAsync(targetUserId);
 
             return Ok(new ToggleConnectionResponse
             {

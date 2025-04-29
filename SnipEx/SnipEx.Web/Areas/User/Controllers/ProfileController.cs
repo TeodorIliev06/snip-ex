@@ -27,6 +27,9 @@
 
             profileInformation.RecentPosts = postCards;
             profileInformation.IsCurrentUser = userId == currentUserId;
+            profileInformation.UserId = userId;
+            profileInformation.ConnectionsCount = await userActionService
+                .GetConnectionsCountAsync(userId);
 
             if (!profileInformation.IsCurrentUser)
             {

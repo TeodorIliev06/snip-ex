@@ -38,7 +38,8 @@
                 .ForMember(d => d.JoinDate,
                     opt =>
                         opt.MapFrom(c => c.JoinDate.ToString(JoinDateFormat, CultureInfo.InvariantCulture)))
-                .ForMember(d => d.IsConnected, opt => opt.Ignore());
+                .ForMember(d => d.IsConnected, opt => opt.Ignore())
+                .ForMember(d => d.UserId, opt => opt.Ignore());
         }
     }
 }

@@ -18,10 +18,10 @@
 
         Task<bool> IsPostSavedByUserAsync(Guid postGuid, string userId);
 
-        Task<bool> ToggleConnectionAsync(Guid postGuid, string userId);
+        Task<bool> ToggleConnectionAsync(string targetUserId, string currentUserId);
 
         Task<bool> DoesConnectionExistAsync(string currentUserId, string targetUserId);
 
-        Task<int> GetConnectionsCountAsync(Guid targetUserGuid);
+        Task<int> GetConnectionsCountAsync(string targetUserId);
     }
 }

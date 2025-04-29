@@ -44,7 +44,6 @@
             </div>
         </div>
         
-        <input type="hidden" id="currentUserId" value="@User.FindFirstValue(ClaimTypes.NameIdentifier)" />
         <div class="post-actions">
             <button class="action-button like-button @(Model.IsLikedByCurrentUser ? "liked" : "")" 
                     data-post-id="@Model.Id">

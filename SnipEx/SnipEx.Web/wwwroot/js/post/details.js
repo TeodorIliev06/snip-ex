@@ -33,13 +33,7 @@
         });
     });
 
-    //const connectButton = document.querySelector('.connect-button[data-target-user-id]');
-    //if (connectButton) {
-    //    const targetUserId = button.getAttribute('data-target-user-id');
-    //    button.addEventListener('click', function () {
-    //        toggleConnection(targetUserId);
-    //    });
-    //}
+    
 });
 
 function copyToClipboard() {
@@ -120,13 +114,10 @@ function handleLongCode() {
 }
 
 async function togglePostLike(postId) {
-    const userId = document.getElementById('currentUserId').value;
-
     await fetchWithToastr(`https://localhost:7000/UserActionApi/TogglePostLike/${postId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ userId })
+        credentials: 'include'
     })
     .then(data => {
         if (!data) return;
@@ -153,13 +144,10 @@ async function togglePostLike(postId) {
 }
 
 async function togglePostSave(postId) {
-    const userId = document.getElementById('currentUserId').value;
-
     await fetchWithToastr(`https://localhost:7000/UserActionApi/TogglePostSave/${postId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ userId })
+        credentials: 'include'
     })
     .then(data => {
         if (!data) return;
@@ -175,13 +163,10 @@ async function togglePostSave(postId) {
 }
 
 async function toggleCommentLike(commentId) {
-    const userId = document.getElementById('currentUserId').value;
-
     await fetchWithToastr(`https://localhost:7000/UserActionApi/ToggleCommentLike/${commentId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ userId })
+        credentials: 'include'
     })
     .then(data => {
         if (!data) return;

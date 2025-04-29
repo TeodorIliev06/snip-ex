@@ -172,8 +172,9 @@
             return user!.Bookmarks.Any(p => p.Id == postGuid);
         }
 
-        public async Task<bool> ToggleConnectionAsync(Guid targetUserGuid, string currentUserId)
+        public async Task<bool> ToggleConnectionAsync(string targetUserId, string currentUserId)
         {
+            var targetUserGuid = Guid.Parse(targetUserId);
             var currentUserGuid = Guid.Parse(currentUserId);
 
             if (targetUserGuid == currentUserGuid)
@@ -190,8 +191,7 @@
 
             if (existingConnection != null)
             {
-                await userConnectionRepository
-                    .DeleteAsync(new {existingConnection.UserId, existingConnection.ConnectedUserId});
+                await userConnectionRepository.DeleteAsync(existingConnection);
                 await userConnectionRepository.SaveChangesAsync();
                 return false;
             }
@@ -224,8 +224,10 @@
                 .AnyAsync(uc => uc.UserId == smallerId && uc.ConnectedUserId == largerId);
         }
 
-        public async Task<int> GetConnectionsCountAsync(Guid targetUserGuid)
+        public async Task<int> GetConnectionsCountAsync(string targetUserId)
         {
+            var targetUserGuid = Guid.Parse(targetUserId);
+
             var connectionsCount = await userConnectionRepository
                 .GetAllAttached()
                 .CountAsync(uc => 
