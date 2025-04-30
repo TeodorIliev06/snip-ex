@@ -12,6 +12,8 @@ namespace SnipEx.Data.Models.Enums
         CommentLike,
         PostComment,
         CommentReply,
-        Mention
+        Mention,
+        ConnectionRequest,
+        UserConnection
     }
 }

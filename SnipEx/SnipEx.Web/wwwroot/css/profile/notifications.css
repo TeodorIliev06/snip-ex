@@ -167,6 +167,10 @@
     border-left: 3px solid #d29922;
 }
 
+.notification-item.connection {
+    border-left: 3px solid #8957e5;
+}
+
 .empty-state {
     padding: 3rem;
     text-align: center;

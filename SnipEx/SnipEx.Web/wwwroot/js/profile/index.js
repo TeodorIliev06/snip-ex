@@ -2,8 +2,8 @@
     const connectButton = document.querySelector('.connect-button[data-target-user-id]');
     if (connectButton) {
         const targetUserId = connectButton.getAttribute('data-target-user-id');
-        connectButton.addEventListener('click', function () {
-            toggleConnection(targetUserId);
+        connectButton.addEventListener('click', async function () {
+            await toggleConnection(targetUserId);
         });
     }
 });

@@ -6,8 +6,9 @@
     using SnipEx.Data.Models;
     using SnipEx.Services.Data.Contracts;
     using SnipEx.Data.Repositories.Contracts;
-    using SnipEx.Services.Mediator.Comments.CommentLiked;
     using SnipEx.Services.Mediator.Posts.PostLiked;
+    using SnipEx.Services.Mediator.Comments.CommentLiked;
+    using SnipEx.Services.Mediator.Profiles.UserConnection;
 
     public class UserActionService(
         IRepository<Post, Guid> postRepository,
@@ -206,8 +207,8 @@
             await userConnectionRepository.AddAsync(newConnection);
             await userConnectionRepository.SaveChangesAsync();
 
-            // var connectionCreatedEvent = new ConnectionCreatedEvent(smallerId, largerId);
-            // await mediator.Publish(connectionCreatedEvent);
+            var connectionCreatedEvent = new UserConnectionEvent(smallerId, largerId);
+            await mediator.Publish(connectionCreatedEvent);
 
             return true;
         }

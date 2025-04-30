@@ -38,6 +38,7 @@
                     NotificationType.PostLike or NotificationType.CommentLike => "like",
                     NotificationType.PostComment or NotificationType.CommentReply => "comment",
                     NotificationType.Mention => "mention",
+                    NotificationType.UserConnection or NotificationType.ConnectionRequest => "connection",
                     _ => "general"
                 };
             }
