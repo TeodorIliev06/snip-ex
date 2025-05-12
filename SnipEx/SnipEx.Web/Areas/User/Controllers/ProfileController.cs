@@ -94,5 +94,10 @@
 
             return View(mySnippetsViewModel);
         }
+
+        public async Task<IActionResult> Connections()
+        {
+            return View();
+        }
     }
 }

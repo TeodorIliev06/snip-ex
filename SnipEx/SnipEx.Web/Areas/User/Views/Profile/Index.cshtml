@@ -18,7 +18,6 @@
                         type="button" 
                         class="connect-button @(Model.IsConnected ? "btn-disconnect" : "btn-connect")" 
                         data-target-user-id="@Model.UserId">
-                        <i class="fa-solid @(Model.IsConnected ? "fa-user-minus" : "fa-user-plus")"></i>
                         @(Model.IsConnected ? "Disconnect" : "Connect")
                     </button>
                 </div>
