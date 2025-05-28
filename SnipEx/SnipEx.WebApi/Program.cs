@@ -13,8 +13,9 @@ namespace SnipEx.WebApi
     using SnipEx.Web.Infrastructure;
     using SnipEx.Web.ViewModels.Post;
     using SnipEx.Services.Data.Contracts;
-
+    using SnipEx.Web.Infrastructure.Filters;
     using static SnipEx.Common.SignalRConstants;
+    using Microsoft.OpenApi.Models;
 
     public class Program
     {
@@ -51,7 +52,19 @@ namespace SnipEx.WebApi
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "SnipEx.WebApi",
+                    Version = "v1",
+                    Description = "API for SnipEx app"
+                });
+
+                c.OperationFilter<FileUploadOperationFilter>();
+            });
+
+
 
             builder.Services.RegisterRepositories(typeof(ApplicationUser).Assembly);
             builder.Services.RegisterUserDefinedServices(typeof(IPostService).Assembly);
