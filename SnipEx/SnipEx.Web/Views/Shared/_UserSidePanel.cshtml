@@ -4,13 +4,15 @@
 
 <div class="side-panel">
     <div class="user-profile-container">
-        <div class="user-avatar">
-            <input type="file" id="profilePictureUpload" accept="image/jpeg,image/png,image/gif,image/webp" style="display: none;" />
-            <img id="profilePicture" alt="Profile Picture" class="avatar-image" style="cursor: pointer;" />
-            <div class="avatar-edit-overlay">
-                <i class="bi bi-camera"></i>
-            </div>
-        </div>
+        <form id="uploadForm" enctype="multipart/form-data">
+            <input type="file" id="fileInput" name="file" style="display: none;" accept="image/jpeg,image/png,image/gif,image/webp" />
+            <label for="fileInput" class="avatar-wrapper" title="Click to change profile picture">
+                <img id="profileAvatar" src="/images/profile_pics/default_user1.png" alt="Profile Picture" class="avatar-img" />
+                <div class="avatar-overlay">
+                    <i class="bi bi-camera"></i>
+                </div>
+            </label>
+        </form>
 
         <div class="user-info">
             <h3 class="user-name">@Model.UserName</h3>
@@ -38,10 +40,10 @@
                 </li>
                 <li>
                     <a asp-area="User" asp-controller="Profile" asp-action="Notifications">
-                    <div class="notification-container">
-                        <i class="bi bi-heart"></i> Notifications
-                        <span id="notification-count" class="notification-badge d-none">0</span>
-                    </div>
+                        <div class="notification-container">
+                            <i class="bi bi-heart"></i> Notifications
+                            <span id="notification-count" class="notification-badge d-none">0</span>
+                        </div>
                     </a>
                 </li>
                 <li>
@@ -60,11 +62,9 @@
         </nav>
     </div>
 </div>
-
 @section Styles {
     <link rel="stylesheet" href="~/css/profile/userSidePanel.css" />
 }
-
 @section Scripts {
     <script src="~/js/profile/userSidePanel.js"></script>
 }

@@ -27,79 +27,94 @@
         .then(() => console.log("SignalR Connected"))
         .catch(err => console.error(err));
 
-    const profilePicture = document.getElementById("profilePicture");
-    const fileInput = document.getElementById("profilePictureUpload");
+    const profilePicture = document.getElementById('profileAvatar');
+    const fileInput = document.getElementById('fileInput');
 
-    // Only add event listeners if elements exist
-    if (profilePicture && fileInput) {
-        loadProfilePicture(profilePicture);
+    loadProfilePicture(profilePicture);
 
-        profilePicture.addEventListener('click', function () {
-            console.log("Profile picture clicked");
-            if (!fileInput) {
-                console.error("File input element is null");
-                return;
-            }
-            fileInput.click();
-        });
+    fileInput.addEventListener('change', function (e) {
+        if (fileInput.files && fileInput.files[0]) {
+            // Update preview image immediately
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                profilePicture.src = e.target.result;
+            };
+            reader.readAsDataURL(fileInput.files[0]);
 
-        fileInput.addEventListener('change', function () {
-            console.log("File input changed:", this.files);
-            if (this.files && this.files[0]) {
-                uploadProfilePicture(this.files[0]);
-            } else {
-                console.error("No files selected or files object is undefined");
-            }
-        });
-    } else {
-        console.error("Could not find required elements");
-    }
+            uploadProfilePicture(fileInput.files[0], profilePicture);
+        }
+    });
 });
 
 function loadProfilePicture(profilePicture) {
-    fetch("https://localhost:7000/ProfilePictureApi/GetProfilePicture",
-            {
-                method: "GET",
-                credentials: "include"
-            })
+    const cachedImageUrl = localStorage.getItem('profilePictureUrl');
+    const cachedTimestamp = localStorage.getItem('profilePictureTimestamp');
+
+    // Use cached image if it's less than 1 hour old
+    if (cachedImageUrl && cachedTimestamp && (Date.now() - cachedTimestamp < 3600000)) {
+        profilePicture.src = cachedImageUrl;
+    }
+
+    fetch('https://localhost:7000/ProfilePictureApi/GetProfilePicture', {
+        method: 'GET',
+        headers: {
+            'Accept': 'image/*',
+        },
+        cache: 'no-store',
+        credentials: "include"
+    })
         .then(response => {
-            if (!response.ok) throw new Error("Profile picture not found");
-            return response.blob();
+            if (response.ok) {
+                return response.blob();
+            }
+            throw new Error('Failed to load profile picture');
         })
-        .then(imageBlob => {
-            const imageUrl = URL.createObjectURL(imageBlob);
+        .then(blob => {
+            const imageUrl = URL.createObjectURL(blob);
             profilePicture.src = imageUrl;
             profilePicture.width = 120;
             profilePicture.height = 120;
+
+            // Cache the image URL and timestamp
+            localStorage.setItem('profilePictureUrl', imageUrl);
+            localStorage.setItem('profilePictureTimestamp', Date.now());
         })
         .catch(error => {
-            console.error("Error loading profile picture:", error);
+            console.error('Error loading profile picture:', error);
+            profilePicture.src = '/images/default-avatar.png';
         });
 }
 
-function uploadProfilePicture(file) {
+function uploadProfilePicture(file, profilePicture) {
     const formData = new FormData();
     formData.append('file', file);
 
     fetch('https://localhost:7000/ProfilePictureApi/UploadProfilePicture', {
-            method: 'POST',
-            credentials: "include",
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.message) {
-                // TODO: Display success message
-                const profilePicture = document.getElementById("profilePicture");
+        method: 'POST',
+        body: formData,
+        headers: {
+            // Let the browser set Content-Type with the boundary parameter
+            'Accept': 'application/json'
+        },
+        credentials: "include"
+    })
+        .then(response => {
+            profilePicture.classList.remove('uploading');
 
-                loadProfilePicture(profilePicture);
-            } else {
-                // TODO: Display error message
+            if (response.ok) {
+                return response.json();
             }
+            return response.json().then(data => {
+                throw new Error(data.message || 'Failed to upload profile picture');
+            });
+        })
+        .then(data => {
+            console.log('Success:', data.message);
+            loadProfilePicture();
         })
         .catch(error => {
-            console.error('Error uploading profile picture:', error);
-            // TODO: Display error message
+            console.error('Error:', error);
+            loadProfilePicture();
         });
 }
 
