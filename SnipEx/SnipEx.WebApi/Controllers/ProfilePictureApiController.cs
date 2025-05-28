@@ -8,6 +8,7 @@
 
     using SnipEx.Data.Models;
     using SnipEx.Services.Data.Contracts.Utils;
+    using SnipEx.Web.ViewModels.DTOs;
 
     [Authorize]
     public class ProfilePictureApiController(
@@ -32,20 +33,22 @@
             Think of a workaround
         */
         [HttpPost("UploadProfilePicture")]
+        [Consumes("multipart/form-data")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> UploadProfilePicture(IFormFile file)
+        public async Task<IActionResult> UploadProfilePicture([FromForm] FileUploadRequestDto request)
         {
             try
             {
                 var user = await userManager.GetUserAsync(User);
 
-                if (file == null || file.Length == 0)
+                if (request == null || request.File.Length == 0)
                 {
                     return BadRequest(new { message = "No file uploaded." });
                 }
 
-                var result = await profilePictureService.UploadProfilePictureAsync(user, file);
+                var result = await profilePictureService
+                    .UploadProfilePictureAsync(user, request.File);
 
                 if (result)
                 {
