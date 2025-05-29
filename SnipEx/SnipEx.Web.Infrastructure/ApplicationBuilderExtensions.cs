@@ -2,8 +2,8 @@
 {
     using System.Text;
 
-    using Microsoft.IdentityModel.Tokens;
     using Microsoft.AspNetCore.Builder;
+    using Microsoft.IdentityModel.Tokens;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
 
@@ -44,16 +44,27 @@
                 {
                     OnMessageReceived = context =>
                     {
-                        if (context.Request.Cookies.TryGetValue("JwtToken", out string token))
+                        // Getting token from cookies (for regular API calls)
+                        if (context.Request.Cookies.TryGetValue("JwtToken", out var cookieToken))
                         {
-                            context.Token = token;
+                            context.Token = cookieToken;
+                            return Task.CompletedTask;
                         }
+
+                        // Getting token from query string (for SignalR)
+                        var accessToken = context.Request.Query["access_token"];
+                        var path = context.HttpContext.Request.Path;
+
+                        if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/notificationHub"))
+                        {
+                            context.Token = accessToken;
+                        }
+
                         return Task.CompletedTask;
                     }
                 };
             });
 
-            // Make sure to add this too
             builder.Services.AddAuthorization();
 
             return builder;

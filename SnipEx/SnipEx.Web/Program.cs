@@ -55,8 +55,6 @@ namespace SnipEx.Web
 
             AutoMapperConfig.RegisterMappings(typeof(PostViewModel).Assembly);
 
-            app.MapHub<NotificationHub>(HubRoutes.Notifications);
-
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -86,6 +84,8 @@ namespace SnipEx.Web
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
+
+            //app.MapHub<NotificationHub>(HubRoutes.Notifications);
 
             await app.RunAsync();
         }

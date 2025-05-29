@@ -42,21 +42,6 @@
                 await file.CopyToAsync(fileStream);
             }
 
-            using (var image = Image.FromFile(filePath))
-            {
-                if (image.Width != image.Height)
-                {
-                    File.Delete(filePath);
-                    throw new ValidationException("Profile picture must be a square image");
-                }
-
-                if (image.Width > 500 || image.Height > 500)
-                {
-                    File.Delete(filePath);
-                    throw new ValidationException("Image should be 500x500 pixels or smaller");
-                }
-            }
-
             // Store relative path for web rendering
             string relativePath = Path.Combine("images", "profile_pics", uniqueFileName);
             user.ProfilePicturePath = relativePath;

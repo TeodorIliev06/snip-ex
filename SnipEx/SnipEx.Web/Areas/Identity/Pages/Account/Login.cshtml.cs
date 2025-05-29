@@ -108,7 +108,7 @@ namespace SnipEx.Web.Areas.Identity.Pages.Account
 
                     Response.Cookies.Append("JwtToken", token, new CookieOptions
                     {
-                        HttpOnly = true,
+                        HttpOnly = false,
                         Expires = DateTime.Now.AddMinutes(JwtSettings.ExpiryMinutes),
                         Secure = true,
                         SameSite = SameSiteMode.None

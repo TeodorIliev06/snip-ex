@@ -64,7 +64,7 @@ namespace SnipEx.WebApi
                 c.OperationFilter<FileUploadOperationFilter>();
             });
 
-
+            builder.Services.AddRealtimeServices();
 
             builder.Services.RegisterRepositories(typeof(ApplicationUser).Assembly);
             builder.Services.RegisterUserDefinedServices(typeof(IPostService).Assembly);
@@ -101,8 +101,6 @@ namespace SnipEx.WebApi
 
             AutoMapperConfig.RegisterMappings(typeof(PostCardViewModel).Assembly);
 
-            app.MapHub<NotificationHub>(HubRoutes.Notifications);
-
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -123,6 +121,8 @@ namespace SnipEx.WebApi
             app.UseAuthorization();
 
             app.MapControllers();
+
+            app.MapHub<NotificationHub>(HubRoutes.Notifications);
 
             app.Run();
         }
