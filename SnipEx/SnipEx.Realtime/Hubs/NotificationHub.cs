@@ -12,13 +12,5 @@
         {
             await Clients.User(recipientId.ToString()).SendAsync(MethodNames.ReceiveNotification, message);
         }
-
-        public override async Task OnConnectedAsync()
-        {
-            var userId = Context.UserIdentifier;
-            Console.WriteLine($"[SignalR] Connected user: {userId}");
-
-            await base.OnConnectedAsync();
-        }
     }
 }

@@ -12,20 +12,35 @@
     updateNotificationCount();
 
     // Set up SignalR connection
+
+    function getAccessToken() {
+        const match = document.cookie.match(/(^| )JwtToken=([^;]+)/);
+        const token = match ? match[2] : null;
+
+        return token;
+    }
+
     const connection = new signalR.HubConnectionBuilder()
-        .withUrl("https://localhost:7024/notificationHub")
-        .withAutomaticReconnect()
+        .withUrl("https://localhost:7000/notificationHub", {
+            accessTokenFactory: () => {
+                const token = getAccessToken();
+
+                return token;
+            }
+        })
         .build();
 
     connection.on("ReceiveNotification", function (notification) {
-        // Update notification count when a new notification is received
         updateNotificationCount();
-        console.log("New notification received:", notification);
     });
 
     connection.start()
-        .then(() => console.log("SignalR Connected"))
-        .catch(err => console.error(err));
+        .then(() => {
+            console.log("SignalR Connected successfully");
+        })
+        .catch(err => {
+            console.error("SignalR Connection Error:", err);
+        });
 
     const profilePicture = document.getElementById('profileAvatar');
     const fileInput = document.getElementById('fileInput');
