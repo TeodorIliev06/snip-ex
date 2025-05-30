@@ -10,5 +10,7 @@
         Task<BookmarkViewModel> GetUserBookmarksAsync(string userId);
 
         Task<IEnumerable<PostCardViewModel>> GetUserSnippetsAsync(string userId);
+
+        Task<IEnumerable<ConnectionViewModel>> GetUserConnectionsAsync(string userId);
     }
 }
