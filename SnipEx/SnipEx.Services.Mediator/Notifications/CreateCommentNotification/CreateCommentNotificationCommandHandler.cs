@@ -3,10 +3,11 @@
     using MediatR;
     using Microsoft.AspNetCore.SignalR;
 
-    using SnipEx.Realtime.Hubs;
     using SnipEx.Data.Models;
-    using SnipEx.Data.Repositories.Contracts;
+    using SnipEx.Realtime.Hubs;
     using SnipEx.Data.Models.Enums;
+    using SnipEx.Web.ViewModels.DTOs;
+    using SnipEx.Data.Repositories.Contracts;
 
     using static Common.SignalRConstants;
 
@@ -29,12 +30,19 @@
                 IsRead = false
             };
 
+            var notificationDto = new NotificationDto
+            {
+                Message = notification.Message,
+                RecipientId = notification.RecipientId.ToString(),
+                ActorId = notification.ActorId.ToString()
+            };
+
             await notificationRepository.AddAsync(notification);
             await notificationRepository.SaveChangesAsync();
 
             // Send real-time notification
             await hubContext.Clients.User(request.RecipientId.ToString())
-                .SendAsync(MethodNames.ReceiveNotification, notification, cancellationToken: cancellationToken);
+                .SendAsync(MethodNames.ReceiveNotification, notificationDto, cancellationToken: cancellationToken);
         }
     }
 }
