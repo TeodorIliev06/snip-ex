@@ -1,6 +1,4 @@
-﻿// connections.js - Client-side logic for the connections page
-
-document.addEventListener('DOMContentLoaded', function () {
+﻿document.addEventListener('DOMContentLoaded', function () {
     // Filter buttons functionality
     const filterButtons = document.querySelectorAll('.filter-button');
     const connectionItems = document.querySelectorAll('.connection-item');
@@ -94,44 +92,30 @@ document.addEventListener('DOMContentLoaded', function () {
             const connectionItem = this.closest('.connection-item');
             const connectionId = connectionItem.getAttribute('data-id');
 
-            // Here you would make an AJAX request to unfollow the user
-            console.log(`Unfollowing user with ID: ${connectionId}`);
-
-            // UI update (for demo purposes)
+            // Disable button to prevent double click
+            this.disabled = true;
             this.textContent = 'Unfollowing...';
-            setTimeout(() => {
-                const badge = connectionItem.querySelector('.connection-badge');
 
-                if (badge && badge.classList.contains('mutual')) {
-                    // If it was mutual, change to follower
-                    badge.classList.remove('mutual');
-                    badge.classList.add('follower');
-                    badge.textContent = 'Follower';
+            // Call the real disconnect logic
+            button.addEventListener('click', async function () {
+                await toggleConnection(targetUserId);
+            });
+            toggleConnection(connectionId, function (data) {
+                // Animate removal smoothly
+                connectionItem.style.transition = 'opacity 0.5s ease';
+                connectionItem.style.opacity = '0';
 
-                    this.textContent = 'Follow Back';
-                    this.classList.remove('btn-unfollow');
-                    this.classList.add('btn-follow');
+                setTimeout(() => {
+                    connectionItem.remove();
 
-                    // Update the connection-item border
-                    connectionItem.classList.remove('mutual');
-                    connectionItem.classList.add('follower');
-                } else {
-                    // If it was just following, change to "Follow"
-                    this.textContent = 'Follow';
-                    this.classList.remove('btn-unfollow');
-                    this.classList.add('btn-follow');
-
-                    if (badge) {
-                        badge.classList.remove('following');
-                        badge.classList.add('suggested');
-                        badge.textContent = 'Suggested';
+                    // Optionally update the counter if it's shown here
+                    const statNumber = document.querySelector('.stat-number');
+                    if (statNumber && data.connectionsCount !== undefined) {
+                        statNumber.textContent = data.connectionsCount;
                     }
 
-                    // Update the connection-item border
-                    connectionItem.classList.remove('following');
-                    connectionItem.classList.add('suggested');
-                }
-            }, 500);
+                }, 500);
+            });
         });
     });
 
@@ -203,3 +187,29 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
+
+async function toggleConnection(targetUserId) {
+    await fetchWithToastr(`https://localhost:7000/UserActionApi/ToggleConnection/${targetUserId}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include'
+        })
+        .then(data => {
+            if (!data) return;
+
+            const connectButton = document.querySelector('.connect-button');
+            const connectionCountElement = document.querySelector('.stat-item:nth-child(3) strong');
+
+            connectionCountElement.textContent = data.connectionsCount;
+
+            if (data.isConnected) {
+                connectButton.classList.remove('btn-connect');
+                connectButton.classList.add('btn-disconnect');
+                connectButton.innerHTML = 'Disconnect';
+            } else {
+                connectButton.classList.remove('btn-disconnect');
+                connectButton.classList.add('btn-connect');
+                connectButton.innerHTML = 'Connect';
+            }
+        });
+}

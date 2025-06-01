@@ -101,10 +101,12 @@
 
             var connections = await userService
                 .GetUserConnectionsAsync(userId);
+            var connectionsCount = await userActionService.GetConnectionsCountAsync(userId);
 
             var viewModel = new UserConnectionsViewModel()
             {
-                Connections = connections
+                Connections = connections,
+                ConnectionsCount = connectionsCount
             };
 
             return View(viewModel);

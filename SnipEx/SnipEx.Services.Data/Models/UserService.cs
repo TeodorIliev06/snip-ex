@@ -67,6 +67,8 @@
                     uc.ConnectedUserId == userGuid)
                 .Select(uc => new ConnectionViewModel
                 {
+                    UserId = uc.UserId.ToString(),
+                    ConnectedUserId = uc.ConnectedUserId.ToString(),
                     ActorAvatar = uc.UserId == userGuid
                         ? "/" + uc.ConnectedUser.ProfilePicturePath
                         : "/" + uc.User.ProfilePicturePath,

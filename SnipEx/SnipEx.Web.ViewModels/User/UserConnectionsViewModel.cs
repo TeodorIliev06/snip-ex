@@ -4,5 +4,7 @@
     {
         public IEnumerable<ConnectionViewModel> Connections { get; set; }
             = new HashSet<ConnectionViewModel>();
+
+        public int ConnectionsCount { get; set; }
     }
 }

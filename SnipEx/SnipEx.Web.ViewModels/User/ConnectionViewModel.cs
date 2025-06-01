@@ -1,13 +1,15 @@
 ﻿namespace SnipEx.Web.ViewModels.User
 {
-    using AutoMapper;
-
-    using SnipEx.Data.Models;
     using SnipEx.Data.Models.Enums;
-    using SnipEx.Services.Mapping.Contracts;
 
-    public class ConnectionViewModel : IMapFrom<UserConnection>, IHaveCustomMappings
+    public class ConnectionViewModel
     {
+        public string Id => $"{UserId}_{ConnectedUserId}";
+
+        public string UserId { get; set; } = null!;
+
+        public string ConnectedUserId { get; set; } = null!;
+
         public string ActorAvatar { get; set; } = null!;
 
         public string Username { get; set; } = null!;
@@ -26,18 +28,6 @@
                     _ => "general"
                 };
             }
-        }
-
-        public void CreateMappings(IProfileExpression configuration)
-        {
-            configuration.CreateMap<UserConnection, ConnectionViewModel>()
-                .ForMember(d => d.PostsCount,
-                    opt =>
-                        opt.MapFrom(uc => uc.ConnectedUser.Posts.Count))
-                .ForMember(d => d.ActorAvatar,
-                    opt =>
-                        opt.MapFrom(uc =>
-                            "/" + uc.ConnectedUser.ProfilePicturePath));
         }
     }
 }

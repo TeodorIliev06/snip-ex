@@ -12,12 +12,8 @@
             <h1>Connections</h1>
             <div class="connections-stats">
                 <div class="stat-item">
-                    <span class="stat-number">42</span>
-                    <span class="stat-label">Following</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number">38</span>
-                    <span class="stat-label">Followers</span>
+                    <span class="stat-number">@Model.ConnectionsCount</span>
+                    <span class="stat-label">Connections</span>
                 </div>
             </div>
         </section>
@@ -35,7 +31,7 @@
             {
                 @foreach (var connection in Model.Connections)
                 {
-                    <div class="connection-item @connection.CssType">
+                    <div class="connection-item @connection.CssType" data-id="@connection.Id">
                         <div class="connection-avatar">
                         <img src="@connection.ActorAvatar">
                         </div>
@@ -46,7 +42,7 @@
                                     <span class="connection-badge @connection.CssType">Connected</span>
                                 </div>
                                 <div class="connection-actions">
-                                    <button class="btn-unfollow">Disconnect</button>
+                                    <button class="btn-disconnect">Disconnect</button>
                                 </div>
                             </div>
                             <div class="connection-meta">
