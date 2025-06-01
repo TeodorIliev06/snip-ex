@@ -259,7 +259,7 @@ namespace SnipEx.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comments", (string)null);
 
                     b.HasData(
                         new
@@ -321,7 +321,7 @@ namespace SnipEx.Data.Migrations
                     b.HasIndex("CommentId", "UserId")
                         .IsUnique();
 
-                    b.ToTable("CommentsLikes");
+                    b.ToTable("CommentsLikes", (string)null);
                 });
 
             modelBuilder.Entity("SnipEx.Data.Models.Notification", b =>
@@ -369,7 +369,7 @@ namespace SnipEx.Data.Migrations
 
                     b.HasIndex("RecipientId", "IsRead");
 
-                    b.ToTable("Notifications");
+                    b.ToTable("Notifications", (string)null);
                 });
 
             modelBuilder.Entity("SnipEx.Data.Models.Post", b =>
@@ -417,7 +417,7 @@ namespace SnipEx.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Posts");
+                    b.ToTable("Posts", (string)null);
 
                     b.HasData(
                         new
@@ -494,7 +494,7 @@ namespace SnipEx.Data.Migrations
                     b.HasIndex("PostId", "UserId")
                         .IsUnique();
 
-                    b.ToTable("PostsLikes");
+                    b.ToTable("PostsLikes", (string)null);
                 });
 
             modelBuilder.Entity("SnipEx.Data.Models.PostTag", b =>
@@ -509,7 +509,7 @@ namespace SnipEx.Data.Migrations
 
                     b.HasIndex("TagId");
 
-                    b.ToTable("PostsTags");
+                    b.ToTable("PostsTags", (string)null);
 
                     b.HasData(
                         new
@@ -557,7 +557,7 @@ namespace SnipEx.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProgrammingLanguages");
+                    b.ToTable("ProgrammingLanguages", (string)null);
 
                     b.HasData(
                         new
@@ -615,7 +615,7 @@ namespace SnipEx.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tags");
+                    b.ToTable("Tags", (string)null);
 
                     b.HasData(
                         new
@@ -736,7 +736,7 @@ namespace SnipEx.Data.Migrations
 
                     b.HasIndex("ConnectedUserId");
 
-                    b.ToTable("UsersConnections");
+                    b.ToTable("UsersConnections", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>

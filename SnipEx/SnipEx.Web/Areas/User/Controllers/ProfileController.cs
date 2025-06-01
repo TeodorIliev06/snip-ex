@@ -97,7 +97,17 @@
 
         public async Task<IActionResult> Connections()
         {
-            return View();
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+
+            var connections = await userService
+                .GetUserConnectionsAsync(userId);
+
+            var viewModel = new UserConnectionsViewModel()
+            {
+                Connections = connections
+            };
+
+            return View(viewModel);
         }
     }
 }

@@ -54,8 +54,9 @@
             return viewModel;
         }
 
-        //TODO: pass both user ids to determine which is smaller/larger
-        //      for bidirectional search
+        //Quickfix:
+        //  Add conditional logic in every projection
+        //  Tradeoff is halved storage usage
         public async Task<IEnumerable<ConnectionViewModel>> GetUserConnectionsAsync(string userId)
         {
             var userGuid = Guid.Parse(userId);
@@ -66,8 +67,15 @@
                     uc.ConnectedUserId == userGuid)
                 .Select(uc => new ConnectionViewModel
                 {
-                    PostsCount = uc.ConnectedUser.Posts.Count,
-                    ActorAvatar = "/" + uc.ConnectedUser.ProfilePicturePath,
+                    ActorAvatar = uc.UserId == userGuid
+                        ? "/" + uc.ConnectedUser.ProfilePicturePath
+                        : "/" + uc.User.ProfilePicturePath,
+                    Username = uc.UserId == userGuid
+                        ? uc.ConnectedUser.UserName!
+                        : uc.User.UserName!,
+                    PostsCount = uc.UserId == userGuid
+                        ? uc.ConnectedUser.Posts.Count
+                        : uc.User.Posts.Count,
                     Type = uc.Status
                 })
                 .ToListAsync();

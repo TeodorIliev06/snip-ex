@@ -1,4 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using SnipEx.Web.ViewModels.User
+@model UserConnectionsViewModel
 
 @{
     ViewData["Title"] = "SnipEx - Connections";
@@ -29,6 +31,41 @@
         </div>
 
         <div class="connections-list">
+            @if (Model.Connections.Any())
+            {
+                @foreach (var connection in Model.Connections)
+                {
+                    <div class="connection-item @connection.CssType">
+                        <div class="connection-avatar">
+                        <img src="@connection.ActorAvatar">
+                        </div>
+                        <div class="connection-content">
+                            <div class="connection-header">
+                                <div class="connection-name">
+                                    <span>@connection.Username</span>
+                                    <span class="connection-badge @connection.CssType">Connected</span>
+                                </div>
+                                <div class="connection-actions">
+                                    <button class="btn-unfollow">Disconnect</button>
+                                </div>
+                            </div>
+                            <div class="connection-meta">
+                                <span class="meta-item"><i class="fa-solid fa-code"></i> @connection.PostsCount snippets</span>
+                                <span class="meta-item"><i class="fa-solid fa-star"></i> 94 stars</span>
+                                <span class="meta-item"><i class="fa-solid fa-users"></i> 8 mutual connections</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="empty-state">
+                    <i class="fa-regular fa-bell-slash"></i>
+                    <p>No connections yet</p>
+                    <span>When you receive connections, they'll appear here.</span>
+                </div>
+            }
             <!-- Mutual Connection -->
             <div class="connection-item mutual" data-id="1">
                 <div class="connection-avatar">
@@ -64,97 +101,16 @@
                     <div class="connection-header">
                         <div class="connection-name">
                             <span>devmartin</span>
-                            <span class="connection-badge following">Following</span>
+                            <span class="connection-badge following">Connected</span>
                         </div>
                         <div class="connection-actions">
-                            <button class="btn-unfollow">Unfollow</button>
+                            <button class="btn-unfollow">Disconnect</button>
                         </div>
-                    </div>
-                    <div class="connection-bio">
-                        Backend developer specializing in C# and .NET. Love sharing code solutions!
                     </div>
                     <div class="connection-meta">
                         <span class="meta-item"><i class="fa-solid fa-code"></i> 36 snippets</span>
                         <span class="meta-item"><i class="fa-solid fa-star"></i> 94 stars</span>
                         <span class="meta-item"><i class="fa-solid fa-users"></i> 8 mutual connections</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Follower Connection -->
-            <div class="connection-item follower" data-id="3">
-                <div class="connection-avatar">
-                    <img src="/images/default-avatar.png" alt="frontendguru">
-                </div>
-                <div class="connection-content">
-                    <div class="connection-header">
-                        <div class="connection-name">
-                            <span>frontendguru</span>
-                            <span class="connection-badge follower">Follower</span>
-                        </div>
-                        <div class="connection-actions">
-                            <button class="btn-follow">Follow Back</button>
-                        </div>
-                    </div>
-                    <div class="connection-bio">
-                        UI/UX designer and front-end developer. Always looking for beautiful solutions.
-                    </div>
-                    <div class="connection-meta">
-                        <span class="meta-item"><i class="fa-solid fa-code"></i> 29 snippets</span>
-                        <span class="meta-item"><i class="fa-solid fa-star"></i> 86 stars</span>
-                        <span class="meta-item"><i class="fa-solid fa-users"></i> 5 mutual connections</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Suggested Connection -->
-            <div class="connection-item suggested" data-id="4">
-                <div class="connection-avatar">
-                    <img src="/images/default-avatar.png" alt="csharpwizard">
-                </div>
-                <div class="connection-content">
-                    <div class="connection-header">
-                        <div class="connection-name">
-                            <span>csharpwizard</span>
-                            <span class="connection-badge suggested">Suggested</span>
-                        </div>
-                        <div class="connection-actions">
-                            <button class="btn-follow">Follow</button>
-                        </div>
-                    </div>
-                    <div class="connection-bio">
-                        C# enthusiast and ASP.NET Core advocate. Writing snippets for everyday problems.
-                    </div>
-                    <div class="connection-meta">
-                        <span class="meta-item"><i class="fa-solid fa-code"></i> 52 snippets</span>
-                        <span class="meta-item"><i class="fa-solid fa-star"></i> 138 stars</span>
-                        <span class="meta-item"><i class="fa-solid fa-users"></i> 12 mutual connections</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Another Mutual Connection -->
-            <div class="connection-item mutual" data-id="5">
-                <div class="connection-avatar">
-                    <img src="/images/default-avatar.png" alt="jsmaster">
-                </div>
-                <div class="connection-content">
-                    <div class="connection-header">
-                        <div class="connection-name">
-                            <span>jsmaster</span>
-                            <span class="connection-badge mutual">Mutual</span>
-                        </div>
-                        <div class="connection-actions">
-                            <button class="btn-unfollow">Unfollow</button>
-                        </div>
-                    </div>
-                    <div class="connection-bio">
-                        JavaScript expert focusing on React and Node.js. Love to share reusable components.
-                    </div>
-                    <div class="connection-meta">
-                        <span class="meta-item"><i class="fa-solid fa-code"></i> 41 snippets</span>
-                        <span class="meta-item"><i class="fa-solid fa-star"></i> 112 stars</span>
-                        <span class="meta-item"><i class="fa-solid fa-users"></i> 9 mutual connections</span>
                     </div>
                 </div>
             </div>

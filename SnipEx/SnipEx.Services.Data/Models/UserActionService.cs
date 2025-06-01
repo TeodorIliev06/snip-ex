@@ -4,6 +4,7 @@
     using Microsoft.EntityFrameworkCore;
 
     using SnipEx.Data.Models;
+    using SnipEx.Data.Models.Enums;
     using SnipEx.Services.Data.Contracts;
     using SnipEx.Data.Repositories.Contracts;
     using SnipEx.Services.Mediator.Posts.PostLiked;
@@ -201,7 +202,8 @@
             {
                 UserId = smallerId,
                 ConnectedUserId = largerId,
-                ConnectedOn = DateTime.UtcNow
+                ConnectedOn = DateTime.UtcNow,
+                Status = ConnectionStatus.Accepted // Always accept until feature rework in future
             };
 
             await userConnectionRepository.AddAsync(newConnection);

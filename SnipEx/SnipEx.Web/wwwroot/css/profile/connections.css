@@ -156,25 +156,25 @@
     font-weight: normal;
 }
 
-    .connection-badge.mutual {
-        background-color: #8957e5;
-        color: #e6edf3;
-    }
+.connection-badge.mutual {
+    background-color: #8957e5;
+    color: #e6edf3;
+}
 
-    .connection-badge.following {
-        background-color: #58a6ff;
-        color: #e6edf3;
-    }
+.connection-badge.connected {
+    background-color: #58a6ff;
+    color: #e6edf3;
+}
 
-    .connection-badge.follower {
-        background-color: #3fb950;
-        color: #e6edf3;
-    }
+.connection-badge.follower {
+    background-color: #3fb950;
+    color: #e6edf3;
+}
 
-    .connection-badge.suggested {
-        background-color: #f85149;
-        color: #e6edf3;
-    }
+.connection-badge.suggested {
+    background-color: #f85149;
+    color: #e6edf3;
+}
 
 .connection-bio {
     margin-bottom: 0.75rem;

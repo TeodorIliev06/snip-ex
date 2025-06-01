@@ -10,6 +10,8 @@
     {
         public string ActorAvatar { get; set; } = null!;
 
+        public string Username { get; set; } = null!;
+
         public int PostsCount { get; set; }
 
         public ConnectionStatus Type { get; set; }
