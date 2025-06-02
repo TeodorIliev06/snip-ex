@@ -197,16 +197,16 @@
     gap: 0.3rem;
 }
 
-    .meta-item i {
-        color: #58a6ff;
-    }
+.meta-item i {
+    color: #58a6ff;
+}
 
 .connection-actions {
     display: flex;
     gap: 0.5rem;
 }
 
-.btn-follow, .btn-disconnect {
+.btn-connect, .btn-disconnect {
     border-radius: 4px;
     padding: 0.4rem 0.8rem;
     font-size: 0.85rem;
@@ -215,16 +215,16 @@
     font-weight: 500;
 }
 
-.btn-follow {
+.btn-connect {
     background-color: #238636;
     color: #e6edf3;
     border: none;
 }
 
-    .btn-follow:hover {
-        background-color: #2ea043;
-        box-shadow: 0 0 5px rgba(46, 160, 67, 0.6);
-    }
+.btn-connect:hover {
+    background-color: #2ea043;
+    box-shadow: 0 0 5px rgba(46, 160, 67, 0.6);
+}
 
 .btn-disconnect {
     background-color: transparent;
@@ -232,10 +232,10 @@
     border: 1px solid #6e7681;
 }
 
-    .btn-disconnect:hover {
-        background-color: #6e7681;
-        color: #e6edf3;
-    }
+.btn-disconnect:hover {
+    background-color: #6e7681;
+    color: #e6edf3;
+}
 
 /* Connection type styling */
 .connection-item.mutual {
@@ -269,10 +269,10 @@
     transition: all 0.3s ease;
 }
 
-    .btn-load-more:hover {
-        background-color: #30363d;
-        color: #e6edf3;
-    }
+.btn-load-more:hover {
+    background-color: #30363d;
+    color: #e6edf3;
+}
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
@@ -307,7 +307,7 @@
         width: 100%;
     }
 
-    .btn-follow, .btn-disconnect {
+    .btn-connect, .btn-disconnect {
         width: 100%;
     }
 

@@ -42,7 +42,11 @@
                                     <span class="connection-badge @connection.CssType">Connected</span>
                                 </div>
                                 <div class="connection-actions">
-                                    <button class="btn-disconnect">Disconnect</button>
+                                    <button 
+                                        class="connect-button btn-disconnect" 
+                                        data-target-user-id="@connection.TargetUserId">
+                                        Disconnect
+                                    </button>
                                 </div>
                             </div>
                             <div class="connection-meta">

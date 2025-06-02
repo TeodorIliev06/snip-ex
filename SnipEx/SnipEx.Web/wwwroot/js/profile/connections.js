@@ -28,7 +28,7 @@
 
     // Follow/Unfollow button functionality
     const followButtons = document.querySelectorAll('.btn-follow');
-    const unfollowButtons = document.querySelectorAll('.btn-unfollow');
+    const disconnectButtons = document.querySelectorAll('.btn-disconnect');
 
     followButtons.forEach(button => {
         button.addEventListener('click', function () {
@@ -87,35 +87,11 @@
         });
     });
 
-    unfollowButtons.forEach(button => {
-        button.addEventListener('click', function () {
-            const connectionItem = this.closest('.connection-item');
-            const connectionId = connectionItem.getAttribute('data-id');
+    disconnectButtons.forEach(button => {
+        button.addEventListener('click', async function () {
+            const targetUserId = button.getAttribute('data-target-user-id');
 
-            // Disable button to prevent double click
-            this.disabled = true;
-            this.textContent = 'Unfollowing...';
-
-            // Call the real disconnect logic
-            button.addEventListener('click', async function () {
-                await toggleConnection(targetUserId);
-            });
-            toggleConnection(connectionId, function (data) {
-                // Animate removal smoothly
-                connectionItem.style.transition = 'opacity 0.5s ease';
-                connectionItem.style.opacity = '0';
-
-                setTimeout(() => {
-                    connectionItem.remove();
-
-                    // Optionally update the counter if it's shown here
-                    const statNumber = document.querySelector('.stat-number');
-                    if (statNumber && data.connectionsCount !== undefined) {
-                        statNumber.textContent = data.connectionsCount;
-                    }
-
-                }, 500);
-            });
+            await toggleConnection(targetUserId);
         });
     });
 
@@ -193,23 +169,31 @@ async function toggleConnection(targetUserId) {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include'
-        })
-        .then(data => {
-            if (!data) return;
+    })
+    .then(data => {
+        if (!data) return;
 
-            const connectButton = document.querySelector('.connect-button');
-            const connectionCountElement = document.querySelector('.stat-item:nth-child(3) strong');
+        const connectButton = document.querySelector('.connect-button');
+        const connectionCount = document.querySelector('.stat-number');
+        const connectionBadge = document.querySelector('.connection-badge');
 
-            connectionCountElement.textContent = data.connectionsCount;
+        connectionCount.textContent = data.connectionsCount;
 
-            if (data.isConnected) {
-                connectButton.classList.remove('btn-connect');
-                connectButton.classList.add('btn-disconnect');
-                connectButton.innerHTML = 'Disconnect';
-            } else {
-                connectButton.classList.remove('btn-disconnect');
-                connectButton.classList.add('btn-connect');
-                connectButton.innerHTML = 'Connect';
-            }
-        });
+        if (data.isConnected) {
+            connectButton.classList.remove('btn-connect');
+            connectButton.classList.add('btn-disconnect');
+            connectionBadge.classList.add('connected');
+
+            connectButton.innerHTML = 'Disconnect';
+            connectionBadge.innerHTML = 'Connected';
+
+        } else {
+            connectButton.classList.remove('btn-disconnect');
+            connectButton.classList.add('btn-connect');
+            connectionBadge.classList.remove('connected');
+
+            connectButton.innerHTML = 'Connect';
+            connectionBadge.innerHTML = '';
+        }
+    });
 }

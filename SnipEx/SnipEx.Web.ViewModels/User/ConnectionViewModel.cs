@@ -10,6 +10,8 @@
 
         public string ConnectedUserId { get; set; } = null!;
 
+        public string TargetUserId { get; set; } = null!;
+
         public string ActorAvatar { get; set; } = null!;
 
         public string Username { get; set; } = null!;
