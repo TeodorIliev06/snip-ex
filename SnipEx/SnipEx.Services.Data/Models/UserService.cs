@@ -11,6 +11,7 @@
 
     public class UserService(
         IRepository<ApplicationUser, Guid> userRepository,
+        IRepository<PostLike, Guid> postLikeRepository,
         IRepository<UserConnection, object> userConnectionRepository) : IUserService
     {
         public async Task<ProfileInformationViewModel> GetProfileInformationAsync(string userId)
@@ -86,6 +87,18 @@
                 .ToListAsync();
 
             return viewModel;
+        }
+
+        public async Task<int> GetTotalLikesReceivedByUserAsync(string userId)
+        {
+            var userGuid = Guid.Parse(userId);
+
+            var totalLikes = await postLikeRepository
+                .GetAllAttached()
+                .Where(pl => pl.Post.UserId == userGuid)
+                .CountAsync();
+
+            return totalLikes;
         }
     }
 }

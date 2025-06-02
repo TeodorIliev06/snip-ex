@@ -240,6 +240,39 @@
             return connectionsCount;
         }
 
+        public async Task<int> GetMutualConnectionsCountAsync(string currentUserId, string targetUserId)
+        {
+            var currentUserGuid = Guid.Parse(currentUserId);
+            var targetUserGuid = Guid.Parse(targetUserId);
+
+            var allConnections = await userConnectionRepository
+                .GetAllAttached()
+                .Where(uc =>
+                    uc.UserId == currentUserGuid || uc.ConnectedUserId == currentUserGuid ||
+                    uc.UserId == targetUserGuid || uc.ConnectedUserId == targetUserGuid)
+                .ToListAsync();
+
+            var currentUserConnections = allConnections
+                .Where(uc =>
+                    uc.UserId == currentUserGuid ||
+                    uc.ConnectedUserId == currentUserGuid)
+                .Select(uc => uc.UserId == currentUserGuid 
+                    ? uc.ConnectedUserId 
+                    : uc.UserId)
+                .ToHashSet();
+
+            var targetUserConnections = allConnections
+                .Where(uc => 
+                    uc.UserId == targetUserGuid ||
+                    uc.ConnectedUserId == targetUserGuid)
+                .Select(uc => uc.UserId == targetUserGuid 
+                    ? uc.ConnectedUserId 
+                    : uc.UserId)
+                .ToHashSet();
+
+            return currentUserConnections.Intersect(targetUserConnections).Count();
+        }
+
         private (Guid smallerId, Guid largerId) OrderUserIds(Guid user1Guid, Guid user2Guid)
         {
             if (user1Guid.CompareTo(user2Guid) < 0)

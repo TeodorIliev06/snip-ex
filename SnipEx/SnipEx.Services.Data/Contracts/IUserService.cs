@@ -12,5 +12,7 @@
         Task<IEnumerable<PostCardViewModel>> GetUserSnippetsAsync(string userId);
 
         Task<IEnumerable<ConnectionViewModel>> GetUserConnectionsAsync(string userId);
+
+        Task<int> GetTotalLikesReceivedByUserAsync(string userId);
     }
 }

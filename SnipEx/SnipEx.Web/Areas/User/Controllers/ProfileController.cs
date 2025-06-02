@@ -103,6 +103,18 @@
                 .GetUserConnectionsAsync(userId);
             var connectionsCount = await userActionService.GetConnectionsCountAsync(userId);
 
+            //Optimise these queries with a bulk query and dictionary
+            foreach (var connection in connections)
+            {
+                var mutualConnectionsCount = await userActionService
+                    .GetMutualConnectionsCountAsync(userId, connection.TargetUserId);
+                var totalLikesCount = await userService
+                    .GetTotalLikesReceivedByUserAsync(connection.TargetUserId);
+
+                connection.MutualConnectionsCount = mutualConnectionsCount;
+                connection.LikesCount = totalLikesCount;
+            }
+
             var viewModel = new UserConnectionsViewModel()
             {
                 Connections = connections,

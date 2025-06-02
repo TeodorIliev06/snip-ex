@@ -18,6 +18,10 @@
 
         public int PostsCount { get; set; }
 
+        public int LikesCount { get; set; }
+
+        public int MutualConnectionsCount { get; set; }
+
         public ConnectionStatus Type { get; set; }
 
         public string CssType

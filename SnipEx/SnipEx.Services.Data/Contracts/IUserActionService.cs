@@ -23,5 +23,7 @@
         Task<bool> DoesConnectionExistAsync(string currentUserId, string targetUserId);
 
         Task<int> GetConnectionsCountAsync(string targetUserId);
+
+        Task<int> GetMutualConnectionsCountAsync(string currentUserId, string targetUserId);
     }
 }
