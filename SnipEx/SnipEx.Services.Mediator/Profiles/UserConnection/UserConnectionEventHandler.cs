@@ -8,13 +8,13 @@
 
     public class UserConnectionEventHandler(
         IRepository<ApplicationUser, Guid> userRepository,
-        IRepository<UserConnection, object> userConnectionRepository,
         IMediator mediator) : INotificationHandler<UserConnectionEvent>
     {
         public async Task Handle(UserConnectionEvent notification, CancellationToken cancellationToken)
         {
             var actor = await userRepository.GetByIdAsync(notification.ActorGuid);
-            if (actor == null)
+            if (actor == null || 
+                actor.Id == notification.ActorGuid)
             {
                 return;
             }

@@ -26,66 +26,7 @@
         });
     });
 
-    // Follow/Unfollow button functionality
-    const followButtons = document.querySelectorAll('.btn-follow');
     const disconnectButtons = document.querySelectorAll('.btn-disconnect');
-
-    followButtons.forEach(button => {
-        button.addEventListener('click', function () {
-            const connectionItem = this.closest('.connection-item');
-            const connectionId = connectionItem.getAttribute('data-id');
-
-            // Here you would make an AJAX request to follow the user
-            console.log(`Following user with ID: ${connectionId}`);
-
-            // UI update (for demo purposes)
-            if (this.textContent === 'Follow') {
-                this.textContent = 'Following...';
-                setTimeout(() => {
-                    this.textContent = 'Unfollow';
-                    this.classList.remove('btn-follow');
-                    this.classList.add('btn-unfollow');
-
-                    // Update the badge if it was a suggested connection
-                    const badge = connectionItem.querySelector('.connection-badge');
-                    if (badge && badge.classList.contains('suggested')) {
-                        badge.classList.remove('suggested');
-                        badge.classList.add('following');
-                        badge.textContent = 'Following';
-
-                        // Update the item's class for filtering
-                        connectionItem.classList.remove('suggested');
-                        connectionItem.classList.add('following');
-                    }
-
-                    // Update the connection-item border
-                    connectionItem.classList.remove('suggested');
-                    connectionItem.classList.add('following');
-
-                }, 500);
-            } else if (this.textContent === 'Follow Back') {
-                this.textContent = 'Following...';
-                setTimeout(() => {
-                    this.textContent = 'Unfollow';
-                    this.classList.remove('btn-follow');
-                    this.classList.add('btn-unfollow');
-
-                    // Update the badge
-                    const badge = connectionItem.querySelector('.connection-badge');
-                    if (badge) {
-                        badge.classList.remove('follower');
-                        badge.classList.add('mutual');
-                        badge.textContent = 'Mutual';
-                    }
-
-                    // Update the connection-item border
-                    connectionItem.classList.remove('follower');
-                    connectionItem.classList.add('mutual');
-
-                }, 500);
-            }
-        });
-    });
 
     disconnectButtons.forEach(button => {
         button.addEventListener('click', async function () {
@@ -173,10 +114,15 @@ async function toggleConnection(targetUserId) {
     .then(data => {
         if (!data) return;
 
-        const connectButton = document.querySelector('.connect-button');
-        const connectionCount = document.querySelector('.stat-number');
-        const connectionBadge = document.querySelector('.connection-badge');
+        const connectionItem = document
+            .querySelector(`.connect-button[data-target-user-id="${targetUserId}"]`)
+            ?.closest('.connection-item');
+        if (!connectionItem) return;
 
+        const connectButton = connectionItem.querySelector('.connect-button');
+        const connectionBadge = connectionItem.querySelector('.connection-badge');
+
+        const connectionCount = document.querySelector('.stat-number');
         connectionCount.textContent = data.connectionsCount;
 
         if (data.isConnected) {

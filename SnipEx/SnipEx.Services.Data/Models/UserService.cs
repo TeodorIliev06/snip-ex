@@ -70,7 +70,7 @@
                     UserId = uc.UserId.ToString(),
                     ConnectedUserId = uc.ConnectedUserId.ToString(),
                     TargetUserId = uc.UserId == userGuid
-                        ? uc.ConnectedUser.ToString()
+                        ? uc.ConnectedUserId.ToString()
                         : uc.UserId.ToString(),
                     ActorAvatar = uc.UserId == userGuid
                         ? "/" + uc.ConnectedUser.ProfilePicturePath

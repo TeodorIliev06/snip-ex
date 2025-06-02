@@ -209,7 +209,7 @@
             await userConnectionRepository.AddAsync(newConnection);
             await userConnectionRepository.SaveChangesAsync();
 
-            var connectionCreatedEvent = new UserConnectionEvent(smallerId, largerId);
+            var connectionCreatedEvent = new UserConnectionEvent(currentUserGuid, targetUserGuid);
             await mediator.Publish(connectionCreatedEvent);
 
             return true;
