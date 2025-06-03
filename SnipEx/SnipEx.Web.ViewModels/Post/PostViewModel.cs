@@ -16,9 +16,9 @@
 
         public int Views { get; set; }
 
-        public decimal Rating { get; set; }
-
         public int CommentCount { get; set; }
+
+        public int LikesCount { get; set; }
 
         public ICollection<TagViewModel> Tags { get; set; } 
             = new List<TagViewModel>();

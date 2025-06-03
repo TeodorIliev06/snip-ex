@@ -4,7 +4,6 @@
     "Title": "Understanding Dependency Injection in .NET Core Applications",
     "Content": "Dependency Injection (DI) is a design pattern that implements Inversion of Control (IoC) for resolving dependencies. In .NET Core, the built-in DI container provides a simple and flexible way to manage object dependencies. This post explores best practices, common pitfalls, and real-world examples of implementing DI in your applications. We'll cover constructor injection, service lifetimes, and how to properly structure your application for testability.",
     "Views": 856,
-    "Rating": 4.8,
     "CreatedAt": "2024-02-15T00:00:00.000Z",
     "UserId": null,
     "LanguageId": "b3f7e6d5-89f4-4b29-bd0e-31a3f9076b2d"
@@ -14,7 +13,6 @@
     "Title": "Mastering LINQ: Advanced Queries and Performance Optimization",
     "Content": "Language Integrated Query (LINQ) is a powerful feature in C# that enables you to write type-safe queries. This comprehensive guide delves into advanced LINQ techniques, including query optimization, proper use of deferred execution, and understanding the performance implications of different LINQ operations. We'll examine real-world scenarios and demonstrate how to write efficient queries that scale well with large datasets.",
     "Views": 1000,
-    "Rating": 4.9,
     "CreatedAt": "2024-02-20T00:00:00.000Z",
     "UserId": null,
     "LanguageId": "b3f7e6d5-89f4-4b29-bd0e-31a3f9076b2d"
@@ -24,7 +22,6 @@
     "Title": "Building Scalable Microservices with ASP.NET Core",
     "Content": "Microservices architecture has become increasingly popular for building scalable, maintainable applications. This post examines the key principles of microservices design using ASP.NET Core, including service communication patterns, data consistency challenges, and deployment strategies. We'll walk through creating a sample microservices ecosystem with practical examples and best practices.",
     "Views": 723,
-    "Rating": 4.5,
     "CreatedAt": "2024-02-01T00:00:00.000Z",
     "UserId": null,
     "LanguageId": "b3f7e6d5-89f4-4b29-bd0e-31a3f9076b2d"
@@ -34,7 +31,6 @@
     "Title": "Effective Error Handling in C# Applications",
     "Content": "Proper error handling is crucial for building robust and maintainable applications. This guide covers advanced exception handling techniques in C#, including custom exceptions, global error handling middleware in ASP.NET Core, and logging best practices. Learn how to implement a comprehensive error handling strategy that improves application reliability and debugging capabilities.",
     "Views": 645,
-    "Rating": 4.7,
     "CreatedAt": "2024-02-10T00:00:00.000Z",
     "UserId": null,
     "LanguageId": "b3f7e6d5-89f4-4b29-bd0e-31a3f9076b2d"
@@ -44,7 +40,6 @@
     "Title": "Entity Framework Core: Advanced Patterns and Performance Tips",
     "Content": "Entity Framework Core is the go-to ORM for .NET developers, but using it effectively requires understanding its inner workings. This post explores advanced patterns including query optimization, proper use of tracking vs. no-tracking queries, and effective caching strategies. We'll also examine common performance pitfalls and how to avoid them in real-world scenarios.",
     "Views": 912,
-    "Rating": 4.6,
     "CreatedAt": "2024-02-05T00:00:00.000Z",
     "UserId": null,
     "LanguageId": "b3f7e6d5-89f4-4b29-bd0e-31a3f9076b2d"

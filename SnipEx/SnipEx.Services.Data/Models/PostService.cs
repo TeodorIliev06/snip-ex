@@ -26,6 +26,7 @@
                 .Include(p => p.User)
                 .Include(p => p.PostsTags).ThenInclude(pt => pt.Tag)
                 .Include(p => p.Comments)
+                .Include(p => p.Likes)
                 .AsQueryable();
 
             if (!string.IsNullOrEmpty(tag))
@@ -44,7 +45,7 @@
             query = sort switch
             {
                 "popular" => query.OrderByDescending(p => p.Views),
-                "rating" => query.OrderByDescending(p => p.Rating),
+                "likes" => query.OrderByDescending(p => p.Likes.Count),
                 _ => query.OrderByDescending(p => p.CreatedAt)
             };
 
@@ -72,7 +73,7 @@
                     UserName = p.User?.UserName ?? ApplicationConstants.NoUserName,
                     CreatedAt = p.CreatedAt.ToString(CreatedAtFormat, CultureInfo.InvariantCulture),
                     Views = p.Views,
-                    Rating = p.Rating,
+                    LikesCount = p.Likes.Count,
                     CommentCount = p.Comments.Count,
                     Tags = p.PostsTags.Select(pt => new TagViewModel
                     {

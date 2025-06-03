@@ -6,7 +6,6 @@
 
 <div class="container-fluid py-4">
     <div class="row">
-        <!-- Sidebar -->
         <div class="col-md-3">
             <div class="card mb-4 sidebar-card">
                 <div class="card-body">
@@ -46,9 +45,7 @@
             </div>
         </div>
 
-        <!-- Main Content -->
         <div class="col-md-9">
-            <!-- Sort Options and Active Filters -->
             <div class="card mb-4">
                 <div class="card-body p-3">
                     <div class="d-flex justify-content-between align-items-center">
@@ -60,8 +57,8 @@
                             <button data-sort="popular" class="btn sort-btn">
                                 <i class="bi bi-eye"></i> Popular
                             </button>
-                            <button data-sort="rating" class="btn sort-btn">
-                                <i class="bi bi-star"></i> Top Rated
+                            <button data-sort="likes" class="btn sort-btn">
+                                <i class="bi bi-hand-thumbs-up"></i> Most liked
                             </button>
                         </div>
                     </div>
@@ -88,7 +85,6 @@
                 </div>
             </div>
 
-            <!-- Snippets -->
             <div id="snippetsList">
                 @foreach (var post in Model.Posts)
                 {
@@ -110,7 +106,7 @@
                             </div>
                             <div class="d-flex gap-3">
                                 <span title="Views" class="snippet-stat"><i class="bi bi-eye"></i> @post.Views</span>
-                                <span title="Rating" class="snippet-stat"><i class="bi bi-star"></i> @post.Rating</span>
+                                <span title="Likes" class="snippet-stat"><i class="bi bi-hand-thumbs-up"></i> @post.LikesCount</span>
                                 <span title="Comments" class="snippet-stat"><i class="bi bi-chat"></i> @post.CommentCount</span>
                             </div>
                         </div>
@@ -150,7 +146,6 @@
     </div>
 </div>
 
-<!-- Hidden form for submitting filters -->
 <form id="filterForm" method="get" asp-controller="Post" asp-action="Index" class="d-none">
     <input type="hidden" id="tagInput" name="tag" value="@Model.SelectedTag" />
     <input type="hidden" id="sortInput" name="sort" value="@Model.CurrentSort" />

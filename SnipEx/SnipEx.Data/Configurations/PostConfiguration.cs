@@ -29,10 +29,6 @@
                 .Property(p => p.Views)
                 .HasDefaultValue(ViewMinValue);
 
-            builder
-                .Property(p => p.Rating)
-                .HasPrecision(2, 1);
-
             builder.HasOne(p => p.User)
                 .WithMany(u => u.Posts)
                 .HasForeignKey(p => p.UserId)

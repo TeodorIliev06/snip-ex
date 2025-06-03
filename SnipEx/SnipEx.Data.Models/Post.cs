@@ -10,8 +10,6 @@
 
         public int Views { get; set; }
 
-        public decimal Rating { get; set; }
-
         public DateTime CreatedAt { get; set; }
 
         public Guid? UserId { get; set; }
