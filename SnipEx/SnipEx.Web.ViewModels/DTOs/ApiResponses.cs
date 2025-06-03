@@ -24,5 +24,10 @@
             public bool IsConnected { get; set; }
             public int ConnectionsCount { get; set; }
         }
+
+        public class IncrementPostViewsResponse
+        {
+            public bool AreViewsIncremented { get; set; }
+        }
     }
 }

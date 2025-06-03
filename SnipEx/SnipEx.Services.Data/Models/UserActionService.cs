@@ -273,6 +273,24 @@
             return currentUserConnections.Intersect(targetUserConnections).Count();
         }
 
+        public async Task<bool> IncrementPostViewsAsync(Guid postGuid, string userId)
+        {
+            var userGuid = Guid.Parse(userId);
+            var post = await postRepository.GetByIdAsync(postGuid);
+
+            if (post == null ||
+                post.UserId == userGuid)
+            {
+                return false;
+            }
+
+            post.Views++;
+            await postRepository.UpdateAsync(post);
+            await postRepository.SaveChangesAsync();
+
+            return true;
+        }
+
         private (Guid smallerId, Guid largerId) OrderUserIds(Guid user1Guid, Guid user2Guid)
         {
             if (user1Guid.CompareTo(user2Guid) < 0)

@@ -4,8 +4,6 @@
 
     public class ConnectionViewModel
     {
-        public string Id => $"{UserId}_{ConnectedUserId}";
-
         public string UserId { get; set; } = null!;
 
         public string ConnectedUserId { get; set; } = null!;

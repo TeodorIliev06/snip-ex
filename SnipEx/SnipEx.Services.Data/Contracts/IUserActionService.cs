@@ -25,5 +25,7 @@
         Task<int> GetConnectionsCountAsync(string targetUserId);
 
         Task<int> GetMutualConnectionsCountAsync(string currentUserId, string targetUserId);
+
+        Task<bool> IncrementPostViewsAsync(Guid postGuid, string userId);
     }
 }

@@ -43,17 +43,15 @@
             </div>
         </div>
         
-        <div class="post-actions">
-            <button class="action-button like-button @(Model.IsLikedByCurrentUser ? "liked" : "")" 
-                    data-post-id="@Model.Id">
+        <div class="post-actions" data-post-id="@Model.Id">
+            <button class="action-button like-button @(Model.IsLikedByCurrentUser ? "liked" : "")">
                 <i class="fa fa-thumbs-up"></i>
                 @if (@Model.LikesCount > 0)
                 {
                     <span class="count">@Model.LikesCount</span>
                 }
             </button>
-            <button class="action-button save-button @(Model.IsBookmarkedByCurrentUser ? "saved" : "")"
-                    data-post-id="@Model.Id">
+            <button class="action-button save-button @(Model.IsBookmarkedByCurrentUser ? "saved" : "")">
                 <i class="fa fa-bookmark"></i>
                 <span>@(Model.IsBookmarkedByCurrentUser ? "Saved" : "Save")</span>
             </button>

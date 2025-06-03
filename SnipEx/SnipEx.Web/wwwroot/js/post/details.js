@@ -1,4 +1,4 @@
-﻿document.addEventListener('DOMContentLoaded', function () {
+﻿document.addEventListener('DOMContentLoaded', async function () {
     // Initialize Prism for syntax highlighting
     if (typeof Prism !== 'undefined') {
         Prism.highlightAll();
@@ -9,17 +9,20 @@
         copyButton.addEventListener('click', copyToClipboard);
     }
 
-    const postLikeButton = document.querySelector('.like-button[data-post-id]');
+    const postEl = document.querySelector('.post-actions');
+    const postId = postEl.getAttribute('data-post-id');
+
+    await incrementPostViewsCount(postId);
+
+    const postLikeButton = document.querySelector('.like-button');
     if (postLikeButton) {
-        const postId = postLikeButton.getAttribute('data-post-id');
         postLikeButton.addEventListener('click', async function () {
             await togglePostLike(postId);
         });
     }
 
-    const postSaveButton = document.querySelector('.save-button[data-post-id]');
+    const postSaveButton = document.querySelector('.save-button');
     if (postSaveButton) {
-        const postId = postSaveButton.getAttribute('data-post-id');
         postSaveButton.addEventListener('click', async function () {
             await togglePostSave(postId);
         });
@@ -32,8 +35,6 @@
             await toggleCommentLike(commentId);
         });
     });
-
-    
 });
 
 function copyToClipboard() {
@@ -122,7 +123,7 @@ async function togglePostLike(postId) {
     .then(data => {
         if (!data) return;
 
-        const likeButton = document.querySelector(`.like-button[data-post-id="${postId}"]`);
+        const likeButton = document.querySelector(`.like-button`);
         let likeCountSpan = likeButton.querySelector('.count');
 
         let currentCount = parseInt(likeCountSpan?.textContent || "0", 10);
@@ -152,7 +153,7 @@ async function togglePostSave(postId) {
     .then(data => {
         if (!data) return;
 
-        const saveButton = document.querySelector(`.save-button[data-post-id="${postId}"]`);
+        const saveButton = document.querySelector(`.save-button`);
         saveButton.classList.toggle('saved', data.isLiked);
 
         const spanElement = saveButton.querySelector('span');
@@ -190,6 +191,17 @@ async function toggleCommentLike(commentId) {
 
         likeButton.classList.toggle('liked', data.isLiked);
     });
+}
+
+async function incrementPostViewsCount(postId) {
+    await fetchWithToastr(`https://localhost:7000/UserActionApi/IncrementPostViewsCount/${postId}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include'
+        })
+        .then(data => {
+            if (!data) return;
+        });
 }
 
 // Run all code enhancements after the document is ready

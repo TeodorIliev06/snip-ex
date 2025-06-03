@@ -123,5 +123,32 @@
                 ConnectionsCount = connectionsCount
             });
         }
+
+        [HttpPatch("[action]/{postId}")]
+        [ProducesResponseType(typeof(IncrementPostViewsResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PopUpError), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> IncrementPostViewsCount(string postId)
+        {
+            var isGuidValid = ValidationUtils.TryGetGuid(postId, out Guid postGuid);
+            if (!isGuidValid)
+            {
+                return BadRequest(ApiResponse.Fail(PopUpError.NonExistingPost));
+            }
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
+            var areViewsIncremented = await userActionService
+                .IncrementPostViewsAsync(postGuid, userId);
+
+            return Ok(new IncrementPostViewsResponse()
+            {
+                AreViewsIncremented = areViewsIncremented
+            });
+        }
     }
 }
