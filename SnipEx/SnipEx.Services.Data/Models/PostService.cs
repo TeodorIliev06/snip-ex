@@ -15,8 +15,9 @@
     using static Common.EntityValidationConstants.Post;
 
     public class PostService(
-        IRepository<Post, Guid> postRepository,
         IRepository<Tag, Guid> tagRepository,
+        IRepository<Post, Guid> postRepository,
+        ITagService tagService,
         ICommentService commentService,
         IUserActionService userActionService) : IPostService
     {
@@ -121,15 +122,38 @@
 
             var userGuid = Guid.Parse(userId);
 
-            var post = new Post();
-            AutoMapperConfig.MapperInstance.Map(model, post);
-            post.CreatedAt = creationDate;
-            post.UserId = userGuid; //Workaround
+            await using var transaction = await postRepository.BeginTransactionAsync();
+            try
+            {
+                var post = new Post();
+                AutoMapperConfig.MapperInstance.Map(model, post);
+                post.CreatedAt = creationDate;
+                post.UserId = userGuid;
 
-            await postRepository.AddAsync(post);
-            await postRepository.SaveChangesAsync();
+                await postRepository.AddAsync(post);
+                await postRepository.SaveChangesAsync();
 
-            return true;
+                if (model.Tags?.Any() == true)
+                {
+                    var tagModels = model.Tags
+                        .Select(tagName => new AddTagFormModel { Name = tagName });
+
+                    bool tagSuccess = await tagService.AddTagsToPostAsync(tagModels, post.Id);
+                    if (!tagSuccess)
+                    {
+                        await transaction.RollbackAsync();
+                        return false;
+                    }
+                }
+
+                await transaction.CommitAsync();
+                return true;
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                return false;
+            }
         }
 
         public async Task<PostDetailsViewModel?> GetPostByIdAsync(Guid postGuid, string? userId)
