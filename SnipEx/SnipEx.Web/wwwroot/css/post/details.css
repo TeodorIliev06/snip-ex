@@ -22,7 +22,7 @@ body {
 .container {
     max-width: 1000px;
     margin: 0 auto;
-    padding: 2rem 1rem;
+    padding: 1rem;
 }
 
 .post-card {
