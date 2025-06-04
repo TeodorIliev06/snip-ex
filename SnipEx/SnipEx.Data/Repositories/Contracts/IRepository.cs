@@ -2,6 +2,8 @@
 {
     using System.Linq.Expressions;
 
+    using Microsoft.EntityFrameworkCore.Storage;
+
     public interface IRepository<TType, TId>
     {
         TType? GetById(TId id);
@@ -39,5 +41,9 @@
         void SaveChanges();
 
         Task SaveChangesAsync();
+
+        IDbContextTransaction BeginTransaction();
+
+        Task<IDbContextTransaction> BeginTransactionAsync();
     }
 }

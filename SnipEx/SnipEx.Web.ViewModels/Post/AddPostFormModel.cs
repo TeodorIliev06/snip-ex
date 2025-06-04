@@ -4,9 +4,11 @@
     using System.ComponentModel.DataAnnotations;
 
     using AutoMapper;
+
     using SnipEx.Data.Models;
-    using SnipEx.Services.Mapping.Contracts;
     using SnipEx.Web.ViewModels.Language;
+    using SnipEx.Services.Mapping.Contracts;
+
     using static Common.EntityValidationConstants.Post;
 
     public class AddPostFormModel : IMapTo<Post>, IHaveCustomMappings

@@ -3,6 +3,7 @@
     using System.Linq.Expressions;
 
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Storage;
 
     using Contracts;
 
@@ -153,6 +154,16 @@
         public async Task SaveChangesAsync()
         {
             await this.dbContext.SaveChangesAsync();
+        }
+
+        public IDbContextTransaction BeginTransaction()
+        {
+            return this.dbContext.Database.BeginTransaction();
+        }
+
+        public async Task<IDbContextTransaction> BeginTransactionAsync()
+        {
+            return await this.dbContext.Database.BeginTransactionAsync();
         }
     }
 }
