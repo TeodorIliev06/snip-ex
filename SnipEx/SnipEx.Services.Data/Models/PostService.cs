@@ -135,10 +135,7 @@
 
                 if (model.Tags?.Any() == true)
                 {
-                    var tagModels = model.Tags
-                        .Select(tagName => new AddTagFormModel { Name = tagName });
-
-                    bool tagSuccess = await tagService.AddTagsToPostAsync(tagModels, post.Id);
+                    bool tagSuccess = await tagService.AddTagsToPostAsync(model.Tags, post.Id);
                     if (!tagSuccess)
                     {
                         await transaction.RollbackAsync();

@@ -6,6 +6,7 @@
     using AutoMapper;
 
     using SnipEx.Data.Models;
+    using SnipEx.Web.ViewModels.Tag;
     using SnipEx.Web.ViewModels.Language;
     using SnipEx.Services.Mapping.Contracts;
 
@@ -32,7 +33,8 @@
 
         public string? UserId { get; set; }
 
-        public List<string> Tags { get; set; } = new List<string>();
+        public IEnumerable<AddTagFormModel> Tags { get; set; } = new 
+            HashSet<AddTagFormModel>();
 
         [Required]
         public string LanguageId { get; set; }
@@ -44,6 +46,7 @@
         {
             configuration.CreateMap<AddPostFormModel, Post>()
                 .ForMember(dest => dest.Views, opt => opt.MapFrom(src => 0))
+                .ForMember(d => d.UserId, opt => opt.Ignore())
                 .ForMember(dest => dest.CreatedAt, opt => opt.Ignore());
         }
     }

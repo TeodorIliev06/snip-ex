@@ -61,8 +61,6 @@
             </div>
         </div>
 
-        <input type="hidden" asp-for="UserId" value="@User.FindFirstValue(ClaimTypes.NameIdentifier)" />
-
         <div class="form-group">
             <label class="form-label">Tags</label>
             <div class="tags-container" id="tags-container">
@@ -72,6 +70,9 @@
                 <input type="text" class="tag-input" id="tag-input" placeholder="Add a tag...">
                 <button type="button" class="add-tag-btn" id="add-tag-btn">Add</button>
             </div>
+    
+            <!-- Validation span for tags -->
+            <span asp-validation-for="Tags" class="field-validation-error" style="display: none;"></span>
             <!-- Hidden container for tag IDs to be submitted with the form -->
             <div id="tag-ids-container"></div>
         </div>
