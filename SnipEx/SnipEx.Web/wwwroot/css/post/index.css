@@ -7,6 +7,41 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
+.snippet-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+/* See more button styling */
+.see-more-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+}
+
+.see-more-btn:hover {
+    transform: translateX(2px);
+}
+
+/* Code preview collapsed state */
+.code-preview.collapsed {
+    position: relative;
+}
+
+.code-preview.collapsed::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background: linear-gradient(transparent, #f8f9fa);
+    pointer-events: none;
+}
+
 pre code {
     white-space: pre-wrap;
     word-wrap: break-word;

@@ -19,4 +19,38 @@
         width: 100%;
         margin-top: 1rem;
     }
+
+    .code-snippet pre {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+
+    .code-snippet pre code {
+        white-space: pre-wrap !important;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+    }
+
+    /* Hide line numbers on mobile to avoid layout issues */
+    .code-snippet .line-numbers-rows {
+        display: none;
+    }
+
+    .code-snippet pre.line-numbers {
+        padding-left: 1.5rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .snippet-actions {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+
+    .snippet-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
 }

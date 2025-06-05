@@ -1,7 +1,11 @@
 ﻿document.addEventListener('DOMContentLoaded', async function () {
-    // Initialize Prism for syntax highlighting
     if (typeof Prism !== 'undefined') {
         Prism.highlightAll();
+
+        setTimeout(() => {
+            addCustomLineNumbers();
+            handleLongCode();
+        }, 100);
     }
 
     const copyButton = document.querySelector('.copy-button');
@@ -11,7 +15,6 @@
 
     const postEl = document.querySelector('.post-actions');
     const postId = postEl.getAttribute('data-post-id');
-
     await incrementPostViewsCount(postId);
 
     const postLikeButton = document.querySelector('.like-button');
@@ -36,7 +39,6 @@
         });
     });
 });
-
 function copyToClipboard() {
     const codeElement = document.querySelector('pre code');
     if (!codeElement) return;
@@ -66,21 +68,41 @@ function copyToClipboard() {
     });
 }
 
-// Add line numbers to code
-function addLineNumbers() {
-    const codeElement = document.querySelector('pre code');
-    if (!codeElement) return;
+function addCustomLineNumbers() {
+    const codeSnippets = document.querySelectorAll('.code-snippet');
 
-    const codeLines = codeElement.innerHTML.split('\n');
-    let numberedCode = '';
+    codeSnippets.forEach(snippet => {
+        const pre = snippet.querySelector('pre');
+        const code = snippet.querySelector('code');
 
-    codeLines.forEach((line, index) => {
-        // Skip empty lines at the end
-        if (index === codeLines.length - 1 && line.trim() === '') return;
-        numberedCode += `<span class="line-number">${index + 1}</span>${line}\n`;
+        if (!pre || !code) return;
+
+        const existingLineNumbers = snippet.querySelector('.line-numbers');
+        if (existingLineNumbers) {
+            existingLineNumbers.remove();
+        }
+
+        const lines = code.textContent.split('\n');
+        const lineCount = lines.length;
+
+        if (lineCount >= 100) {
+            snippet.classList.add('three-digit-lines');
+        } else {
+            snippet.classList.remove('three-digit-lines');
+        }
+
+        const lineNumbersContainer = document.createElement('div');
+        lineNumbersContainer.className = 'line-numbers';
+
+        for (let i = 1; i <= lineCount; i++) {
+            const lineNumber = document.createElement('span');
+            lineNumber.className = 'line-number';
+            lineNumber.textContent = i;
+            lineNumbersContainer.appendChild(lineNumber);
+        }
+
+        snippet.appendChild(lineNumbersContainer);
     });
-
-    codeElement.innerHTML = numberedCode;
 }
 
 // Check if code is too long and add a "Show more" button
@@ -203,16 +225,3 @@ async function incrementPostViewsCount(postId) {
             if (!data) return;
         });
 }
-
-// Run all code enhancements after the document is ready
-document.addEventListener('DOMContentLoaded', function () {
-    if (typeof Prism !== 'undefined') {
-        Prism.highlightAll();
-
-        // Run these after syntax highlighting
-        setTimeout(() => {
-            addLineNumbers();
-            handleLongCode();
-        }, 100);
-    }
-});

@@ -160,7 +160,7 @@ function initializeCopyButtons() {
 }
 
 /**
- * Limit code preview height and add expand/collapse functionality
+ * Limit code preview height and add 'See more' link to redirect to post details
  */
 function initializeCodePreviews() {
     document.querySelectorAll('.code-preview').forEach(codeBlock => {
@@ -169,29 +169,29 @@ function initializeCodePreviews() {
             codeBlock.style.overflow = 'hidden';
             codeBlock.classList.add('collapsed');
 
-            const expandBtn = document.createElement('button');
-            expandBtn.className = 'btn btn-sm btn-link expand-code-btn';
-            expandBtn.innerHTML = '<i class="bi bi-arrows-expand"></i> Show more';
-            expandBtn.style.display = 'block';
-            expandBtn.style.width = '100%';
-            expandBtn.style.marginTop = '8px';
+            // Find the post ID from the data attribute
+            const card = codeBlock.closest('.snippet-card');
+            const postId = card.getAttribute('data-post-id');
 
-            expandBtn.addEventListener('click', function () {
-                if (codeBlock.classList.contains('collapsed')) {
-                    codeBlock.style.maxHeight = 'none';
-                    codeBlock.classList.remove('collapsed');
-                    this.innerHTML = '<i class="bi bi-arrows-collapse"></i> Show less';
-                } else {
-                    codeBlock.style.maxHeight = '200px';
-                    codeBlock.classList.add('collapsed');
-                    this.innerHTML = '<i class="bi bi-arrows-expand"></i> Show more';
-                }
-            });
+            // Construct the correct URL to the post details page
+            const postUrl = `/Post/Details/${postId}`;
 
-            codeBlock.parentNode.insertBefore(expandBtn, codeBlock.nextSibling);
+            // Find the existing button container (the div with copy button)
+            const buttonContainer = card.querySelector('.d-flex.justify-content-between.align-items-center.mt-3');
+            const copyButton = buttonContainer.querySelector('.copy-btn');
+
+            // Create 'See more' link
+            const seeMoreLink = document.createElement('a');
+            seeMoreLink.href = postUrl;
+            seeMoreLink.className = 'btn btn-sm btn-outline-secondary ms-2';
+            seeMoreLink.innerHTML = '<i class="bi bi-arrow-right-circle"></i> See more';
+
+            // Insert the "See more" button next to the copy button
+            copyButton.parentElement.appendChild(seeMoreLink);
         }
     });
 }
+
 
 /**
 * Apply dynamic classes to elements like selected tags and sort buttons

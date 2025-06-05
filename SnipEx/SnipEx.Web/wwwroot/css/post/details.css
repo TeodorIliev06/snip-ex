@@ -121,13 +121,13 @@ body {
     transition: all 0.2s ease;
 }
 
-    .post-tag:hover {
-        background-color: rgba(88, 166, 255, 0.2);
-    }
+.post-tag:hover {
+    background-color: rgba(88, 166, 255, 0.2);
+}
 
 .code-container {
     position: relative;
-    overflow: hidden; /* Contains the scrollable area properly */
+    overflow: hidden;
 }
 
 .code-header {
@@ -151,20 +151,75 @@ body {
 .code-snippet {
     padding: 0;
     margin: 0;
-    max-height: 600px; /* Increase this value for taller content display */
-    overflow-y: auto; /* Enable vertical scrolling */
-    overflow-x: auto; /* Enable horizontal scrolling only when needed */
+    max-height: 600px;
+    overflow-y: auto;
+    position: relative;
 }
 
+/* Base pre styling with word wrapping */
 .code-snippet pre {
     margin: 0;
-    padding: 1.5rem;
+    padding: 0;
     font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
     font-size: 0.9rem;
     line-height: 1.5;
     tab-size: 4;
-    white-space: pre; /* Preserve formatting */
-    word-wrap: normal; /* Prevent text wrapping */
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    overflow-x: hidden;
+    position: relative;
+    counter-reset: line;
+}
+
+/* Default spacing for 1-99 lines */
+.code-snippet pre {
+    padding-left: 2.5em;
+}
+
+/* Additional spacing for 100+ lines (3 digits) */
+.code-snippet.three-digit-lines pre {
+    padding-left: 3.5em;
+}
+
+.code-snippet pre code {
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    display: block;
+    position: relative;
+}
+
+.code-snippet .line-numbers {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 2.5em;
+    color: #a0a0a0;
+    font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    text-align: right;
+    padding-right: 0.5em;
+    user-select: none;
+    pointer-events: none;
+    z-index: 1;
+    font-weight: 400;
+}
+
+.code-snippet.three-digit-lines .line-numbers {
+    width: 3.5em;
+}
+
+.code-snippet .line-numbers .line-number {
+    display: block;
+    height: 1.5em;
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+}
+
+.code-snippet:hover .line-numbers .line-number {
+    opacity: 1;
 }
 
 .copy-button {
@@ -181,10 +236,10 @@ body {
     font-size: 0.9rem;
 }
 
-    .copy-button:hover {
-        background-color: rgba(255, 255, 255, 0.05);
-        color: var(--text-primary);
-    }
+.copy-button:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+}
 
 .post-actions {
     padding: 1rem 1.5rem;
@@ -206,14 +261,14 @@ body {
     gap: 8px;
 }
 
-    .action-button:hover {
-        background-color: rgba(255, 255, 255, 0.05);
-        color: var(--text-primary);
-    }
+.action-button:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+}
 
-    .action-button i {
-        font-size: 1rem;
-    }
+.action-button i {
+    font-size: 1rem;
+}
 
 .like-button .count {
     font-weight: 600;
@@ -253,10 +308,10 @@ body {
     font-size: 0.9rem;
 }
 
-    .sort-comments:hover {
-        background-color: rgba(255, 255, 255, 0.05);
-        color: var(--text-primary);
-    }
+.sort-comments:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+}
 
 .comment-form {
     margin-bottom: 2rem;
@@ -279,11 +334,11 @@ body {
     font-family: inherit;
 }
 
-    .comment-input:focus {
-        outline: none;
-        border-color: var(--accent-color);
-        box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.2);
-    }
+.comment-input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.2);
+}
 
 .submit-comment {
     position: absolute;
@@ -299,9 +354,9 @@ body {
     font-weight: 500;
 }
 
-    .submit-comment:hover {
-        background-color: var(--success-hover);
-    }
+.submit-comment:hover {
+    background-color: var(--success-hover);
+}
 
 .comments-list {
     display: flex;
@@ -353,10 +408,10 @@ body {
     transition: all 0.2s ease;
 }
 
-    .comment-action:hover {
-        background-color: rgba(255, 255, 255, 0.05);
-        color: var(--text-primary);
-    }
+.comment-action:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+}
 
 .comment-body {
     color: var(--text-primary);
@@ -439,4 +494,3 @@ body {
 .expand-code-button:hover {
     background-color: #3c444d;
 }
-
