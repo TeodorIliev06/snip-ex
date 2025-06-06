@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnipEx.Services.Mediator", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnipEx.Realtime", "SnipEx.Realtime\SnipEx.Realtime.csproj", "{8BD28BCE-1FF1-4F3B-823B-E0E86258B157}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnipEx.Services.Tests", "SnipEx.Services.Tests\SnipEx.Services.Tests.csproj", "{52894491-77BE-4058-9052-8572CBD675FD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +83,10 @@ Global
 		{8BD28BCE-1FF1-4F3B-823B-E0E86258B157}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8BD28BCE-1FF1-4F3B-823B-E0E86258B157}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8BD28BCE-1FF1-4F3B-823B-E0E86258B157}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52894491-77BE-4058-9052-8572CBD675FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52894491-77BE-4058-9052-8572CBD675FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52894491-77BE-4058-9052-8572CBD675FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52894491-77BE-4058-9052-8572CBD675FD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -95,5 +101,6 @@ Global
 		{64E6A058-3341-4456-904F-F7317BF41736} = {026A6ADD-B5E7-471F-BD54-8FCCE8B4D051}
 		{ABAE5A9A-1BA1-4094-8DFA-9D69F164E9C4} = {9492908E-CA9B-44B2-BE32-986DBF6CAE05}
 		{D352581D-51CF-4D5A-81A9-846399B09676} = {026A6ADD-B5E7-471F-BD54-8FCCE8B4D051}
+		{52894491-77BE-4058-9052-8572CBD675FD} = {026A6ADD-B5E7-471F-BD54-8FCCE8B4D051}
 	EndGlobalSection
 EndGlobal
