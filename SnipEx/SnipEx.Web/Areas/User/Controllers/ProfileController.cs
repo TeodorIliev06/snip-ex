@@ -19,25 +19,32 @@
     {
         public async Task<IActionResult> Index(string? id)
         {
-            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
-            var userId = string.IsNullOrEmpty(id) ? currentUserId : id;
-
-            var profileInformation = await userService.GetProfileInformationAsync(userId);
-            var postCards = await postService.GetPostsCardsByIdAsync(userId);
-
-            profileInformation.RecentPosts = postCards;
-            profileInformation.IsCurrentUser = userId == currentUserId;
-            profileInformation.UserId = userId;
-            profileInformation.ConnectionsCount = await userActionService
-                .GetConnectionsCountAsync(userId);
-
-            if (!profileInformation.IsCurrentUser)
+            try
             {
-                profileInformation.IsConnected = await userActionService
-                    .DoesConnectionExistAsync(currentUserId, userId);
-            }
+                var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+                var userId = string.IsNullOrEmpty(id) ? currentUserId : id;
 
-            return View(profileInformation);
+                var profileInformation = await userService.GetProfileInformationAsync(userId);
+                var postCards = await postService.GetPostsCardsByIdAsync(userId);
+
+                profileInformation.RecentPosts = postCards;
+                profileInformation.IsCurrentUser = userId == currentUserId;
+                profileInformation.UserId = userId;
+                profileInformation.ConnectionsCount = await userActionService
+                    .GetConnectionsCountAsync(userId);
+
+                if (!profileInformation.IsCurrentUser)
+                {
+                    profileInformation.IsConnected = await userActionService
+                        .DoesConnectionExistAsync(currentUserId, userId);
+                }
+
+                return View(profileInformation);
+            }
+            catch (InvalidOperationException)
+            {
+                return NotFound();
+            }
         }
 
         public async Task<IActionResult> Notifications()
@@ -76,9 +83,9 @@
 
             var postCards = await postService.GetPostsCardsByIdAsync(userId);
             var receivedComments = await commentService.GetReceivedCommentsCountAsync(userId);
-            var languageDistribution =  languageService
+            var languageDistribution = languageService
                 .GetUserPostsLanguagesDistribution(postCards);
-            var mostPopularLanguage = languageDistribution.Any() 
+            var mostPopularLanguage = languageDistribution.Any()
                 ? languageDistribution.First().Name
                 : "None";
 

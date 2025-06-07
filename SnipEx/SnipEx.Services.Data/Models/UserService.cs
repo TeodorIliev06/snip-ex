@@ -9,34 +9,52 @@
     using SnipEx.Services.Data.Contracts;
     using SnipEx.Data.Repositories.Contracts;
 
+    using static SnipEx.Common.ErrorMessages;
+
     public class UserService(
-        IRepository<ApplicationUser, Guid> userRepository,
         IRepository<PostLike, Guid> postLikeRepository,
+        IRepository<ApplicationUser, Guid> userRepository,
         IRepository<UserConnection, object> userConnectionRepository) : IUserService
     {
         public async Task<ProfileInformationViewModel> GetProfileInformationAsync(string userId)
         {
             var userGuid = Guid.Parse(userId);
-            var viewModel = await userRepository
+
+            var user = await userRepository
                 .GetAllAttached()
                 .Include(u => u.Posts)
                 .Where(u => u.Id == userGuid)
-                .To<ProfileInformationViewModel>()
-                .FirstAsync();
+                .FirstOrDefaultAsync();
 
+            if (user == null)
+            {
+                throw new InvalidOperationException(
+                    string.Format(UserError.UserNotFound, userId));
+            }
+
+            var viewModel = AutoMapperConfig.MapperInstance
+                .Map<ProfileInformationViewModel>(user);
             return viewModel;
         }
 
         public async Task<BookmarkViewModel> GetUserBookmarksAsync(string userId)
         {
             var userGuid = Guid.Parse(userId);
-            var viewModel = await userRepository
+            var user = await userRepository
                 .GetAllAttached()
                 .Include(u => u.Bookmarks)
                 .ThenInclude(b => b.Language)
                 .Where(u => u.Id == userGuid)
-                .To<BookmarkViewModel>()
-                .FirstAsync();
+                .FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                throw new InvalidOperationException(
+                    string.Format(UserError.UserNotFound, userId));
+            }
+
+            var viewModel = AutoMapperConfig.MapperInstance
+                .Map<BookmarkViewModel>(user);
 
             return viewModel;
         }
@@ -44,11 +62,15 @@
         public async Task<IEnumerable<PostCardViewModel>> GetUserSnippetsAsync(string userId)
         {
             var userGuid = Guid.Parse(userId);
+
             var viewModel = await userRepository
                 .GetAllAttached()
                 .Include(u => u.Bookmarks)
-                .ThenInclude(b => b.Language)
+                .ThenInclude(b => b.Language)  // Post -> Language
+                .Include(u => u.Bookmarks)
+                .ThenInclude(b => b.User)      // Post -> User (separate include chain)
                 .Where(u => u.Id == userGuid)
+                .SelectMany(u => u.Bookmarks)
                 .To<PostCardViewModel>()
                 .ToListAsync();
 
