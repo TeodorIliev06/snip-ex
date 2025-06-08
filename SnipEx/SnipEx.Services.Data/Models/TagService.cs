@@ -1,11 +1,12 @@
 ﻿namespace SnipEx.Services.Data.Models
 {
     using Microsoft.EntityFrameworkCore;
+
     using SnipEx.Data.Models;
-    using SnipEx.Data.Repositories.Contracts;
-    using SnipEx.Services.Data.Contracts;
     using SnipEx.Services.Mapping;
     using SnipEx.Web.ViewModels.Tag;
+    using SnipEx.Services.Data.Contracts;
+    using SnipEx.Data.Repositories.Contracts;
 
     public class TagService(
         IRepository<Tag, Guid> tagRepository,

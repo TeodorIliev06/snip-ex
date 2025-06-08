@@ -291,7 +291,7 @@
             return true;
         }
 
-        private (Guid smallerId, Guid largerId) OrderUserIds(Guid user1Guid, Guid user2Guid)
+        private static (Guid smallerId, Guid largerId) OrderUserIds(Guid user1Guid, Guid user2Guid)
         {
             if (user1Guid.CompareTo(user2Guid) < 0)
             {

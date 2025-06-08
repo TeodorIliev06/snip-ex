@@ -1,10 +1,5 @@
 ﻿namespace SnipEx.Services.Tests
 {
-    using System;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using System.Collections.Generic;
-
     using Moq;
     using NUnit.Framework;
     using MockQueryable.Moq;
@@ -58,14 +53,17 @@
             var result = await _languageService.GetAllLanguagesAsync();
 
             // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(4, result.Count());
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Count(), Is.EqualTo(4));
 
             var resultList = result.ToList();
-            Assert.AreEqual("C#", resultList[0].Name);
-            Assert.AreEqual("JavaScript", resultList[1].Name);
-            Assert.AreEqual("Python", resultList[2].Name);
-            Assert.AreEqual("Java", resultList[3].Name);
+            Assert.Multiple(() =>
+            {
+                Assert.That(resultList[0].Name, Is.EqualTo("C#"));
+                Assert.That(resultList[1].Name, Is.EqualTo("JavaScript"));
+                Assert.That(resultList[2].Name, Is.EqualTo("Python"));
+                Assert.That(resultList[3].Name, Is.EqualTo("Java"));
+            });
 
             _mockLanguageRepository
                 .Verify(r => r.GetAllAttached(), Times.Once);
@@ -85,8 +83,8 @@
             var result = await _languageService.GetAllLanguagesAsync();
 
             // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(0, result.Count());
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Count(), Is.EqualTo(0));
 
             _mockLanguageRepository
                 .Verify(r => r.GetAllAttached(), Times.Once);
@@ -110,19 +108,22 @@
             var result = _languageService.GetUserPostsLanguagesDistribution(postCards);
 
             // Assert
-            Assert.IsNotNull(result);
+            Assert.That(result, Is.Not.Null);
             var resultList = result.ToList();
-            Assert.AreEqual(3, resultList.Count);
+            Assert.That(resultList.Count, Is.EqualTo(3));
 
-            // Should be ordered by count descending
-            Assert.AreEqual("C#", resultList[0].Name);
-            Assert.AreEqual(3, resultList[0].Count);
+            Assert.Multiple(() =>
+            {
+                // Should be ordered by count descending
+                Assert.That(resultList[0].Name, Is.EqualTo("C#"));
+                Assert.That(resultList[0].Count, Is.EqualTo(3));
 
-            Assert.AreEqual("JavaScript", resultList[1].Name);
-            Assert.AreEqual(2, resultList[1].Count);
+                Assert.That(resultList[1].Name, Is.EqualTo("JavaScript"));
+                Assert.That(resultList[1].Count, Is.EqualTo(2));
 
-            Assert.AreEqual("Python", resultList[2].Name);
-            Assert.AreEqual(1, resultList[2].Count);
+                Assert.That(resultList[2].Name, Is.EqualTo("Python"));
+                Assert.That(resultList[2].Count, Is.EqualTo(1));
+            });
         }
 
         [Test]
@@ -135,8 +136,8 @@
             var result = _languageService.GetUserPostsLanguagesDistribution(postCards);
 
             // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(0, result.Count());
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Count(), Is.EqualTo(0));
         }
 
         [Test]
@@ -167,11 +168,15 @@
             var result = _languageService.GetUserPostsLanguagesDistribution(postCards);
 
             // Assert
-            Assert.IsNotNull(result);
-            var resultList = result.ToList();
-            Assert.AreEqual(1, resultList.Count);
-            Assert.AreEqual("C#", resultList[0].Name);
-            Assert.AreEqual(3, resultList[0].Count);
+            Assert.Multiple(() =>
+            {
+                Assert.That(result, Is.Not.Null);
+
+                var resultList = result.ToList();
+                Assert.That(resultList.Count, Is.EqualTo(1));
+                Assert.That(resultList[0].Name, Is.EqualTo("C#"));
+                Assert.That(resultList[0].Count, Is.EqualTo(3));
+            });
         }
 
         [Test]
@@ -190,22 +195,22 @@
             var result = _languageService.GetUserPostsLanguagesDistribution(postCards);
 
             // Assert
-            Assert.IsNotNull(result);
+            Assert.That(result, Is.Not.Null);
             var resultList = result.ToList();
-            Assert.AreEqual(3, resultList.Count);
+            Assert.That(resultList.Count, Is.EqualTo(3));
 
             // Verify that null is treated as a separate group
             var nullGroup = resultList.FirstOrDefault(r => r.Name == null);
-            Assert.IsNotNull(nullGroup);
-            Assert.AreEqual(2, nullGroup.Count);
+            Assert.That(nullGroup, Is.Not.Null);
+            Assert.That(nullGroup.Count, Is.EqualTo(2));
 
             var csharpGroup = resultList.FirstOrDefault(r => r.Name == "C#");
-            Assert.IsNotNull(csharpGroup);
-            Assert.AreEqual(1, csharpGroup.Count);
+            Assert.That(csharpGroup, Is.Not.Null);
+            Assert.That(csharpGroup.Count, Is.EqualTo(1));
 
             var jsGroup = resultList.FirstOrDefault(r => r.Name == "JavaScript");
-            Assert.IsNotNull(jsGroup);
-            Assert.AreEqual(1, jsGroup.Count);
+            Assert.That(jsGroup, Is.Not.Null);
+            Assert.That(jsGroup.Count, Is.EqualTo(1));
         }
 
         [Test]
@@ -224,19 +229,19 @@
             var result = _languageService.GetUserPostsLanguagesDistribution(postCards);
 
             // Assert
-            Assert.IsNotNull(result);
+            Assert.That(result, Is.Not.Null);
             var resultList = result.ToList();
-            Assert.AreEqual(4, resultList.Count);
+            Assert.That(resultList.Count, Is.EqualTo(4));
 
             // All should have count of 1
-            Assert.IsTrue(resultList.All(r => r.Count == 1));
+            Assert.That(resultList.All(r => r.Count == 1));
 
             // Verify that they are still properly grouped and ordered
             var languages = resultList.Select(r => r.Name).ToList();
-            Assert.Contains("C#", languages);
-            Assert.Contains("JavaScript", languages);
-            Assert.Contains("Python", languages);
-            Assert.Contains("Java", languages);
+            Assert.That(languages, Does.Contain("C#"));
+            Assert.That(languages, Does.Contain("JavaScript"));
+            Assert.That(languages, Does.Contain("Python"));
+            Assert.That(languages, Does.Contain("Java"));
         }
 
         [Test]
@@ -259,18 +264,21 @@
             var result = _languageService.GetUserPostsLanguagesDistribution(postCards);
 
             // Assert
-            Assert.IsNotNull(result);
+            Assert.That(result, Is.Not.Null);
             var resultList = result.ToList();
-            Assert.AreEqual(3, resultList.Count);
+            Assert.That(resultList.Count, Is.EqualTo(3));
 
-            Assert.AreEqual("C#", resultList[0].Name);
-            Assert.AreEqual(500, resultList[0].Count);
+            Assert.Multiple(() =>
+            {
+                Assert.That(resultList[0].Name, Is.EqualTo("C#"));
+                Assert.That(resultList[0].Count, Is.EqualTo(500));
 
-            Assert.AreEqual("JavaScript", resultList[1].Name);
-            Assert.AreEqual(300, resultList[1].Count);
+                Assert.That(resultList[1].Name, Is.EqualTo("JavaScript"));
+                Assert.That(resultList[1].Count, Is.EqualTo(300));
 
-            Assert.AreEqual("Python", resultList[2].Name);
-            Assert.AreEqual(200, resultList[2].Count);
+                Assert.That(resultList[2].Name, Is.EqualTo("Python"));
+                Assert.That(resultList[2].Count, Is.EqualTo(200));
+            });
         }
     }
 }

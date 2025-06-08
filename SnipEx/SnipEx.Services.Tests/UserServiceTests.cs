@@ -1,19 +1,16 @@
 ﻿namespace SnipEx.Services.Tests
 {
-    using MockQueryable.Moq;
     using Moq;
     using NUnit.Framework;
+    using MockQueryable.Moq;
+
     using SnipEx.Data.Models;
-    using SnipEx.Data.Models.Enums;
-    using SnipEx.Data.Repositories.Contracts;
-    using SnipEx.Services.Data.Models;
     using SnipEx.Services.Mapping;
-    using SnipEx.Services.Tests.Utils;
+    using SnipEx.Data.Models.Enums;
     using SnipEx.Web.ViewModels.User;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
+    using SnipEx.Services.Data.Models;
+    using SnipEx.Services.Tests.Utils;
+    using SnipEx.Data.Repositories.Contracts;
 
     [TestFixture]
     public class UserServiceTests
@@ -86,7 +83,7 @@
             var result = await _userService.GetTotalLikesReceivedByUserAsync(userId);
 
             // Assert
-            Assert.AreEqual(2, result); // Only 2 likes on the target user's posts
+            Assert.That(result, Is.EqualTo(2)); // Only 2 likes on the target user's posts
             _mockPostLikeRepository.Verify(r => r.GetAllAttached(), Times.Once);
         }
 
@@ -117,7 +114,7 @@
             var result = await _userService.GetTotalLikesReceivedByUserAsync(userId);
 
             // Assert
-            Assert.AreEqual(0, result);
+            Assert.That(result, Is.EqualTo(0));
             _mockPostLikeRepository.Verify(r => r.GetAllAttached(), Times.Once);
         }
 
@@ -137,7 +134,7 @@
             var result = await _userService.GetTotalLikesReceivedByUserAsync(userId);
 
             // Assert
-            Assert.AreEqual(0, result);
+            Assert.That(result, Is.EqualTo(0));
             _mockPostLikeRepository.Verify(r => r.GetAllAttached(), Times.Once);
         }
 
@@ -205,7 +202,7 @@
             var result = await _userService.GetTotalLikesReceivedByUserAsync(userId);
 
             // Assert
-            Assert.AreEqual(1000, result); // Only the target user's posts should be counted
+            Assert.That(result, Is.EqualTo(1000)); // Only the target user's posts should be counted
             _mockPostLikeRepository.Verify(r => r.GetAllAttached(), Times.Once);
         }
 
@@ -245,8 +242,8 @@
             var result = await _userService.GetProfileInformationAsync(userId);
 
             // Assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<ProfileInformationViewModel>(result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<ProfileInformationViewModel>());
             _mockUserRepository.Verify(r => r.GetAllAttached(), Times.Once);
         }
 
@@ -324,7 +321,7 @@
             var result = await _userService.GetProfileInformationAsync(userId);
 
             // Assert
-            Assert.IsNotNull(result);
+            Assert.That(result, Is.Not.Null);
             // Verify that the Include(u => u.Posts) was part of the query by checking repository call
             _mockUserRepository.Verify(r => r.GetAllAttached(), Times.Once);
         }
@@ -368,8 +365,8 @@
             var result = await _userService.GetProfileInformationAsync(targetUserId);
 
             // Assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<ProfileInformationViewModel>(result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<ProfileInformationViewModel>());
             _mockUserRepository.Verify(r => r.GetAllAttached(), Times.Once);
         }
 
@@ -401,8 +398,8 @@
             var result = await _userService.GetProfileInformationAsync(userId);
 
             // Assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<ProfileInformationViewModel>(result);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<ProfileInformationViewModel>());
             _mockUserRepository.Verify(r => r.GetAllAttached(), Times.Once);
         }
 
@@ -468,10 +465,14 @@
 
             // Assert
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.TotalBookmarks, Is.EqualTo(3));
-            Assert.That(result.RecentBookmarksCount, Is.EqualTo(2)); // Only bookmarks from last 30 days
-            Assert.That(result.MostCommonLanguage, Is.EqualTo("C#")); // Most frequent language
-            Assert.That(result.Bookmarks, Is.Not.Null);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.TotalBookmarks, Is.EqualTo(3));
+                Assert.That(result.RecentBookmarksCount, Is.EqualTo(2)); // Only bookmarks from last 30 days
+                Assert.That(result.MostCommonLanguage, Is.EqualTo("C#")); // Most frequent language
+                Assert.That(result.Bookmarks, Is.Not.Null);
+            });
             _mockUserRepository.Verify(r => r.GetAllAttached(), Times.Once);
         }
 
@@ -503,10 +504,14 @@
 
             // Assert
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.TotalBookmarks, Is.EqualTo(0));
-            Assert.That(result.RecentBookmarksCount, Is.EqualTo(0));
-            Assert.That(result.MostCommonLanguage, Is.EqualTo("None")); // Default when no bookmarks
-            Assert.That(result.Bookmarks, Is.Not.Null);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.TotalBookmarks, Is.EqualTo(0));
+                Assert.That(result.RecentBookmarksCount, Is.EqualTo(0));
+                Assert.That(result.MostCommonLanguage, Is.EqualTo("None")); // Default when no bookmarks
+                Assert.That(result.Bookmarks, Is.Not.Null);
+            });
             _mockUserRepository.Verify(r => r.GetAllAttached(), Times.Once);
         }
 
@@ -575,10 +580,13 @@
             // Act
             var result = await _userService.GetUserBookmarksAsync(userId);
 
-            // Assert
-            Assert.That(result.TotalBookmarks, Is.EqualTo(4));
-            Assert.That(result.RecentBookmarksCount, Is.EqualTo(2)); // Only recent ones
-            Assert.That(result.MostCommonLanguage, Is.EqualTo("C#")); // Most frequent
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result.TotalBookmarks, Is.EqualTo(4));
+                Assert.That(result.RecentBookmarksCount, Is.EqualTo(2)); // Only recent ones
+                Assert.That(result.MostCommonLanguage, Is.EqualTo("C#")); // Most frequent
+            });
             _mockUserRepository.Verify(r => r.GetAllAttached(), Times.Once);
         }
 
@@ -622,9 +630,12 @@
             // Act
             var result = await _userService.GetUserBookmarksAsync(userId);
 
-            // Assert
-            Assert.That(result.TotalBookmarks, Is.EqualTo(6));
-            Assert.That(result.MostCommonLanguage, Is.EqualTo("JavaScript")); // Most frequent
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result.TotalBookmarks, Is.EqualTo(6));
+                Assert.That(result.MostCommonLanguage, Is.EqualTo("JavaScript")); // Most frequent
+            });
             _mockUserRepository.Verify(r => r.GetAllAttached(), Times.Once);
         }
 
@@ -742,11 +753,14 @@
             // Act
             var result = await _userService.GetUserBookmarksAsync(userId);
 
-            // Assert
-            Assert.That(result.TotalBookmarks, Is.EqualTo(2));
-            // Only the bookmark at -29 days should be counted as recent
-            Assert.That(result.RecentBookmarksCount, Is.EqualTo(1));
-            Assert.That(result.MostCommonLanguage, Is.EqualTo("C#")); // C# should win with 1 vs 0 recent bookmarks
+            Assert.Multiple(() =>
+            {
+                // Assert
+                Assert.That(result.TotalBookmarks, Is.EqualTo(2));
+                // Only the bookmark at -29 days should be counted as recent
+                Assert.That(result.RecentBookmarksCount, Is.EqualTo(1));
+                Assert.That(result.MostCommonLanguage, Is.EqualTo("C#")); // C# should win with 1 vs 0 recent bookmarks
+            });
             _mockUserRepository.Verify(r => r.GetAllAttached(), Times.Once);
         }
 
@@ -808,13 +822,16 @@
             Assert.That(result.Count(), Is.EqualTo(2));
 
             var resultList = result.ToList();
-            Assert.That(resultList[0].Title, Is.EqualTo("Bookmark 1"));
-            Assert.That(resultList[0].Content, Is.EqualTo("Content 1"));
-            Assert.That(resultList[0].LanguageName, Is.EqualTo("C#"));
+            Assert.Multiple(() =>
+            {
+                Assert.That(resultList[0].Title, Is.EqualTo("Bookmark 1"));
+                Assert.That(resultList[0].Content, Is.EqualTo("Content 1"));
+                Assert.That(resultList[0].LanguageName, Is.EqualTo("C#"));
 
-            Assert.That(resultList[1].Title, Is.EqualTo("Bookmark 2"));
-            Assert.That(resultList[1].Content, Is.EqualTo("Content 2"));
-            Assert.That(resultList[1].LanguageName, Is.EqualTo("JavaScript"));
+                Assert.That(resultList[1].Title, Is.EqualTo("Bookmark 2"));
+                Assert.That(resultList[1].Content, Is.EqualTo("Content 2"));
+                Assert.That(resultList[1].LanguageName, Is.EqualTo("JavaScript"));
+            });
 
             _mockUserRepository.Verify(r => r.GetAllAttached(), Times.Once);
         }
@@ -943,13 +960,17 @@
             Assert.That(result.Count(), Is.EqualTo(1));
 
             var connection = result.First();
-            Assert.That(connection.UserId, Is.EqualTo(userGuid.ToString()));
-            Assert.That(connection.ConnectedUserId, Is.EqualTo(connectedUserId.ToString()));
-            Assert.That(connection.TargetUserId, Is.EqualTo(connectedUserId.ToString())); // Should be the connected user
-            Assert.That(connection.Username, Is.EqualTo("connecteduser")); // Should show connected user's name
-            Assert.That(connection.ActorAvatar, Is.EqualTo("/images/connected.jpg")); // Should show connected user's avatar
-            Assert.That(connection.PostsCount, Is.EqualTo(3)); // Should show connected user's post count
-            Assert.That(connection.Type, Is.EqualTo(ConnectionStatus.Accepted));
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(connection.UserId, Is.EqualTo(userGuid.ToString()));
+                Assert.That(connection.ConnectedUserId, Is.EqualTo(connectedUserId.ToString()));
+                Assert.That(connection.TargetUserId, Is.EqualTo(connectedUserId.ToString())); // Should be the connected user
+                Assert.That(connection.Username, Is.EqualTo("connecteduser")); // Should show connected user's name
+                Assert.That(connection.ActorAvatar, Is.EqualTo("/images/connected.jpg")); // Should show connected user's avatar
+                Assert.That(connection.PostsCount, Is.EqualTo(3)); // Should show connected user's post count
+                Assert.That(connection.Type, Is.EqualTo(ConnectionStatus.Accepted));
+            });
 
             _mockUserConnectionRepository.Verify(r => r.GetAllAttached(), Times.Once);
         }
@@ -999,13 +1020,17 @@
             Assert.That(result.Count(), Is.EqualTo(1));
 
             var connection = result.First();
-            Assert.That(connection.UserId, Is.EqualTo(otherUserId.ToString()));
-            Assert.That(connection.ConnectedUserId, Is.EqualTo(userGuid.ToString()));
-            Assert.That(connection.TargetUserId, Is.EqualTo(otherUserId.ToString())); // Should be the other user
-            Assert.That(connection.Username, Is.EqualTo("otheruser")); // Should show other user's name
-            Assert.That(connection.ActorAvatar, Is.EqualTo("/images/other.jpg")); // Should show other user's avatar
-            Assert.That(connection.PostsCount, Is.EqualTo(1)); // Should show other user's post count
-            Assert.That(connection.Type, Is.EqualTo(ConnectionStatus.Pending));
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(connection.UserId, Is.EqualTo(otherUserId.ToString()));
+                Assert.That(connection.ConnectedUserId, Is.EqualTo(userGuid.ToString()));
+                Assert.That(connection.TargetUserId, Is.EqualTo(otherUserId.ToString())); // Should be the other user
+                Assert.That(connection.Username, Is.EqualTo("otheruser")); // Should show other user's name
+                Assert.That(connection.ActorAvatar, Is.EqualTo("/images/other.jpg")); // Should show other user's avatar
+                Assert.That(connection.PostsCount, Is.EqualTo(1)); // Should show other user's post count
+                Assert.That(connection.Type, Is.EqualTo(ConnectionStatus.Pending));
+            });
 
             _mockUserConnectionRepository.Verify(r => r.GetAllAttached(), Times.Once);
         }
@@ -1082,16 +1107,24 @@
             // First connection - user is connector
             var firstConnection = resultList.FirstOrDefault(c => c.TargetUserId == user1Id.ToString());
             Assert.That(firstConnection, Is.Not.Null);
-            Assert.That(firstConnection.Username, Is.EqualTo("user1"));
-            Assert.That(firstConnection.PostsCount, Is.EqualTo(2));
-            Assert.That(firstConnection.Type, Is.EqualTo(ConnectionStatus.Accepted));
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(firstConnection.Username, Is.EqualTo("user1"));
+                Assert.That(firstConnection.PostsCount, Is.EqualTo(2));
+                Assert.That(firstConnection.Type, Is.EqualTo(ConnectionStatus.Accepted));
+            });
 
             // Second connection - user is being connected to
             var secondConnection = resultList.FirstOrDefault(c => c.TargetUserId == user2Id.ToString());
             Assert.That(secondConnection, Is.Not.Null);
-            Assert.That(secondConnection.Username, Is.EqualTo("user2"));
-            Assert.That(secondConnection.PostsCount, Is.EqualTo(3));
-            Assert.That(secondConnection.Type, Is.EqualTo(ConnectionStatus.Blocked));
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(secondConnection.Username, Is.EqualTo("user2"));
+                Assert.That(secondConnection.PostsCount, Is.EqualTo(3));
+                Assert.That(secondConnection.Type, Is.EqualTo(ConnectionStatus.Blocked));
+            });
 
             _mockUserConnectionRepository.Verify(r => r.GetAllAttached(), Times.Once);
         }

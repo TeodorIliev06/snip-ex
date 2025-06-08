@@ -1,10 +1,5 @@
 ﻿namespace SnipEx.Services.Tests
 {
-    using System;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using System.Collections.Generic;
-
     using Moq;
     using NUnit.Framework;
     using MockQueryable.Moq;
@@ -59,13 +54,16 @@
             var result = await _tagService.GetTrendingTagsAsync();
 
             // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(3, result.Count());
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Count(), Is.EqualTo(3));
 
             var resultList = result.ToList();
-            Assert.AreEqual("C#", resultList[0].Name);
-            Assert.AreEqual("JavaScript", resultList[1].Name);
-            Assert.AreEqual("Python", resultList[2].Name);
+            Assert.Multiple(() =>
+            {
+                Assert.That(resultList[0].Name, Is.EqualTo("C#"));
+                Assert.That(resultList[1].Name, Is.EqualTo("JavaScript"));
+                Assert.That(resultList[2].Name, Is.EqualTo("Python"));
+            });
 
             _mockTagRepository
                 .Verify(r => r.GetAllAttached(), Times.Once);
@@ -82,7 +80,7 @@
             var result = await _tagService.AddTagsToPostAsync(models, postGuid);
 
             // Assert
-            Assert.IsFalse(result);
+            Assert.That(result, Is.False);
         }
 
         [Test]
@@ -96,7 +94,7 @@
             var result = await _tagService.AddTagsToPostAsync(models, postGuid);
 
             // Assert
-            Assert.IsFalse(result);
+            Assert.That(result, Is.False);
         }
 
         [Test]
@@ -115,7 +113,7 @@
             var result = await _tagService.AddTagsToPostAsync(models, postGuid);
 
             // Assert
-            Assert.IsFalse(result);
+            Assert.That(result, Is.False);
         }
 
         [Test]
@@ -160,7 +158,7 @@
             var result = await _tagService.AddTagsToPostAsync(models, postGuid);
 
             // Assert
-            Assert.IsTrue(result);
+            Assert.That(result, Is.True);
             _mockTagRepository
                 .Verify(r =>
                     r.AddRangeAsync(It.IsAny<Tag[]>()), Times.Once);
@@ -215,7 +213,7 @@
             var result = await _tagService.AddTagsToPostAsync(models, postGuid);
 
             // Assert
-            Assert.IsTrue(result);
+            Assert.That(result, Is.True);
 
             _mockTagRepository
                 .Verify(r =>
