@@ -166,16 +166,6 @@
     color: #e6edf3;
 }
 
-.connection-badge.follower {
-    background-color: #3fb950;
-    color: #e6edf3;
-}
-
-.connection-badge.suggested {
-    background-color: #f85149;
-    color: #e6edf3;
-}
-
 .connection-bio {
     margin-bottom: 0.75rem;
     color: #c9d1d9;
@@ -242,16 +232,8 @@
     border-left: 3px solid #8957e5;
 }
 
-.connection-item.following {
+.connection-item.connected {
     border-left: 3px solid #58a6ff;
-}
-
-.connection-item.follower {
-    border-left: 3px solid #3fb950;
-}
-
-.connection-item.suggested {
-    border-left: 3px solid #f85149;
 }
 
 .load-more {

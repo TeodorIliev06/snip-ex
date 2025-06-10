@@ -44,9 +44,9 @@
                                 </div>
 
                                 <div class="connection-actions">
-                                    <button class="connect-button btn-disconnect"
+                                    <button class="connect-button @connection.ButtonCssClass"
                                             data-target-user-id="@connection.TargetUserId">
-                                        Disconnect
+                                        @connection.ButtonText
                                     </button>
                                 </div>
                             </div>
@@ -68,32 +68,6 @@
                     <span>When you receive connections, they'll appear here.</span>
                 </div>
             }
-
-            <!-- Mutual Connection -->
-            <div class="connection-item mutual" data-id="1">
-                <div class="connection-avatar">
-                    <img src="/images/default-avatar.png" alt="alexcoder">
-                </div>
-                <div class="connection-content">
-                    <div class="connection-header">
-                        <div class="connection-name">
-                            <span>alexcoder</span>
-                            <span class="connection-badge mutual">Mutual</span>
-                        </div>
-                        <div class="connection-actions">
-                            <button class="btn-unfollow">Unfollow</button>
-                        </div>
-                    </div>
-                    <div class="connection-bio">
-                        Full-stack developer passionate about clean code and new technologies.
-                    </div>
-                    <div class="connection-meta">
-                        <span class="meta-item"><i class="fa-solid fa-code"></i> 48 snippets</span>
-                        <span class="meta-item"><i class="fa-solid fa-star"></i> 127 stars</span>
-                        <span class="meta-item"><i class="fa-solid fa-users"></i> 15 mutual connections</span>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <div class="load-more">

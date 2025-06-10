@@ -112,20 +112,23 @@
                 .GetUserMutualConnectionsAsync(userId);
             var connectionsCount = await userActionService.GetConnectionsCountAsync(userId);
 
-            //Optimise these queries with a bulk query and dictionary
             var allConnections = new List<ConnectionViewModel>();
             allConnections.AddRange(directConnections);
             allConnections.AddRange(mutualConnections);
 
+            var targetUserIds = allConnections.Select(c => c.TargetUserId).ToList();
+
+            var mutualConnectionsCounts = await userActionService
+                .GetMutualConnectionsCountByUserAsync(userId, targetUserIds);
+            var totalLikesCounts = await userService
+                .GetTotalLikesReceivedByUserAsync(targetUserIds);
+
             foreach (var connection in allConnections)
             {
-                var mutualConnectionsCount = await userActionService
-                    .GetMutualConnectionsCountAsync(userId, connection.TargetUserId);
-                var totalLikesCount = await userService
-                    .GetTotalLikesReceivedByUserAsync(connection.TargetUserId);
-
-                connection.MutualConnectionsCount = mutualConnectionsCount;
-                connection.LikesCount = totalLikesCount;
+                connection.MutualConnectionsCount = mutualConnectionsCounts
+                    .GetValueOrDefault(connection.TargetUserId, 0);
+                connection.LikesCount = totalLikesCounts
+                    .GetValueOrDefault(connection.TargetUserId, 0);
             }
 
             var viewModel = new UserConnectionsViewModel()

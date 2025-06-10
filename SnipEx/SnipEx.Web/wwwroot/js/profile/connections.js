@@ -119,49 +119,55 @@ async function toggleConnection(targetUserId) {
             ?.closest('.connection-item');
         if (!connectionItem) return;
 
-        const connectButton = connectionItem.querySelector('.connect-button');
-        const connectionBadge = connectionItem.querySelector('.connection-badge');
         const connectionCount = document.querySelector('.stat-number');
-
         connectionCount.textContent = data.connectionsCount;
 
-        const isMutual = connectionItem.classList.contains('mutual');
-        const isConnected = connectionItem.classList.contains('connected');
-
         if (data.isConnected) {
-            // User is now connected
-            connectButton.classList.remove('btn-connect');
-            connectButton.classList.add('btn-disconnect');
-            connectionBadge.classList.add('connected');
-
-            // Update item class from mutual to connected if it was mutual
-            if (isMutual) {
-                connectionItem.classList.remove('mutual');
-                connectionItem.classList.add('connected');
-            }
-
-            connectButton.innerHTML = 'Disconnect';
-            connectionBadge.innerHTML = 'Connected';
-
+            updateConnectionUI(connectionItem, 'connected');
         } else {
-            // User disconnected
-            connectButton.classList.remove('btn-disconnect');
-            connectButton.classList.add('btn-connect');
-            connectionBadge.classList.remove('connected');
-
-            // Determine what to show based on original connection type
-            if (connectionItem.hasAttribute('data-original-type')) {
-                const originalType = connectionItem.getAttribute('data-original-type');
-                if (originalType === 'mutual') {
-                    connectionItem.classList.remove('connected');
-                    connectionItem.classList.add('mutual');
-                    connectButton.innerHTML = 'Connect';
-                    connectionBadge.innerHTML = 'Mutual';
-                }
-            } else {
-                connectButton.innerHTML = 'Connect';
-                connectionBadge.innerHTML = '';
-            }
+            const originalType = connectionItem.getAttribute('data-original-type') || 'mutual';
+            updateConnectionUI(connectionItem, originalType);
         }
     });
+}
+
+const connectionStates = {
+    connected: {
+        button: { classes: ['btn-disconnect'], text: 'Disconnect' },
+        badge: { classes: ['connected'], text: 'CONNECTED' },
+        item: { classes: ['connected'] }
+    },
+    mutual: {
+        button: { classes: ['btn-connect'], text: 'Connect' },
+        badge: { classes: ['mutual'], text: 'MUTUAL' },
+        item: { classes: ['mutual'] }
+    },
+    disconnected: {
+        button: { classes: ['btn-connect'], text: 'Connect' },
+        badge: { classes: [], text: '' },
+        item: { classes: [] }
+    }
+};
+
+function updateConnectionUI(connectionItem, newState) {
+    const connectButton = connectionItem.querySelector('.connect-button');
+    const connectionBadge = connectionItem.querySelector('.connection-badge');
+    const config = connectionStates[newState];
+
+    // Clear all possible classes
+    const allClasses = ['btn-connect', 'btn-disconnect', 'connected', 'mutual'];
+
+    // Update button
+    connectButton.classList.remove(...allClasses);
+    connectButton.classList.add(...config.button.classes);
+    connectButton.innerHTML = config.button.text;
+
+    // Update badge
+    connectionBadge.classList.remove(...allClasses);
+    connectionBadge.classList.add(...config.badge.classes);
+    connectionBadge.innerHTML = config.badge.text;
+
+    // Update item
+    connectionItem.classList.remove(...allClasses);
+    connectionItem.classList.add(...config.item.classes);
 }

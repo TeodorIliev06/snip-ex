@@ -240,16 +240,19 @@
             return connectionsCount;
         }
 
-        public async Task<int> GetMutualConnectionsCountAsync(string currentUserId, string targetUserId)
+        public async Task<Dictionary<string, int>> GetMutualConnectionsCountByUserAsync(string currentUserId, List<string> targetUserIds)
         {
             var currentUserGuid = Guid.Parse(currentUserId);
-            var targetUserGuid = Guid.Parse(targetUserId);
+            var targetUserGuids = targetUserIds.Select(Guid.Parse).ToList();
+
+            var allRelevantUserGuids = new List<Guid> { currentUserGuid };
+            allRelevantUserGuids.AddRange(targetUserGuids);
 
             var allConnections = await userConnectionRepository
                 .GetAllAttached()
                 .Where(uc =>
-                    uc.UserId == currentUserGuid || uc.ConnectedUserId == currentUserGuid ||
-                    uc.UserId == targetUserGuid || uc.ConnectedUserId == targetUserGuid)
+                    allRelevantUserGuids.Contains(uc.UserId) ||
+                    allRelevantUserGuids.Contains(uc.ConnectedUserId))
                 .ToListAsync();
 
             var currentUserConnections = allConnections
@@ -261,16 +264,30 @@
                     : uc.UserId)
                 .ToHashSet();
 
-            var targetUserConnections = allConnections
-                .Where(uc => 
-                    uc.UserId == targetUserGuid ||
-                    uc.ConnectedUserId == targetUserGuid)
-                .Select(uc => uc.UserId == targetUserGuid 
-                    ? uc.ConnectedUserId 
-                    : uc.UserId)
-                .ToHashSet();
+            var result = new Dictionary<string, int>();
 
-            return currentUserConnections.Intersect(targetUserConnections).Count();
+            var guidToStringMap = targetUserIds.ToDictionary(Guid.Parse, id => id);
+
+            foreach (var targetUserGuid in targetUserGuids)
+            {
+                var targetUserConnections = allConnections
+                    .Where(uc =>
+                        uc.UserId == targetUserGuid ||
+                        uc.ConnectedUserId == targetUserGuid)
+                    .Select(uc => uc.UserId == targetUserGuid
+                        ? uc.ConnectedUserId
+                        : uc.UserId)
+                    .ToHashSet();
+
+                var mutualCount = currentUserConnections.Intersect(targetUserConnections).Count();
+
+                if (guidToStringMap.TryGetValue(targetUserGuid, out string originalStringId))
+                {
+                    result[originalStringId] = mutualCount;
+                }
+            }
+
+            return result;
         }
 
         public async Task<bool> IncrementPostViewsAsync(Guid postGuid, string userId)

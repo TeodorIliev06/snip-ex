@@ -1,5 +1,7 @@
 ﻿namespace SnipEx.Services.Data.Models
 {
+    using System.Linq;
+
     using Microsoft.EntityFrameworkCore;
 
     using SnipEx.Data.Models;
@@ -189,16 +191,32 @@
             return mutualUsers;
         }
 
-        public async Task<int> GetTotalLikesReceivedByUserAsync(string userId)
+        public async Task<Dictionary<string, int>> GetTotalLikesReceivedByUserAsync(List<string> userIds)
         {
-            var userGuid = Guid.Parse(userId);
+            var userGuids = userIds.Select(Guid.Parse).ToList();
 
-            var totalLikes = await postLikeRepository
+            var likesData = await postLikeRepository
                 .GetAllAttached()
-                .Where(pl => pl.Post.UserId == userGuid)
-                .CountAsync();
+                .Where(pl => pl.Post.UserId.HasValue &&
+                             userGuids.Contains(pl.Post.UserId.Value))
+                .GroupBy(pl => pl.Post.UserId!.Value)
+                .Select(g => 
+                    new { UserId = g.Key, Count = g.Count() })
+                .ToListAsync();
 
-            return totalLikes;
+            var result = userIds.ToDictionary(id => id, id => 0);
+
+            // Create a mapping from Guid back to original string format
+            var guidToStringMap = userIds.ToDictionary(Guid.Parse, id => id);
+
+            foreach (var item in likesData)
+            {
+                if (guidToStringMap.TryGetValue(item.UserId, out string originalStringId))
+                {
+                    result[originalStringId] = item.Count;
+                }
+            }
+            return result;
         }
     }
 }

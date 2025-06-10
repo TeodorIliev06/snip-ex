@@ -551,10 +551,10 @@
 
         #endregion
 
-        #region GetMutualConnectionsCountAsync Tests
+        #region GetMutualConnectionsCountByUserAsync Tests
 
         [Test]
-        public async Task GetMutualConnectionsCountAsync_ShouldReturnCorrectCount()
+        public async Task GetMutualConnectionsCountByUserAsync_ShouldReturnCorrectCount()
         {
             // Arrange
             var currentUserId = Guid.NewGuid().ToString();
@@ -581,7 +581,7 @@
             _mockUserConnectionRepository.Setup(r => r.GetAllAttached()).Returns(mockDbSet.Object);
 
             // Act
-            var result = await _userActionService.GetMutualConnectionsCountAsync(currentUserId, targetUserId);
+            var result = await _userActionService.GetMutualConnectionsCountByUserAsync(currentUserId, targetUserId);
 
             // Assert
             Assert.That(result, Is.EqualTo(2));

@@ -34,5 +34,31 @@
                 };
             }
         }
+
+        public string ButtonText
+        {
+            get
+            {
+                return Type switch
+                {
+                    ConnectionStatus.Mutual => "Connect",
+                    ConnectionStatus.Accepted => "Disconnect",
+                    _ => "Connect"
+                };
+            }
+        }
+
+        public string ButtonCssClass
+        {
+            get
+            {
+                return Type switch
+                {
+                    ConnectionStatus.Mutual => "btn-connect",
+                    ConnectionStatus.Accepted => "btn-disconnect",
+                    _ => "btn-connect"
+                };
+            }
+        }
     }
 }
