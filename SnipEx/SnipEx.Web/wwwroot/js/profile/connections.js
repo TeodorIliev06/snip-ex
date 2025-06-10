@@ -26,9 +26,9 @@
         });
     });
 
-    const disconnectButtons = document.querySelectorAll('.btn-disconnect');
+    const connectionButtons = document.querySelectorAll('.connect-button');
 
-    disconnectButtons.forEach(button => {
+    connectionButtons.forEach(button => {
         button.addEventListener('click', async function () {
             const targetUserId = button.getAttribute('data-target-user-id');
 
@@ -121,25 +121,47 @@ async function toggleConnection(targetUserId) {
 
         const connectButton = connectionItem.querySelector('.connect-button');
         const connectionBadge = connectionItem.querySelector('.connection-badge');
-
         const connectionCount = document.querySelector('.stat-number');
+
         connectionCount.textContent = data.connectionsCount;
 
+        const isMutual = connectionItem.classList.contains('mutual');
+        const isConnected = connectionItem.classList.contains('connected');
+
         if (data.isConnected) {
+            // User is now connected
             connectButton.classList.remove('btn-connect');
             connectButton.classList.add('btn-disconnect');
             connectionBadge.classList.add('connected');
+
+            // Update item class from mutual to connected if it was mutual
+            if (isMutual) {
+                connectionItem.classList.remove('mutual');
+                connectionItem.classList.add('connected');
+            }
 
             connectButton.innerHTML = 'Disconnect';
             connectionBadge.innerHTML = 'Connected';
 
         } else {
+            // User disconnected
             connectButton.classList.remove('btn-disconnect');
             connectButton.classList.add('btn-connect');
             connectionBadge.classList.remove('connected');
 
-            connectButton.innerHTML = 'Connect';
-            connectionBadge.innerHTML = '';
+            // Determine what to show based on original connection type
+            if (connectionItem.hasAttribute('data-original-type')) {
+                const originalType = connectionItem.getAttribute('data-original-type');
+                if (originalType === 'mutual') {
+                    connectionItem.classList.remove('connected');
+                    connectionItem.classList.add('mutual');
+                    connectButton.innerHTML = 'Connect';
+                    connectionBadge.innerHTML = 'Mutual';
+                }
+            } else {
+                connectButton.innerHTML = 'Connect';
+                connectionBadge.innerHTML = '';
+            }
         }
     });
 }

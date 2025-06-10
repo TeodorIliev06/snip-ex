@@ -21,9 +21,7 @@
         <div class="filter-bar">
             <button class="filter-button active" data-filter="all">All</button>
             <button class="filter-button" data-filter="following">Following</button>
-            <button class="filter-button" data-filter="followers">Followers</button>
             <button class="filter-button" data-filter="mutual">Mutual</button>
-            <button class="filter-button" data-filter="suggested">Suggested</button>
         </div>
 
         <div class="connections-list">
@@ -33,22 +31,26 @@
                 {
                     <div class="connection-item @connection.CssType">
                         <div class="connection-avatar">
-                        <img src="@connection.ActorAvatar">
+                            <img src="@connection.ActorAvatar">
                         </div>
+
                         <div class="connection-content">
                             <div class="connection-header">
                                 <div class="connection-name">
                                     <span>@connection.Username</span>
-                                    <span class="connection-badge @connection.CssType">Connected</span>
+                                    <span class="connection-badge @connection.CssType">
+                                        @connection.CssType.ToUpper()
+                                    </span>
                                 </div>
+
                                 <div class="connection-actions">
-                                    <button 
-                                        class="connect-button btn-disconnect" 
-                                        data-target-user-id="@connection.TargetUserId">
+                                    <button class="connect-button btn-disconnect"
+                                            data-target-user-id="@connection.TargetUserId">
                                         Disconnect
                                     </button>
                                 </div>
                             </div>
+
                             <div class="connection-meta">
                                 <span class="meta-item"><i class="fa-solid fa-code"></i> @connection.PostsCount snippets</span>
                                 <span class="meta-item"><i class="fa-solid fa-thumbs-up"></i> @connection.LikesCount likes</span>
@@ -66,6 +68,7 @@
                     <span>When you receive connections, they'll appear here.</span>
                 </div>
             }
+
             <!-- Mutual Connection -->
             <div class="connection-item mutual" data-id="1">
                 <div class="connection-avatar">
@@ -88,29 +91,6 @@
                         <span class="meta-item"><i class="fa-solid fa-code"></i> 48 snippets</span>
                         <span class="meta-item"><i class="fa-solid fa-star"></i> 127 stars</span>
                         <span class="meta-item"><i class="fa-solid fa-users"></i> 15 mutual connections</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Following Connection -->
-            <div class="connection-item following" data-id="2">
-                <div class="connection-avatar">
-                    <img src="/images/default-avatar.png" alt="devmartin">
-                </div>
-                <div class="connection-content">
-                    <div class="connection-header">
-                        <div class="connection-name">
-                            <span>devmartin</span>
-                            <span class="connection-badge following">Connected</span>
-                        </div>
-                        <div class="connection-actions">
-                            <button class="btn-unfollow">Disconnect</button>
-                        </div>
-                    </div>
-                    <div class="connection-meta">
-                        <span class="meta-item"><i class="fa-solid fa-code"></i> 36 snippets</span>
-                        <span class="meta-item"><i class="fa-solid fa-star"></i> 94 stars</span>
-                        <span class="meta-item"><i class="fa-solid fa-users"></i> 8 mutual connections</span>
                     </div>
                 </div>
             </div>

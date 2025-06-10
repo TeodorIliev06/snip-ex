@@ -106,12 +106,18 @@
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
 
-            var connections = await userService
+            var directConnections = await userService
                 .GetUserConnectionsAsync(userId);
+            var mutualConnections = await userService
+                .GetUserMutualConnectionsAsync(userId);
             var connectionsCount = await userActionService.GetConnectionsCountAsync(userId);
 
             //Optimise these queries with a bulk query and dictionary
-            foreach (var connection in connections)
+            var allConnections = new List<ConnectionViewModel>();
+            allConnections.AddRange(directConnections);
+            allConnections.AddRange(mutualConnections);
+
+            foreach (var connection in allConnections)
             {
                 var mutualConnectionsCount = await userActionService
                     .GetMutualConnectionsCountAsync(userId, connection.TargetUserId);
@@ -124,7 +130,7 @@
 
             var viewModel = new UserConnectionsViewModel()
             {
-                Connections = connections,
+                Connections = allConnections,
                 ConnectionsCount = connectionsCount
             };
 

@@ -29,6 +29,7 @@
                 return Type switch
                 {
                     ConnectionStatus.Accepted => "connected",
+                    ConnectionStatus.Mutual => "mutual",
                     _ => "general"
                 };
             }

@@ -4,6 +4,7 @@
 
     using SnipEx.Data.Models;
     using SnipEx.Services.Mapping;
+    using SnipEx.Data.Models.Enums;
     using SnipEx.Web.ViewModels.User;
     using SnipEx.Web.ViewModels.Post;
     using SnipEx.Services.Data.Contracts;
@@ -66,9 +67,9 @@
             var viewModel = await userRepository
                 .GetAllAttached()
                 .Include(u => u.Bookmarks)
-                .ThenInclude(b => b.Language)  // Post -> Language
+                .ThenInclude(b => b.Language)
                 .Include(u => u.Bookmarks)
-                .ThenInclude(b => b.User)      // Post -> User (separate include chain)
+                .ThenInclude(b => b.User)
                 .Where(u => u.Id == userGuid)
                 .SelectMany(u => u.Bookmarks)
                 .To<PostCardViewModel>()
@@ -109,6 +110,83 @@
                 .ToListAsync();
 
             return viewModel;
+        }
+
+        public async Task<IEnumerable<ConnectionViewModel>> GetUserMutualConnectionsAsync(string userId)
+        {
+            var userGuid = Guid.Parse(userId);
+
+            var userDirectConnections = await userConnectionRepository
+                .GetAllAttached()
+                .Where(uc => (uc.UserId == userGuid || uc.ConnectedUserId == userGuid)
+                             && uc.Status == ConnectionStatus.Accepted)
+                .Select(uc => uc.UserId == userGuid ? uc.ConnectedUserId : uc.UserId)
+                .ToListAsync();
+
+            // Find people who are:
+            // 1. Connected to user's direct connections
+            // 2. NOT directly connected to the user
+            // 3. NOT the user themselves
+            var mutualConnectionUsers = await userConnectionRepository
+                .GetAllAttached()
+                .Where(uc =>
+                    // One person in the connection is from user's direct connections
+                    (userDirectConnections.Contains(uc.UserId) || userDirectConnections.Contains(uc.ConnectedUserId)) &&
+                    // The other person is not the current user
+                    uc.UserId != userGuid && uc.ConnectedUserId != userGuid &&
+                    // The other person is not already a direct connection of the user
+                    !(userDirectConnections.Contains(uc.UserId) && userDirectConnections.Contains(uc.ConnectedUserId)) &&
+                    uc.Status == ConnectionStatus.Accepted)
+                .Include(uc => uc.User)
+                .Include(uc => uc.ConnectedUser)
+                .ToListAsync();
+
+            var mutualUsers = new List<ConnectionViewModel>();
+            var processedUserIds = new HashSet<Guid>();
+
+            foreach (var connection in mutualConnectionUsers)
+            {
+                Guid mutualUserId;
+                ApplicationUser mutualUser = null!;
+
+                if (userDirectConnections.Contains(connection.UserId))
+                {
+                    mutualUserId = connection.ConnectedUserId;
+                    mutualUser = connection.ConnectedUser;
+                }
+                else if (userDirectConnections.Contains(connection.ConnectedUserId))
+                {
+                    mutualUserId = connection.UserId;
+                    mutualUser = connection.User;
+                }
+                else
+                {
+                    continue;
+                }
+
+                if (processedUserIds.Contains(mutualUserId) ||
+                    userDirectConnections.Contains(mutualUserId))
+                {
+                    continue;
+                }
+
+                processedUserIds.Add(mutualUserId);
+
+                mutualUsers.Add(new ConnectionViewModel
+                {
+                    UserId = userGuid.ToString(),
+                    ConnectedUserId = mutualUserId.ToString(),
+                    TargetUserId = mutualUserId.ToString(),
+                    ActorAvatar = "/" + mutualUser.ProfilePicturePath,
+                    Username = mutualUser.UserName!,
+                    PostsCount = mutualUser.Posts.Count,
+                    LikesCount = 0,
+                    MutualConnectionsCount = 0,
+                    Type = ConnectionStatus.Mutual
+                });
+            }
+
+            return mutualUsers;
         }
 
         public async Task<int> GetTotalLikesReceivedByUserAsync(string userId)

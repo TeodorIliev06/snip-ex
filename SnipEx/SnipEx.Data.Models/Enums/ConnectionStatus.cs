@@ -4,6 +4,7 @@
     {
         Pending,
         Accepted,
+        Mutual,
         Rejected,
         Blocked
     }

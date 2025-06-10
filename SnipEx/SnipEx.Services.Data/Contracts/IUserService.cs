@@ -13,6 +13,8 @@
 
         Task<IEnumerable<ConnectionViewModel>> GetUserConnectionsAsync(string userId);
 
+        Task<IEnumerable<ConnectionViewModel>> GetUserMutualConnectionsAsync(string userId);
+
         Task<int> GetTotalLikesReceivedByUserAsync(string userId);
     }
 }
