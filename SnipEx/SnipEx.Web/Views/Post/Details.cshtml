@@ -34,7 +34,8 @@
         <div class="code-container">
             <div class="code-header">
                 <span class="language-badge">@Model.LanguageName</span>
-                <button class="copy-button" onclick="copyToClipboard()" title="Copy to clipboard">
+                <button class="btn btn-sm btn-outline-primary copy-btn"
+                        title="Copy to clipboard">
                     <i class="fa fa-copy"></i> Copy
                 </button>
             </div>
@@ -55,7 +56,7 @@
                 <i class="fa fa-bookmark"></i>
                 <span>@(Model.IsBookmarkedByCurrentUser ? "Saved" : "Save")</span>
             </button>
-            <button class="action-button share-button" onclick="openShareModal()">
+            <button class="action-button share-button">
                 <i class="fa fa-share-alt"></i> Share
             </button>
 
@@ -63,33 +64,33 @@
                 <div class="share-modal-content">
                     <div class="share-modal-header">
                         <h3 class="share-modal-title">Share this post</h3>
-                        <button class="share-close-btn" onclick="closeShareModal()">
+                        <button class="share-close-btn">
                             <i class="fa fa-times"></i>
                         </button>
                     </div>
                     <div class="share-modal-body">
                         <div class="share-options-grid">
-                            <div class="share-option twitter" onclick="shareViaTwitter()">
+                            <div class="share-option twitter">
                                 <i class="fab fa-twitter"></i>
                                 <span>Twitter</span>
                             </div>
-                            <div class="share-option linkedin" onclick="shareViaLinkedIn()">
+                            <div class="share-option linkedin">
                                 <i class="fab fa-linkedin"></i>
                                 <span>LinkedIn</span>
                             </div>
-                            <div class="share-option facebook" onclick="shareViaFacebook()">
+                            <div class="share-option facebook">
                                 <i class="fab fa-facebook"></i>
                                 <span>Facebook</span>
                             </div>
-                            <div class="share-option telegram" onclick="shareViaTelegram()">
+                            <div class="share-option telegram">
                                 <i class="fab fa-telegram"></i>
                                 <span>Telegram</span>
                             </div>
-                            <div class="share-option email" onclick="shareViaEmail()">
+                            <div class="share-option email">
                                 <i class="fa fa-envelope"></i>
                                 <span>Email</span>
                             </div>
-                            <div class="share-option copy" onclick="copyLinkToClipboard()">
+                            <div class="share-option copy">
                                 <i class="fa fa-link"></i>
                                 <span>Copy Link</span>
                             </div>
@@ -102,7 +103,7 @@
                             </div>
                             <div class="share-link-input-group">
                                 <input type="text" id="shareUrlInput" class="share-link-input" readonly>
-                                <button class="copy-link-btn" onclick="copyFromInput()" id="copyBtn">
+                                <button class="copy-link-btn" id="copyBtn">
                                     <i class="fa fa-copy"></i>
                                     <span>Copy</span>
                                 </button>

@@ -8,10 +8,11 @@
         }, 100);
     }
 
-    const copyButton = document.querySelector('.copy-button');
-    if (copyButton) {
-        copyButton.addEventListener('click', copyToClipboard);
-    }
+    const copyButton = document.querySelector('.copy-btn');
+
+    copyButton.addEventListener('click', () => {
+        copyToClipboard();
+    });
 
     const postEl = document.querySelector('.post-actions');
     const postId = postEl.getAttribute('data-post-id');
@@ -39,17 +40,20 @@
         });
     });
 });
+
 function copyToClipboard() {
     const codeElement = document.querySelector('pre code');
-    if (!codeElement) return;
+
+    if (!codeElement) {
+        return;
+    }
 
     const textToCopy = codeElement.textContent;
 
     navigator.clipboard.writeText(textToCopy).then(() => {
-        const copyButton = document.querySelector('.copy-button');
+        const copyButton = document.querySelector('.copy-btn');
         const originalText = copyButton.innerHTML;
 
-        // Use an icon to indicate success
         copyButton.innerHTML = '<i class="fa fa-check"></i> Copied!';
         copyButton.classList.add('copied');
 
@@ -60,7 +64,7 @@ function copyToClipboard() {
     }).catch(err => {
         console.error('Failed to copy: ', err);
         // Show error feedback to user
-        const copyButton = document.querySelector('.copy-button');
+        const copyButton = document.querySelector('.copy-btn');
         copyButton.innerHTML = 'Failed to copy';
         setTimeout(() => {
             copyButton.innerHTML = 'Copy';
@@ -131,7 +135,6 @@ function handleLongCode() {
             }
         });
 
-        // Add the button after the code container
         codeContainer.parentNode.insertBefore(expandButton, codeContainer.nextSibling);
     }
 }
@@ -142,28 +145,28 @@ async function togglePostLike(postId) {
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include'
     })
-    .then(data => {
-        if (!data) return;
+        .then(data => {
+            if (!data) return;
 
-        const likeButton = document.querySelector(`.like-button`);
-        let likeCountSpan = likeButton.querySelector('.count');
+            const likeButton = document.querySelector(`.like-button`);
+            let likeCountSpan = likeButton.querySelector('.count');
 
-        let currentCount = parseInt(likeCountSpan?.textContent || "0", 10);
-        let newCount = data.isLiked ? currentCount + 1 : currentCount - 1;
+            let currentCount = parseInt(likeCountSpan?.textContent || "0", 10);
+            let newCount = data.isLiked ? currentCount + 1 : currentCount - 1;
 
-        if (newCount >= 1) {
-            if (!likeCountSpan) {
-                likeCountSpan = document.createElement("span");
-                likeCountSpan.classList.add("count");
-                likeButton.appendChild(likeCountSpan);
+            if (newCount >= 1) {
+                if (!likeCountSpan) {
+                    likeCountSpan = document.createElement("span");
+                    likeCountSpan.classList.add("count");
+                    likeButton.appendChild(likeCountSpan);
+                }
+                likeCountSpan.textContent = newCount;
+            } else if (likeCountSpan) {
+                likeCountSpan.remove();
             }
-            likeCountSpan.textContent = newCount;
-        } else if (likeCountSpan) {
-            likeCountSpan.remove();
-        }
 
-        likeButton.classList.toggle('liked', data.isLiked);
-    });
+            likeButton.classList.toggle('liked', data.isLiked);
+        });
 }
 
 async function togglePostSave(postId) {
@@ -172,17 +175,17 @@ async function togglePostSave(postId) {
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include'
     })
-    .then(data => {
-        if (!data) return;
+        .then(data => {
+            if (!data) return;
 
-        const saveButton = document.querySelector(`.save-button`);
-        saveButton.classList.toggle('saved', data.isLiked);
+            const saveButton = document.querySelector(`.save-button`);
+            saveButton.classList.toggle('saved', data.isLiked);
 
-        const spanElement = saveButton.querySelector('span');
-        if (spanElement) {
-            spanElement.textContent = data.isSaved ? 'Saved' : 'Save';
-        }
-    });
+            const spanElement = saveButton.querySelector('span');
+            if (spanElement) {
+                spanElement.textContent = data.isSaved ? 'Saved' : 'Save';
+            }
+        });
 }
 
 async function toggleCommentLike(commentId) {
@@ -191,36 +194,36 @@ async function toggleCommentLike(commentId) {
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include'
     })
-    .then(data => {
-        if (!data) return;
+        .then(data => {
+            if (!data) return;
 
-        const likeButton = document.querySelector(`.like-button[data-comment-id="${commentId}"]`);
-        let likeCountSpan = likeButton.querySelector('.count');
+            const likeButton = document.querySelector(`.like-button[data-comment-id="${commentId}"]`);
+            let likeCountSpan = likeButton.querySelector('.count');
 
-        let currentCount = parseInt(likeCountSpan?.textContent || "0", 10);
-        let newCount = data.isLiked ? currentCount + 1 : currentCount - 1;
+            let currentCount = parseInt(likeCountSpan?.textContent || "0", 10);
+            let newCount = data.isLiked ? currentCount + 1 : currentCount - 1;
 
-        if (newCount >= 1) {
-            if (!likeCountSpan) {
-                likeCountSpan = document.createElement("span");
-                likeCountSpan.classList.add("count");
-                likeButton.appendChild(likeCountSpan);
+            if (newCount >= 1) {
+                if (!likeCountSpan) {
+                    likeCountSpan = document.createElement("span");
+                    likeCountSpan.classList.add("count");
+                    likeButton.appendChild(likeCountSpan);
+                }
+                likeCountSpan.textContent = newCount;
+            } else if (likeCountSpan) {
+                likeCountSpan.remove();
             }
-            likeCountSpan.textContent = newCount;
-        } else if (likeCountSpan) {
-            likeCountSpan.remove();
-        }
 
-        likeButton.classList.toggle('liked', data.isLiked);
-    });
+            likeButton.classList.toggle('liked', data.isLiked);
+        });
 }
 
 async function incrementPostViewsCount(postId) {
     await fetchWithToastr(`https://localhost:7000/UserActionApi/IncrementPostViewsCount/${postId}`, {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include'
-        })
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include'
+    })
         .then(data => {
             if (!data) return;
         });

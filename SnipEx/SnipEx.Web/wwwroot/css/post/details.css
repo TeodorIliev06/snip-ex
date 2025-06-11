@@ -222,23 +222,26 @@ body {
     opacity: 1;
 }
 
-.copy-button {
+.copy-btn {
     background-color: transparent;
-    color: var(--text-secondary);
-    border: 1px solid var(--border-color);
-    padding: 6px 12px;
+    border: 1px solid #30363d;
+    color: #8b949e;
+    transition: all 0.3s ease;
     border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
 }
 
-.copy-button:hover {
-    background-color: rgba(255, 255, 255, 0.05);
-    color: var(--text-primary);
+.copy-btn:hover {
+    background-color: #21262d !important;
+    border-color: #58a6ff;
+    color: #58a6ff;
+    transform: translateY(-1px);
+}
+
+.copy-btn:focus {
+    box-shadow: none;
+    outline: none !important;
+    outline-offset: 0 !important;
 }
 
 .post-actions {

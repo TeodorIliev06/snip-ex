@@ -2,20 +2,29 @@
     const modal = document.getElementById('shareModal');
     const urlInput = document.getElementById('shareUrlInput');
 
-    urlInput.value = window.location.href;
+    if (!modal || !urlInput) {
+        return;
+    }
 
+    urlInput.value = window.location.href;
     modal.classList.add('show');
     document.body.style.overflow = 'hidden';
 }
 
 function closeShareModal() {
     const modal = document.getElementById('shareModal');
+    if (!modal) {
+        return;
+    }
+
     modal.classList.remove('show');
     document.body.style.overflow = 'auto';
 
     const copyBtn = document.getElementById('copyBtn');
-    copyBtn.classList.remove('copied');
-    copyBtn.innerHTML = '<i class="fa fa-copy"></i><span>Copy</span>';
+    if (copyBtn) {
+        copyBtn.classList.remove('copied');
+        copyBtn.innerHTML = '<i class="fa fa-copy"></i><span>Copy</span>';
+    }
 }
 
 function shareViaTwitter() {
@@ -55,58 +64,39 @@ function shareViaEmail() {
     window.location.href = shareUrl;
 }
 
-function copyLinkToClipboard() {
+async function copyLinkToClipboard() {
     const url = getCurrentPostUrl();
-    copyToClipboard(url);
+    try {
+        await navigator.clipboard.writeText(url);
+        showToast('Link copied to clipboard!', 'success');
+    } catch (err) {
+        console.error('Failed to copy link:', err);
+        showToast('Failed to copy link', 'error');
+    }
 }
 
-function copyFromInput() {
+async function copyFromInput() {
     const urlInput = document.getElementById('shareUrlInput');
     const copyBtn = document.getElementById('copyBtn');
 
-    copyToClipboard(urlInput.value);
-
-    // Visual feedback
-    copyBtn.classList.add('copied');
-    copyBtn.innerHTML = '<i class="fa fa-check"></i><span>Copied!</span>';
-
-    setTimeout(() => {
-        copyBtn.classList.remove('copied');
-        copyBtn.innerHTML = '<i class="fa fa-copy"></i><span>Copy</span>';
-    }, 2000);
-}
-
-async function copyToClipboard(text) {
-    try {
-        if (navigator.clipboard && window.isSecureContext) {
-            await navigator.clipboard.writeText(text);
-            showToast('Link copied to clipboard!', 'success');
-        } else {
-            fallbackCopyTextToClipboard(text);
-        }
-    } catch (err) {
-        fallbackCopyTextToClipboard(text);
+    if (!urlInput || !copyBtn) {
+        return;
     }
-}
-
-function fallbackCopyTextToClipboard(text) {
-    const textArea = document.createElement("textarea");
-    textArea.value = text;
-    textArea.style.position = "fixed";
-    textArea.style.left = "-999999px";
-    textArea.style.top = "-999999px";
-    document.body.appendChild(textArea);
-    textArea.focus();
-    textArea.select();
 
     try {
-        document.execCommand('copy');
-        showToast('Link copied to clipboard!', 'success');
+        await navigator.clipboard.writeText(urlInput.value);
+
+        copyBtn.classList.add('copied');
+        copyBtn.innerHTML = '<i class="fa fa-check"></i><span>Copied!</span>';
+
+        setTimeout(() => {
+            copyBtn.classList.remove('copied');
+            copyBtn.innerHTML = '<i class="fa fa-copy"></i><span>Copy</span>';
+        }, 2000);
     } catch (err) {
+        console.error('Failed to copy from input:', err);
         showToast('Failed to copy link', 'error');
     }
-
-    document.body.removeChild(textArea);
 }
 
 // Utility Functions
@@ -115,37 +105,100 @@ function getCurrentPostUrl() {
 }
 
 function getPostTitle() {
-    return document.querySelector('.post-title').textContent;
+    const titleElement = document.querySelector('.post-title');
+    return titleElement ? titleElement.textContent : 'Code Snippet';
 }
 
 function showToast(message, type = 'success') {
     const toast = document.createElement('div');
     toast.className = `toast ${type}`;
     toast.innerHTML = `
-                <i class="fa fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
-                <span>${message}</span>
-            `;
+        <i class="fa fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+        <span>${message}</span>
+    `;
 
     document.body.appendChild(toast);
 
-    // Trigger animation
     setTimeout(() => toast.classList.add('show'), 100);
 
-    // Remove after 3 seconds
     setTimeout(() => {
         toast.classList.remove('show');
         setTimeout(() => toast.remove(), 300);
     }, 3000);
 }
 
-document.getElementById('shareModal').addEventListener('click', function (e) {
-    if (e.target === this) {
-        closeShareModal();
+document.addEventListener('DOMContentLoaded', function () {
+    const shareButton = document.querySelector('.share-button');
+    if (shareButton) {
+        shareButton.removeAttribute('onclick');
+        shareButton.addEventListener('click', openShareModal);
+        console.log('ShareModal: Share button listener attached');
     }
-});
 
-document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') {
-        closeShareModal();
+    const closeBtn = document.querySelector('.share-close-btn');
+    if (closeBtn) {
+        closeBtn.removeAttribute('onclick');
+        closeBtn.addEventListener('click', closeShareModal);
+        console.log('ShareModal: Close button listener attached');
     }
+
+    const twitterOption = document.querySelector('.share-option.twitter');
+    if (twitterOption) {
+        twitterOption.removeAttribute('onclick');
+        twitterOption.addEventListener('click', shareViaTwitter);
+    }
+
+    const linkedinOption = document.querySelector('.share-option.linkedin');
+    if (linkedinOption) {
+        linkedinOption.removeAttribute('onclick');
+        linkedinOption.addEventListener('click', shareViaLinkedIn);
+    }
+
+    const facebookOption = document.querySelector('.share-option.facebook');
+    if (facebookOption) {
+        facebookOption.removeAttribute('onclick');
+        facebookOption.addEventListener('click', shareViaFacebook);
+    }
+
+    const telegramOption = document.querySelector('.share-option.telegram');
+    if (telegramOption) {
+        telegramOption.removeAttribute('onclick');
+        telegramOption.addEventListener('click', shareViaTelegram);
+    }
+
+    const emailOption = document.querySelector('.share-option.email');
+    if (emailOption) {
+        emailOption.removeAttribute('onclick');
+        emailOption.addEventListener('click', shareViaEmail);
+    }
+
+    const copyLinkOption = document.querySelector('.share-option.copy');
+    if (copyLinkOption) {
+        copyLinkOption.removeAttribute('onclick');
+        copyLinkOption.addEventListener('click', copyLinkToClipboard);
+    }
+
+    const copyBtn = document.getElementById('copyBtn');
+    if (copyBtn) {
+        copyBtn.removeAttribute('onclick');
+        copyBtn.addEventListener('click', copyFromInput);
+    }
+
+    const shareModal = document.getElementById('shareModal');
+    if (shareModal) {
+        shareModal.addEventListener('click', function (e) {
+            if (e.target === this) {
+                closeShareModal();
+            }
+        });
+    }
+
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+            const modal = document.getElementById('shareModal');
+            if (modal && modal.classList.contains('show')) {
+                closeShareModal();
+            }
+        }
+    });
 });

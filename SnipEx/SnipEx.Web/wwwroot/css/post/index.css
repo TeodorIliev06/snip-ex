@@ -292,22 +292,22 @@
             transform: translateY(-1px);
         }
 
-    /* Copy Button */
-    .post-index-page .copy-btn {
-        background-color: transparent;
-        border: 1px solid #30363d;
-        color: #8b949e;
-        transition: all 0.3s ease;
-        border-radius: 6px;
-        padding: 0.5rem 1rem;
-    }
+/* Copy Button */
+.post-index-page .copy-btn {
+    background-color: transparent;
+    border: 1px solid #30363d;
+    color: #8b949e;
+    transition: all 0.3s ease;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+}
 
-        .post-index-page .copy-btn:hover {
-            background-color: #21262d !important;
-            border-color: #58a6ff;
-            color: #58a6ff;
-            transform: translateY(-1px);
-        }
+.post-index-page .copy-btn:hover {
+    background-color: #21262d !important;
+    border-color: #58a6ff;
+    color: #58a6ff;
+    transform: translateY(-1px);
+}
 
     /* Empty State */
     .post-index-page .empty-state {
@@ -352,13 +352,14 @@
             background: #58a6ff;
         }
 
-    /* Focus states for accessibility */
-    .post-index-page .tag-filter:focus,
-    .post-index-page .copy-btn:focus,
-    .post-index-page .btn:focus {
-        outline: 2px solid #58a6ff;
-        outline-offset: 2px;
-    }
+/* Focus states for accessibility */
+.post-index-page .tag-filter:focus,
+.post-index-page .copy-btn:focus,
+.post-index-page .btn:focus {
+    box-shadow: none;
+    outline: none !important;
+    outline-offset: 0 !important;
+}
 
 /* Responsive Design */
 @media (max-width: 768px) {
