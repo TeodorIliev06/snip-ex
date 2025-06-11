@@ -1,17 +1,12 @@
 ﻿document.addEventListener('DOMContentLoaded', function () {
-    // Initialize post timestamps
     formatDates();
 
-    // Initialize filter handling
     initializeFilterHandling();
 
-    // Initialize copy buttons
     initializeCopyButtons();
 
-    // Limit code preview height
     initializeCodePreviews();
 
-    // Apply dynamic class assignments
     applyDynamicClasses();
 });
 
@@ -29,13 +24,11 @@ function formatDates() {
  * Convert a date string in format 'dd/MM/yyyy' to a relative time string
  */
 function getRelativeTimeString(dateStr) {
-    // Parse the date string (assuming format is dd/MM/yyyy)
     const parts = dateStr.split('/');
     if (parts.length !== 3) {
-        return dateStr; // Return original if format doesn't match
+        return dateStr;
     }
 
-    // Create date object (month is 0-indexed in JavaScript Date)
     const day = parseInt(parts[0], 10);
     const month = parseInt(parts[1], 10) - 1;
     const year = parseInt(parts[2], 10);
@@ -43,12 +36,10 @@ function getRelativeTimeString(dateStr) {
     const date = new Date(year, month, day);
     const now = new Date();
 
-    // Check if date is valid
     if (isNaN(date.getTime())) {
-        return dateStr; // Return original if date is invalid
+        return dateStr;
     }
 
-    // Calculate difference in milliseconds
     const diffInMs = now - date;
     const diffInSeconds = Math.floor(diffInMs / 1000);
 
@@ -84,7 +75,6 @@ function getRelativeTimeString(dateStr) {
  * Initialize all filter-related functionality
  */
 function initializeFilterHandling() {
-    // Handle tag filters
     document.querySelectorAll('.tag-filter').forEach(tagElement => {
         tagElement.addEventListener('click', function (e) {
             e.preventDefault();
@@ -94,7 +84,6 @@ function initializeFilterHandling() {
         });
     });
 
-    // Handle sort buttons
     document.querySelectorAll('.sort-btn').forEach(sortBtn => {
         sortBtn.addEventListener('click', function () {
             const sort = this.getAttribute('data-sort');
@@ -103,7 +92,6 @@ function initializeFilterHandling() {
         });
     });
 
-    // Handle search form
     document.getElementById('searchForm').addEventListener('submit', function (e) {
         e.preventDefault();
         const searchValue = document.getElementById('searchInput').value;
@@ -111,7 +99,6 @@ function initializeFilterHandling() {
         document.getElementById('filterForm').submit();
     });
 
-    // Handle removing individual filters
     document.querySelectorAll('.remove-filter').forEach(removeBtn => {
         removeBtn.addEventListener('click', function () {
             const filterType = this.getAttribute('data-filter-type');
@@ -124,7 +111,6 @@ function initializeFilterHandling() {
         });
     });
 
-    // Handle clear all filters button
     document.getElementById('clearFilters').addEventListener('click', function () {
         document.getElementById('tagInput').value = '';
         document.getElementById('searchFormInput').value = '';
@@ -169,35 +155,34 @@ function initializeCodePreviews() {
             codeBlock.style.overflow = 'hidden';
             codeBlock.classList.add('collapsed');
 
-            // Find the post ID from the data attribute
             const card = codeBlock.closest('.snippet-card');
             const postId = card.getAttribute('data-post-id');
 
-            // Construct the correct URL to the post details page
             const postUrl = `/Post/Details/${postId}`;
 
-            // Find the existing button container (the div with copy button)
             const buttonContainer = card.querySelector('.d-flex.justify-content-between.align-items-center.mt-3');
-            const copyButton = buttonContainer.querySelector('.copy-btn');
 
-            // Create 'See more' link
+            const rightButtonsWrapper = document.createElement('div');
+            rightButtonsWrapper.className = 'd-flex gap-2 align-items-center';
+
+            const copyButton = buttonContainer.querySelector('.copy-btn');
+            rightButtonsWrapper.appendChild(copyButton);
+
             const seeMoreLink = document.createElement('a');
             seeMoreLink.href = postUrl;
-            seeMoreLink.className = 'btn btn-sm btn-outline-secondary ms-2';
+            seeMoreLink.className = 'btn btn-sm btn-outline-secondary see-more-btn';
             seeMoreLink.innerHTML = '<i class="bi bi-arrow-right-circle"></i> See more';
 
-            // Insert the "See more" button next to the copy button
-            copyButton.parentElement.appendChild(seeMoreLink);
+            rightButtonsWrapper.appendChild(seeMoreLink);
+            buttonContainer.appendChild(rightButtonsWrapper);
         }
     });
 }
 
-
 /**
-* Apply dynamic classes to elements like selected tags and sort buttons
+* Apply dynamic classes to elements (selected tags and sort buttons)
 */
 function applyDynamicClasses() {
-    // Apply active class to the selected tag
     const selectedTag = document.getElementById('tagInput').value;
     document.querySelectorAll('.tag-filter').forEach(tagElement => {
         if (tagElement.getAttribute('data-tag') === selectedTag) {
@@ -209,7 +194,6 @@ function applyDynamicClasses() {
         }
     });
 
-    // Apply active class to the selected sort button
     const selectedSort = document.getElementById('sortInput').value;
     document.querySelectorAll('.sort-btn').forEach(sortBtn => {
         if (sortBtn.getAttribute('data-sort') === selectedSort) {
@@ -221,7 +205,6 @@ function applyDynamicClasses() {
         }
     });
 
-    // Show/hide active filters container
     const searchQuery = document.getElementById('searchFormInput').value.trim();
     const activeFiltersContainer = document.getElementById('activeFilters');
     if (searchQuery || selectedTag) {
