@@ -1,0 +1,153 @@
+﻿@media (max-width: 1024px) {
+    .privacy-container {
+        margin: 40px 20px;
+        padding: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .privacy-container {
+        margin: 30px 15px;
+        padding: 1.5rem;
+    }
+
+    .privacy-title {
+        font-size: 2rem;
+        margin-bottom: 1.2rem;
+    }
+
+    .privacy-intro {
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1.2rem;
+    }
+
+    .privacy-section {
+        padding: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .privacy-section h2 {
+        font-size: 1.5rem;
+        margin-bottom: 0.8rem;
+    }
+
+    .privacy-section h2::after {
+        margin-left: 10px;
+    }
+
+    .privacy-section:hover {
+        transform: none;
+        box-shadow: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .privacy-container {
+        margin: 20px 10px;
+        padding: 1.2rem;
+        border-radius: 8px;
+    }
+
+    .privacy-title {
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+    }
+
+    .privacy-intro {
+        font-size: 0.95rem;
+        margin-bottom: 1.2rem;
+        padding-bottom: 1rem;
+    }
+
+    .privacy-section {
+        padding: 0.8rem;
+        margin-bottom: 1.5rem;
+        border-radius: 6px;
+    }
+
+    .privacy-section h2 {
+        font-size: 1.3rem;
+        margin-bottom: 0.7rem;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .privacy-section h2::after {
+        display: none;
+    }
+
+    .privacy-section ul {
+        padding-left: 1rem;
+    }
+
+    .privacy-section li::before {
+        left: -1rem;
+    }
+}
+
+@media (max-width: 360px) {
+    .privacy-container {
+        margin: 15px 8px;
+        padding: 1rem;
+    }
+
+    .privacy-title {
+        font-size: 1.6rem;
+    }
+
+    .privacy-intro {
+        font-size: 0.9rem;
+    }
+
+    .privacy-section {
+        padding: 0.7rem;
+    }
+
+    .privacy-section h2 {
+        font-size: 1.2rem;
+    }
+
+    .privacy-section p {
+        font-size: 0.9rem;
+    }
+
+    .privacy-section li {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+    .privacy-container {
+        margin: 20px auto;
+    }
+
+    .privacy-title {
+        margin-bottom: 0.8rem;
+    }
+
+    .privacy-intro {
+        margin-bottom: 1rem;
+    }
+
+    .privacy-section {
+        margin-bottom: 1.5rem;
+    }
+}
+
+/* High DPI screens */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .privacy-section {
+        border-left-width: 2px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .privacy-title {
+        animation: none;
+    }
+
+    .privacy-section {
+        transition: none;
+    }
+}

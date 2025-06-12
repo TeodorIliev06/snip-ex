@@ -1,0 +1,370 @@
+﻿/* Large tablets and small laptops */
+@media (max-width: 1200px) {
+    .register-container {
+        gap: 2rem;
+        padding: 1.5rem;
+    }
+
+    .code-decoration {
+        width: 400px;
+    }
+}
+
+/* Desktop Code Decoration */
+@media (min-width: 992px) {
+    .code-decoration {
+        display: block;
+        width: 450px;
+    }
+
+    .terminal-window {
+        background-color: #0d1117;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .terminal-header {
+        background-color: #161b22;
+        padding: 8px 12px;
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid #30363d;
+    }
+
+    .terminal-buttons {
+        display: flex;
+        margin-right: 12px;
+    }
+
+    .terminal-button {
+        height: 12px;
+        width: 12px;
+        border-radius: 50%;
+        margin-right: 8px;
+    }
+
+        .terminal-button.close {
+            background-color: #f85149;
+        }
+
+        .terminal-button.minimize {
+            background-color: #fac002;
+        }
+
+        .terminal-button.maximize {
+            background-color: #39d353;
+        }
+
+    .terminal-title {
+        color: #8b949e;
+        font-size: 0.9rem;
+        font-family: 'JetBrains Mono', monospace;
+    }
+
+    .terminal-content {
+        padding: 16px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+}
+
+@media (max-width: 992px) {
+    .register-container {
+        flex-direction: column;
+        gap: 0;
+        padding: 1rem;
+        min-height: auto;
+    }
+
+    .register-card {
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .code-decoration {
+        display: none !important; /* Hide terminal completely on mobile */
+    }
+
+    /* Disable hover effects on touch devices */
+    .input-with-icon:hover::after {
+        opacity: 0;
+    }
+
+    .btn-register:hover {
+        transform: none;
+        box-shadow: none;
+    }
+
+        .btn-register:hover i {
+            transform: none;
+        }
+}
+
+/* Standard tablets */
+@media (max-width: 768px) {
+    .register-container {
+        padding: 1rem;
+    }
+
+    .register-card {
+        padding: 1.5rem;
+        border-radius: 8px;
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .register-title {
+        font-size: 1.8rem;
+        margin-bottom: 0.4rem;
+    }
+
+    .register-subtitle {
+        font-size: 0.9rem;
+    }
+
+    .register-header {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.2rem;
+    }
+
+    .custom-input {
+        padding: 14px 15px 14px 45px;
+        font-size: 16px; /* Prevents zoom on iOS */
+        min-height: 50px;
+    }
+
+    .btn-register {
+        padding: 14px;
+        font-size: 1rem;
+        min-height: 50px;
+    }
+
+    .validation-message {
+        font-size: 0.8rem;
+    }
+
+    .login-section {
+        font-size: 0.9rem;
+    }
+}
+
+/* Large phones */
+@media (max-width: 480px) {
+    .register-container {
+        padding: 0.8rem;
+        min-height: calc(100vh - 60px);
+    }
+
+    .register-card {
+        padding: 1.2rem;
+        width: 100%;
+        max-width: none;
+        margin: 0;
+        border-radius: 6px;
+    }
+
+    .register-title {
+        font-size: 1.6rem;
+        margin-bottom: 0.3rem;
+    }
+
+    .register-subtitle {
+        font-size: 0.85rem;
+    }
+
+    .register-header {
+        margin-bottom: 1.2rem;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .input-with-icon i {
+        left: 12px;
+        top: 16px;
+        font-size: 0.9rem;
+    }
+
+    .custom-input {
+        padding: 14px 12px 14px 38px;
+        font-size: 16px; /* Prevents zoom on iOS */
+        min-height: 52px;
+    }
+
+    .btn-register {
+        padding: 16px;
+        font-size: 1rem;
+        min-height: 52px;
+        gap: 8px;
+    }
+
+    .register-actions {
+        margin-bottom: 1.2rem;
+    }
+
+    .validation-summary {
+        padding: 0.6rem;
+        margin-bottom: 1.2rem;
+        font-size: 0.85rem;
+    }
+
+    .validation-message {
+        font-size: 0.75rem;
+        margin-top: 0.4rem;
+    }
+
+    .login-section {
+        font-size: 0.85rem;
+    }
+}
+
+/* Very small phones */
+@media (max-width: 360px) {
+    .register-container {
+        padding: 0.5rem;
+    }
+
+    .register-card {
+        padding: 1rem;
+        border-radius: 4px;
+    }
+
+    .register-title {
+        font-size: 1.4rem;
+    }
+
+    .register-subtitle {
+        font-size: 0.8rem;
+    }
+
+    .register-header {
+        margin-bottom: 1rem;
+    }
+
+    .form-group {
+        margin-bottom: 0.8rem;
+    }
+
+    .custom-input {
+        padding: 12px 10px 12px 35px;
+        min-height: 48px;
+    }
+
+    .input-with-icon i {
+        left: 15px;
+        top: 20px;
+        font-size: 0.85rem;
+    }
+
+    .btn-register {
+        padding: 14px;
+        font-size: 0.95rem;
+        min-height: 48px;
+    }
+
+    .validation-message {
+        font-size: 0.7rem;
+    }
+
+    .login-section {
+        font-size: 0.8rem;
+    }
+}
+
+/* Landscape orientation for phones */
+@media (max-height: 500px) and (orientation: landscape) {
+    .register-container {
+        padding: 0.5rem;
+        min-height: auto;
+    }
+
+    .register-card {
+        padding: 1rem;
+    }
+
+    .register-header {
+        margin-bottom: 0.8rem;
+    }
+
+    .register-title {
+        font-size: 1.4rem;
+        margin-bottom: 0.2rem;
+    }
+
+    .form-group {
+        margin-bottom: 0.8rem;
+    }
+
+    .register-actions {
+        margin-bottom: 0.8rem;
+    }
+}
+
+/* High DPI screens */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .custom-input {
+        border-width: 0.5px; /* Thinner borders on high DPI */
+    }
+
+    .register-card {
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+    }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+    .register-title {
+        animation: none;
+    }
+
+    .input-with-icon::after {
+        transition: none;
+    }
+
+    .custom-input {
+        transition: none;
+    }
+
+    .btn-register {
+        transition: none;
+    }
+
+        .btn-register i {
+            transition: none;
+        }
+
+    .login-link {
+        transition: none;
+    }
+
+    .code-particle {
+        animation: none;
+    }
+
+    .register-terminal-content .terminal-line {
+        transition: none;
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* Focus improvements for keyboard navigation */
+@media (prefers-reduced-motion: no-preference) {
+    .custom-input:focus,
+    .btn-register:focus,
+    .login-link:focus {
+        outline: 2px solid #58a6ff;
+        outline-offset: 2px;
+    }
+}
+
+/* A placeholder for light mode support later */
+@media (prefers-color-scheme: light) {
+}
