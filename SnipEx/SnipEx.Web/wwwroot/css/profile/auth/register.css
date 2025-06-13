@@ -196,11 +196,6 @@ body {
     text-decoration: underline !important;
 }
 
-/* Code Decoration */
-.code-decoration {
-    display: none;
-}
-
 .code-particle {
     position: absolute;
     font-family: 'JetBrains Mono', monospace;

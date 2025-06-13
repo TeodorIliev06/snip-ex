@@ -1,6 +1,7 @@
 ﻿/* Large tablets and small laptops */
 @media (max-width: 1200px) {
-    .register-container {
+    .register-container,
+    .login-container {
         gap: 2rem;
         padding: 1.5rem;
     }
@@ -71,14 +72,15 @@
 }
 
 @media (max-width: 992px) {
-    .register-container {
+    .register-container,
+    .login-container {
         flex-direction: column;
         gap: 0;
         padding: 1rem;
-        min-height: auto;
     }
 
-    .register-card {
+    .register-card,
+    .login-card {
         width: 100%;
         max-width: 500px;
         margin: 0 auto;
@@ -93,39 +95,46 @@
         opacity: 0;
     }
 
-    .btn-register:hover {
+    .btn-register:hover,
+    .btn-login:hover {
         transform: none;
         box-shadow: none;
     }
 
-        .btn-register:hover i {
-            transform: none;
-        }
+    .btn-register:hover i,
+    .btn-login:hover i {
+        transform: none;
+    }
 }
 
 /* Standard tablets */
 @media (max-width: 768px) {
-    .register-container {
+    .register-container,
+    .login-container {
         padding: 1rem;
     }
 
-    .register-card {
+    .register-card,
+    .login-card {
         padding: 1.5rem;
         border-radius: 8px;
         width: 100%;
         max-width: 400px;
     }
 
-    .register-title {
+    .register-title,
+    .login-title {
         font-size: 1.8rem;
         margin-bottom: 0.4rem;
     }
 
-    .register-subtitle {
+    .register-subtitle,
+    .login-subtitle {
         font-size: 0.9rem;
     }
 
-    .register-header {
+    .register-header,
+    .login-header {
         margin-bottom: 1.5rem;
     }
 
@@ -139,7 +148,14 @@
         min-height: 50px;
     }
 
-    .btn-register {
+    .input-with-icon i {
+        left: 16px;
+        top: 21px;
+        font-size: 1.1rem;
+    }
+
+    .btn-register,
+    .btn-login {
         padding: 14px;
         font-size: 1rem;
         min-height: 50px;
@@ -149,19 +165,30 @@
         font-size: 0.8rem;
     }
 
-    .login-section {
+    .login-section,
+    .register-section {
         font-size: 0.9rem;
+    }
+
+    .form-options {
+        margin-bottom: 1.2rem;
+    }
+
+    .login-actions {
+        margin-bottom: 1.2rem;
     }
 }
 
 /* Large phones */
 @media (max-width: 480px) {
-    .register-container {
+    .register-container,
+    .login-container {
         padding: 0.8rem;
         min-height: calc(100vh - 60px);
     }
 
-    .register-card {
+    .register-card,
+    .login-card {
         padding: 1.2rem;
         width: 100%;
         max-width: none;
@@ -169,16 +196,19 @@
         border-radius: 6px;
     }
 
-    .register-title {
+    .register-title,
+    .login-title {
         font-size: 1.6rem;
         margin-bottom: 0.3rem;
     }
 
-    .register-subtitle {
+    .register-subtitle,
+    .login-subtitle {
         font-size: 0.85rem;
     }
 
-    .register-header {
+    .register-header,
+    .login-header {
         margin-bottom: 1.2rem;
     }
 
@@ -187,9 +217,9 @@
     }
 
     .input-with-icon i {
-        left: 12px;
-        top: 16px;
-        font-size: 0.9rem;
+        left: 14px;
+        top: 22px;
+        font-size: 0.95rem;
     }
 
     .custom-input {
@@ -198,15 +228,29 @@
         min-height: 52px;
     }
 
-    .btn-register {
+    .btn-register,
+    .btn-login {
         padding: 16px;
         font-size: 1rem;
         min-height: 52px;
         gap: 8px;
     }
 
-    .register-actions {
+    .register-actions,
+    .login-actions {
         margin-bottom: 1.2rem;
+    }
+
+    .form-options {
+        margin-bottom: 1rem;
+    }
+
+    .remember-me {
+        margin-bottom: 0.5rem;
+    }
+
+    .forgot-link {
+        align-self: flex-start;
     }
 
     .validation-summary {
@@ -220,31 +264,37 @@
         margin-top: 0.4rem;
     }
 
-    .login-section {
+    .login-section,
+    .register-section {
         font-size: 0.85rem;
     }
 }
 
 /* Very small phones */
 @media (max-width: 360px) {
-    .register-container {
+    .register-container,
+    .login-container {
         padding: 0.5rem;
     }
 
-    .register-card {
+    .register-card,
+    .login-card {
         padding: 1rem;
         border-radius: 4px;
     }
 
-    .register-title {
+    .register-title,
+    .login-title {
         font-size: 1.4rem;
     }
 
-    .register-subtitle {
+    .register-subtitle,
+    .login-subtitle {
         font-size: 0.8rem;
     }
 
-    .register-header {
+    .register-header,
+    .login-header {
         margin-bottom: 1rem;
     }
 
@@ -263,37 +313,55 @@
         font-size: 0.85rem;
     }
 
-    .btn-register {
+    .btn-register,
+    .btn-login {
         padding: 14px;
         font-size: 0.95rem;
         min-height: 48px;
+    }
+
+    .form-options {
+        gap: 0.6rem;
+    }
+
+    .custom-checkbox .checkbox-label {
+        font-size: 0.8rem;
+    }
+
+    .forgot-link {
+        font-size: 0.8rem;
     }
 
     .validation-message {
         font-size: 0.7rem;
     }
 
-    .login-section {
+    .login-section,
+    .register-section {
         font-size: 0.8rem;
     }
 }
 
 /* Landscape orientation for phones */
 @media (max-height: 500px) and (orientation: landscape) {
-    .register-container {
+    .register-container,
+    .login-container {
         padding: 0.5rem;
         min-height: auto;
     }
 
-    .register-card {
+    .register-card,
+    .login-card {
         padding: 1rem;
     }
 
-    .register-header {
+    .register-header,
+    .login-header {
         margin-bottom: 0.8rem;
     }
 
-    .register-title {
+    .register-title,
+    .login-title {
         font-size: 1.4rem;
         margin-bottom: 0.2rem;
     }
@@ -302,8 +370,16 @@
         margin-bottom: 0.8rem;
     }
 
-    .register-actions {
+    .register-actions,
+    .login-actions {
         margin-bottom: 0.8rem;
+    }
+
+    .form-options {
+        margin-bottom: 0.8rem;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
     }
 }
 
@@ -313,14 +389,16 @@
         border-width: 0.5px; /* Thinner borders on high DPI */
     }
 
-    .register-card {
+    .register-card,
+    .login-card {
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
     }
 }
 
 /* Accessibility improvements */
 @media (prefers-reduced-motion: reduce) {
-    .register-title {
+    .register-title,
+    .login-title {
         animation: none;
     }
 
@@ -332,15 +410,19 @@
         transition: none;
     }
 
-    .btn-register {
+    .btn-register,
+    .btn-login {
         transition: none;
     }
 
-        .btn-register i {
-            transition: none;
-        }
+    .btn-register i,
+    .btn-login i {
+        transition: none;
+    }
 
-    .login-link {
+    .login-link,
+    .register-link,
+    .forgot-link {
         transition: none;
     }
 
@@ -348,10 +430,15 @@
         animation: none;
     }
 
-    .register-terminal-content .terminal-line {
+    .register-terminal-content .terminal-line,
+    .login-terminal-content .terminal-line {
         transition: none;
         opacity: 1;
         transform: none;
+    }
+
+    .custom-checkbox .checkmark {
+        transition: none;
     }
 }
 
@@ -359,7 +446,15 @@
 @media (prefers-reduced-motion: no-preference) {
     .custom-input:focus,
     .btn-register:focus,
-    .login-link:focus {
+    .btn-login:focus,
+    .login-link:focus,
+    .register-link:focus,
+    .forgot-link:focus {
+        outline: 2px solid #58a6ff;
+        outline-offset: 2px;
+    }
+
+    .custom-checkbox input:focus + .checkmark {
         outline: 2px solid #58a6ff;
         outline-offset: 2px;
     }
