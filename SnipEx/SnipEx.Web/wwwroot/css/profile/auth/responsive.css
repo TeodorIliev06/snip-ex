@@ -1,5 +1,4 @@
-﻿/* Large tablets and small laptops */
-@media (max-width: 1200px) {
+﻿@media (max-width: 1200px) {
     .register-container,
     .login-container {
         gap: 2rem;
@@ -107,7 +106,6 @@
     }
 }
 
-/* Standard tablets */
 @media (max-width: 768px) {
     .register-container,
     .login-container {
@@ -179,7 +177,6 @@
     }
 }
 
-/* Large phones */
 @media (max-width: 480px) {
     .register-container,
     .login-container {
@@ -270,7 +267,6 @@
     }
 }
 
-/* Very small phones */
 @media (max-width: 360px) {
     .register-container,
     .login-container {
@@ -342,7 +338,6 @@
     }
 }
 
-/* Landscape orientation for phones */
 @media (max-height: 500px) and (orientation: landscape) {
     .register-container,
     .login-container {
@@ -386,7 +381,7 @@
 /* High DPI screens */
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
     .custom-input {
-        border-width: 0.5px; /* Thinner borders on high DPI */
+        border-width: 0.5px;
     }
 
     .register-card,
@@ -395,7 +390,6 @@
     }
 }
 
-/* Accessibility improvements */
 @media (prefers-reduced-motion: reduce) {
     .register-title,
     .login-title {
@@ -442,7 +436,6 @@
     }
 }
 
-/* Focus improvements for keyboard navigation */
 @media (prefers-reduced-motion: no-preference) {
     .custom-input:focus,
     .btn-register:focus,
