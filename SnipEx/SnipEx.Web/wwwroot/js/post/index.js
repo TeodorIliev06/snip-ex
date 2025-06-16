@@ -1,13 +1,12 @@
 ﻿document.addEventListener('DOMContentLoaded', function () {
     formatDates();
-
     initializeFilterHandling();
-
     initializeCopyButtons();
-
     initializeCodePreviews();
-
     applyDynamicClasses();
+
+    // Handle window resize for responsive adjustments
+    window.addEventListener('resize', debounce(handleWindowResize, 250));
 });
 
 /**
@@ -146,42 +145,65 @@ function initializeCopyButtons() {
 }
 
 /**
- * Limit code preview height and add 'See more' link to redirect to post details
+ * Improved code preview handling with better mobile support
  */
 function initializeCodePreviews() {
     document.querySelectorAll('.code-preview').forEach(codeBlock => {
-        if (codeBlock.clientHeight > 200) {
-            codeBlock.style.maxHeight = '200px';
+        const isMobile = window.innerWidth <= 768;
+        const heightThreshold = isMobile ? 150 : 200;
+
+        if (codeBlock.clientHeight > heightThreshold) {
+            codeBlock.style.maxHeight = `${heightThreshold}px`;
             codeBlock.style.overflow = 'hidden';
             codeBlock.classList.add('collapsed');
 
             const card = codeBlock.closest('.snippet-card');
             const postId = card.getAttribute('data-post-id');
-
             const postUrl = `/Post/Details/${postId}`;
 
             const buttonContainer = card.querySelector('.d-flex.justify-content-between.align-items-center.mt-3');
-
-            const rightButtonsWrapper = document.createElement('div');
-            rightButtonsWrapper.className = 'd-flex gap-2 align-items-center';
-
             const copyButton = buttonContainer.querySelector('.copy-btn');
-            rightButtonsWrapper.appendChild(copyButton);
 
-            const seeMoreLink = document.createElement('a');
-            seeMoreLink.href = postUrl;
-            seeMoreLink.className = 'btn btn-sm btn-outline-secondary see-more-btn';
-            seeMoreLink.innerHTML = '<i class="bi bi-arrow-right-circle"></i> See more';
-
-            rightButtonsWrapper.appendChild(seeMoreLink);
-            buttonContainer.appendChild(rightButtonsWrapper);
+            // Check if see more button already exists
+            if (!buttonContainer.querySelector('.see-more-btn')) {
+                createSeeMoreButton(buttonContainer, copyButton, postUrl, isMobile);
+            }
         }
     });
 }
 
 /**
-* Apply dynamic classes to elements (selected tags and sort buttons)
-*/
+ * Create "See more" button with mobile-responsive layout
+ */
+function createSeeMoreButton(buttonContainer, copyButton, postUrl, isMobile) {
+    // Create wrapper for buttons
+    const rightButtonsWrapper = document.createElement('div');
+    rightButtonsWrapper.className = isMobile ? 'd-flex flex-column gap-2 w-100' : 'd-flex gap-2 align-items-center';
+
+    // Move copy button to wrapper
+    if (copyButton) {
+        rightButtonsWrapper.appendChild(copyButton);
+    }
+
+    // Create see more button
+    const seeMoreLink = document.createElement('a');
+    seeMoreLink.href = postUrl;
+    seeMoreLink.className = 'btn btn-sm btn-outline-secondary see-more-btn';
+    seeMoreLink.innerHTML = '<i class="bi bi-arrow-right-circle"></i> See more';
+
+    rightButtonsWrapper.appendChild(seeMoreLink);
+    buttonContainer.appendChild(rightButtonsWrapper);
+
+    // Adjust button container layout for mobile
+    if (isMobile) {
+        buttonContainer.classList.remove('justify-content-between');
+        buttonContainer.classList.add('flex-column', 'align-items-stretch');
+    }
+}
+
+/**
+ * Apply dynamic classes to elements (selected tags and sort buttons)
+ */
 function applyDynamicClasses() {
     const selectedTag = document.getElementById('tagInput').value;
     document.querySelectorAll('.tag-filter').forEach(tagElement => {
@@ -212,4 +234,46 @@ function applyDynamicClasses() {
     } else {
         activeFiltersContainer.classList.add('d-none');
     }
+}
+
+/**
+ * Handle window resize for responsive adjustments
+ */
+function handleWindowResize() {
+    // Re-initialize code previews with new mobile state
+    initializeCodePreviews();
+
+    // Adjust existing "See more" button layouts
+    const isMobile = window.innerWidth <= 768;
+    document.querySelectorAll('.snippet-card').forEach(card => {
+        const buttonContainer = card.querySelector('.d-flex.justify-content-between.align-items-center.mt-3, .d-flex.flex-column.align-items-stretch.mt-3');
+        const rightButtonsWrapper = buttonContainer?.querySelector('.d-flex.gap-2.align-items-center, .d-flex.flex-column.gap-2.w-100');
+
+        if (rightButtonsWrapper) {
+            if (isMobile) {
+                rightButtonsWrapper.className = 'd-flex flex-column gap-2 w-100';
+                buttonContainer.classList.remove('justify-content-between');
+                buttonContainer.classList.add('flex-column', 'align-items-stretch');
+            } else {
+                rightButtonsWrapper.className = 'd-flex gap-2 align-items-center';
+                buttonContainer.classList.add('justify-content-between');
+                buttonContainer.classList.remove('flex-column', 'align-items-stretch');
+            }
+        }
+    });
+}
+
+/**
+ * Debounce function to limit how often resize handler is called
+ */
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
 }
