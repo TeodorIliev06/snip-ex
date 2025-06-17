@@ -37,9 +37,9 @@
     display: block;
 }
 
-    .avatar-wrapper:hover .avatar-img {
-        opacity: 0.7;
-    }
+.avatar-wrapper:hover .avatar-img {
+    opacity: 0.7;
+}
 
 .avatar-img {
     width: 100%;
@@ -127,15 +127,21 @@
     font-size: 0.95rem;
 }
 
-    .user-navigation a:hover {
-        background-color: #30363d;
-    }
+.user-navigation a:hover,
+.user-navigation a.active {
+    background-color: #30363d;
+}
 
-    .user-navigation a i {
-        font-size: 1.25rem;
-        color: #58a6ff;
-        min-width: 20px;
-    }
+.user-navigation a.active {
+    border-left: 3px solid #58a6ff;
+    padding-left: 0.625rem;
+}
+
+.user-navigation a i {
+    font-size: 1.25rem;
+    color: #58a6ff;
+    min-width: 20px;
+}
 
 /* Logout Button */
 .logout-link {
@@ -155,15 +161,15 @@
     font-size: 0.95rem;
 }
 
-    .logout-link:hover {
-        background-color: rgba(255, 95, 86, 0.1);
-    }
+.logout-link:hover {
+    background-color: rgba(255, 95, 86, 0.1);
+}
 
-    .logout-link i {
-        font-size: 1.25rem;
-        color: #ff5f56;
-        min-width: 20px;
-    }
+.logout-link i {
+    font-size: 1.25rem;
+    color: #ff5f56;
+    min-width: 20px;
+}
 
 /* Auth Buttons */
 .auth-buttons {
@@ -173,57 +179,57 @@
     width: 100%;
 }
 
-    .auth-buttons .btn {
-        padding: 0.75rem 1rem;
-        border-radius: 6px;
-        text-decoration: none;
-        text-align: center;
-        font-weight: 500;
-        transition: all 0.3s ease;
-        border: none;
-        cursor: pointer;
-    }
+.auth-buttons .btn {
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    text-decoration: none;
+    text-align: center;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
 
 .btn-primary {
     background-color: #58a6ff;
     color: white;
 }
 
-    .btn-primary:hover {
-        background-color: #4a90e2;
-        transform: translateY(-2px);
-    }
+.btn-primary:hover {
+    background-color: #4a90e2;
+    transform: translateY(-2px);
+}
 
 .btn-secondary {
     background-color: #30363d;
     color: #e6edf3;
 }
 
-    .btn-secondary:hover {
-        background-color: #3c444d;
-        transform: translateY(-2px);
-    }
+.btn-secondary:hover {
+    background-color: #3c444d;
+    transform: translateY(-2px);
+}
 
 /* Notification Badge */
 .notification-container {
     position: relative;
 }
 
-    .notification-container .notification-badge {
-        position: absolute;
-        top: -6px;
-        right: -10px;
-        background-color: #ff5f56;
-        color: white;
-        border-radius: 50%;
-        font-size: 12px;
-        min-width: 18px;
-        height: 18px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-    }
+.notification-container .notification-badge {
+    position: absolute;
+    top: -6px;
+    right: -10px;
+    background-color: #ff5f56;
+    color: white;
+    border-radius: 50%;
+    font-size: 12px;
+    min-width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
 
 .d-none {
     display: none;
@@ -247,13 +253,13 @@
     transition: all 0.3s ease;
 }
 
-    .mobile-toggle:hover {
-        background-color: #30363d;
-    }
+.mobile-toggle:hover {
+    background-color: #30363d;
+}
 
-    .mobile-toggle i {
-        color: #58a6ff;
-    }
+.mobile-toggle i {
+    color: #58a6ff;
+}
 
 /* Overlay for mobile */
 .mobile-overlay {
@@ -269,6 +275,6 @@
     transition: opacity 0.3s ease;
 }
 
-    .mobile-overlay.active {
-        opacity: 1;
-    }
+.mobile-overlay.active {
+    opacity: 1;
+}

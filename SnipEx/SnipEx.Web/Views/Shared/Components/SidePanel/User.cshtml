@@ -2,6 +2,9 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model SnipEx.Data.Models.ApplicationUser
 
+<link rel="stylesheet" href="~/css/profile/side-panel/userSidePanel.css" />
+<link rel="stylesheet" href="~/css/profile/side-panel/responsive.css" />
+
 <div class="side-panel">
     <div class="user-profile-container">
         <form id="uploadForm" enctype="multipart/form-data">
@@ -63,10 +66,4 @@
     </div>
 </div>
 
-@section Styles {
-    <link rel="stylesheet" href="~/css/profile/side-panel/userSidePanel.css" />
-    <link rel="stylesheet" href="~/css/profile/side-panel/responsive.css" />
-}
-@section Scripts {
-    <script src="~/js/profile/userSidePanel.js"></script>
-}
+<script src="~/js/profile/userSidePanel.js"></script>

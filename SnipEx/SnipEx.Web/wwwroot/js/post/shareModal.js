@@ -68,10 +68,10 @@ async function copyLinkToClipboard() {
     const url = getCurrentPostUrl();
     try {
         await navigator.clipboard.writeText(url);
-        showToast('Link copied to clipboard!', 'success');
+        toastr.success('Link copied to clipboard!', "", { timeOut: 5000, closeButton: true });
     } catch (err) {
         console.error('Failed to copy link:', err);
-        showToast('Failed to copy link', 'error');
+        toastr.error('Failed to copy link', "", { timeOut: 5000, closeButton: true });
     }
 }
 
@@ -95,7 +95,7 @@ async function copyFromInput() {
         }, 2000);
     } catch (err) {
         console.error('Failed to copy from input:', err);
-        showToast('Failed to copy link', 'error');
+        toastr.error('Failed to copy link', "", { timeOut: 5000, closeButton: true });
     }
 }
 
@@ -107,24 +107,6 @@ function getCurrentPostUrl() {
 function getPostTitle() {
     const titleElement = document.querySelector('.post-title');
     return titleElement ? titleElement.textContent : 'Code Snippet';
-}
-
-function showToast(message, type = 'success') {
-    const toast = document.createElement('div');
-    toast.className = `toast ${type}`;
-    toast.innerHTML = `
-        <i class="fa fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
-        <span>${message}</span>
-    `;
-
-    document.body.appendChild(toast);
-
-    setTimeout(() => toast.classList.add('show'), 100);
-
-    setTimeout(() => {
-        toast.classList.remove('show');
-        setTimeout(() => toast.remove(), 300);
-    }, 3000);
 }
 
 document.addEventListener('DOMContentLoaded', function () {
