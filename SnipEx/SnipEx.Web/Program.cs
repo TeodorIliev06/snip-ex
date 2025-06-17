@@ -6,14 +6,11 @@ namespace SnipEx.Web
     using SnipEx.Data;
     using SnipEx.Realtime;
     using SnipEx.Data.Models;
-    using SnipEx.Realtime.Hubs;
     using SnipEx.Services.Mapping;
     using SnipEx.Services.Mediator;
     using SnipEx.Web.Infrastructure;
     using SnipEx.Web.ViewModels.Post;
     using SnipEx.Services.Data.Contracts;
-
-    using static SnipEx.Common.SignalRConstants;
 
     public class Program
     {
@@ -84,8 +81,6 @@ namespace SnipEx.Web
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
-
-            //app.MapHub<NotificationHub>(HubRoutes.Notifications);
 
             await app.RunAsync();
         }
