@@ -46,43 +46,32 @@
         if (e.target.closest('.comment-action[title="Reply"]') || e.target.closest('.comment-action.reply-button')) {
             const button = e.target.closest('.comment-action[title="Reply"]') || e.target.closest('.comment-action.reply-button');
 
-            // Get the parent comment ID (where the reply form is located)
             const commentId = button.dataset.commentId;
-
-            // Get the reference comment ID (if replying to a reply)
             const referenceCommentId = button.dataset.referenceCommentId;
-
-            // Get the username to mention
             const username = button.dataset.username;
 
-            // Hide all existing reply forms
             document.querySelectorAll('.reply-form-container').forEach(form => {
                 form.style.display = 'none';
                 form.classList.remove('visible');
             });
 
-            // Find the reply form for the parent comment
             const replyForm = document.getElementById(`reply-form-${commentId}`);
 
             if (replyForm) {
                 const textarea = replyForm.querySelector('textarea');
                 const form = replyForm.querySelector('form');
 
-                // If we're replying to a specific reply, add the @username mention
                 if (referenceCommentId) {
                     textarea.value = `@${username} `;
 
-                    // Set the reference comment ID as a data attribute on the form
                     form.dataset.referenceCommentId = referenceCommentId;
                 } else {
                     textarea.value = '';
-                    // Remove any existing reference comment ID
                     if (form.dataset.referenceCommentId) {
                         delete form.dataset.referenceCommentId;
                     }
                 }
 
-                // Show the reply form
                 replyForm.style.display = 'block';
                 setTimeout(() => {
                     replyForm.classList.add('visible');
@@ -105,7 +94,6 @@
                     replyForm.style.display = 'none';
                     replyForm.querySelector('textarea').value = '';
 
-                    // Clear any reference comment ID
                     const form = replyForm.querySelector('form');
                     if (form.dataset.referenceCommentId) {
                         delete form.dataset.referenceCommentId;
@@ -121,13 +109,13 @@
 
             const postId = this.dataset.postId;
             const parentCommentId = this.dataset.parentCommentId;
-            const referenceCommentId = this.dataset.referenceCommentId; // Get the reference comment ID if it exists
+            const referenceCommentId = this.dataset.referenceCommentId;
             const content = this.querySelector('textarea[name="Content"]').value;
 
             const replyData = {
                 Content: content,
                 PostId: postId,
-                ParentCommentId: referenceCommentId
+                ParentCommentId: parentCommentId
             };
 
             // Add reference comment ID if it exists (for mentions/replies to replies)
@@ -146,7 +134,6 @@
                 refreshComments(postId);
                 this.querySelector('textarea').value = '';
 
-                // Clear the reference comment ID
                 if (this.dataset.referenceCommentId) {
                     delete this.dataset.referenceCommentId;
                 }
@@ -191,14 +178,12 @@
             const content = contentElement.innerHTML;
             const mentionPattern = /@([\w.]+(?:@[\w.]+\.\w+)?)/g;
 
-            // Replace @mentions with highlighted versions
             const highlightedContent = content.replace(mentionPattern, '<span class="user-mention">@$1</span>');
             contentElement.innerHTML = highlightedContent;
 
-            // Add click event listeners to mentions
             contentElement.querySelectorAll('.user-mention').forEach(mention => {
                 mention.addEventListener('click', function () {
-                    const username = this.textContent.substring(1); // Remove @ symbol
+                    const username = this.textContent.substring(1);
                     console.log(`Clicked on mention: ${username}`);
                 });
             });

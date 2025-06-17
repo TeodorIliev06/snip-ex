@@ -132,14 +132,12 @@ document.addEventListener('DOMContentLoaded', function () {
     if (shareButton) {
         shareButton.removeAttribute('onclick');
         shareButton.addEventListener('click', openShareModal);
-        console.log('ShareModal: Share button listener attached');
     }
 
     const closeBtn = document.querySelector('.share-close-btn');
     if (closeBtn) {
         closeBtn.removeAttribute('onclick');
         closeBtn.addEventListener('click', closeShareModal);
-        console.log('ShareModal: Close button listener attached');
     }
 
     const twitterOption = document.querySelector('.share-option.twitter');

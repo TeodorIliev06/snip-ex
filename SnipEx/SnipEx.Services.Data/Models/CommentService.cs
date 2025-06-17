@@ -56,7 +56,8 @@
         public async Task<bool> AddReplyAsync(AddCommentReplyFormModel model, string userId)
         {
             var isPostGuidValid = ValidationUtils.TryGetGuid(model.PostId, out Guid postGuid);
-            var isParentCommentGuidValid = ValidationUtils.TryGetGuid(model.ParentCommentId, out Guid parentCommentGuid);
+            var isParentCommentGuidValid = ValidationUtils
+                .TryGetGuid(model.ParentCommentId, out Guid parentCommentGuid);
             if (!isPostGuidValid || !isParentCommentGuidValid)
             {
                 return false;
@@ -76,6 +77,25 @@
                 return false;
             }
 
+            Guid? referenceCommentGuid = null;
+            if (!string.IsNullOrEmpty(model.ReferenceCommentId))
+            {
+                var isReferenceCommentGuidValid = ValidationUtils
+                    .TryGetGuid(model.ReferenceCommentId, out Guid refCommentGuid);
+                if (!isReferenceCommentGuidValid)
+                {
+                    return false;
+                }
+
+                var referenceComment = await commentRepository.GetByIdAsync(refCommentGuid);
+                if (referenceComment == null)
+                {
+                    return false;
+                }
+
+                referenceCommentGuid = refCommentGuid;
+            }
+
             var userGuid = Guid.Parse(userId);
 
             var reply = new Comment();
@@ -88,7 +108,7 @@
             await commentRepository.AddAsync(reply);
             await commentRepository.SaveChangesAsync();
 
-            bool isMention = parentComment.ParentCommentId.HasValue;
+            bool isMention = referenceCommentGuid.HasValue;
 
             var replyAddedEvent = new ReplyAddedEvent(reply.Id, parentCommentGuid, userGuid, isMention);
             await mediator.Publish(replyAddedEvent);

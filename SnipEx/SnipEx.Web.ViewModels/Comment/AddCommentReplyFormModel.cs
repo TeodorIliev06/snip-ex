@@ -29,6 +29,8 @@
         [Required]
         public string ParentCommentId { get; set; } = null!;
 
+        public string? ReferenceCommentId { get; set; }
+
         public void CreateMappings(IProfileExpression configuration)
         {
             configuration.CreateMap<AddCommentReplyFormModel, Comment>()
