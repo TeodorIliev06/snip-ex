@@ -14,11 +14,18 @@
             var roleManager = serviceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
-            bool isRoleExisting = await roleManager
+            bool isAdminRoleExisting = await roleManager
                 .RoleExistsAsync(AdminRoleName);
-            if (!isRoleExisting)
+            if (!isAdminRoleExisting)
             {
                 await roleManager.CreateAsync(new ApplicationRole(AdminRoleName));
+            }
+
+            bool isUserRoleExisting = await roleManager
+                .RoleExistsAsync(UserRoleName);
+            if (!isUserRoleExisting)
+            {
+                await roleManager.CreateAsync(new ApplicationRole(UserRoleName));
             }
 
             var adminUser = await userManager.FindByEmailAsync(AdminEmail);
@@ -34,6 +41,7 @@
                 var result = await userManager.CreateAsync(newAdmin, AdminPassword);
                 if (result.Succeeded)
                 {
+                    await userManager.AddToRoleAsync(newAdmin, UserRoleName);
                     await userManager.AddToRoleAsync(newAdmin, AdminRoleName);
                 }
             }

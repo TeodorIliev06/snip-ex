@@ -1,14 +1,17 @@
 ﻿namespace SnipEx.Web.Areas.User.Controllers
 {
     using System.Security.Claims;
-
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     using SnipEx.Web.ViewModels.User;
     using SnipEx.Services.Data.Contracts;
     using SnipEx.Web.ViewModels.Notification;
 
-    [Area("User")]
+    using static Common.ApplicationConstants;
+
+    [Area(UserRoleName)]
+    [Authorize(Roles = UserRoleName)]
     public class ProfileController(
         IUserService userService,
         IUserActionService userActionService,

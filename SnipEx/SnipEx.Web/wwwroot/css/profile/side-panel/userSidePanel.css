@@ -143,6 +143,10 @@
     min-width: 20px;
 }
 
+.user-navigation a.admin-link:hover {
+    background-color: #35668f;
+}
+
 /* Logout Button */
 .logout-link {
     display: flex;
