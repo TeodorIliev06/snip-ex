@@ -125,7 +125,10 @@
 
             const result = await fetchWithToastr('https://localhost:7000/CommentApi/AddReply', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': getAntiForgeryToken()
+                },
                 credentials: 'include',
                 body: JSON.stringify(replyData)
             });
@@ -160,7 +163,10 @@
 
             const result = await fetchWithToastr('https://localhost:7000/CommentApi/AddComment', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': getAntiForgeryToken()
+                },
                 credentials: 'include',
                 body: JSON.stringify(commentData)
             });

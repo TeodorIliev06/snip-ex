@@ -30,8 +30,9 @@
     </div>
     <div class="reply-form-container" id="reply-form-@Model.Id" style="display: none;">
         <form class="reply-form" data-post-id="@Model.PostId" data-parent-comment-id="@Model.Id" data-parent-username="@Model.UserName">
-            <input type="hidden" name="PostId" value="@Model.PostId" />
-            <input type="hidden" name="ParentCommentId" value="@Model.Id" />
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="PostId" value="@Model.PostId"/>
+            <input type="hidden" name="ParentCommentId" value="@Model.Id"/>
             <div class="form-group">
                 <textarea name="Content" class="form-control" placeholder="Write your reply..." required></textarea>
             </div>

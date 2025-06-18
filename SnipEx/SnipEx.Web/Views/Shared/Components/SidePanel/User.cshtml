@@ -8,9 +8,10 @@
 <div class="side-panel">
     <div class="user-profile-container">
         <form id="uploadForm" enctype="multipart/form-data">
-            <input type="file" id="fileInput" name="file" style="display: none;" accept="image/jpeg,image/png,image/gif,image/webp" />
+            @Html.AntiForgeryToken()
+            <input type="file" id="fileInput" name="file" style="display: none;" accept="image/jpeg,image/png,image/gif,image/webp"/>
             <label for="fileInput" class="avatar-wrapper" title="Click to change profile picture">
-                <img id="profileAvatar" src="/images/profile_pics/default_user1.png" alt="Profile Picture" class="avatar-img" />
+                <img id="profileAvatar" src="/images/profile_pics/default_user1.png" alt="Profile Picture" class="avatar-img"/>
                 <div class="avatar-overlay">
                     <i class="bi bi-camera"></i>
                 </div>

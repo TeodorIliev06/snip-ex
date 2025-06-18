@@ -341,8 +341,8 @@ function uploadProfilePicture(file, profilePicture) {
         method: 'POST',
         body: formData,
         headers: {
-            // Let the browser set Content-Type with the boundary parameter
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+            'RequestVerificationToken': getAntiForgeryToken()
         },
         credentials: "include"
     })

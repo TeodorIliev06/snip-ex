@@ -142,7 +142,10 @@ function handleLongCode() {
 async function togglePostLike(postId) {
     await fetchWithToastr(`https://localhost:7000/UserActionApi/TogglePostLike/${postId}`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+            'Content-Type': 'application/json',
+            'RequestVerificationToken': getAntiForgeryToken()
+        },
         credentials: 'include'
     })
         .then(data => {
@@ -172,7 +175,10 @@ async function togglePostLike(postId) {
 async function togglePostSave(postId) {
     await fetchWithToastr(`https://localhost:7000/UserActionApi/TogglePostSave/${postId}`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+            'Content-Type': 'application/json',
+            'RequestVerificationToken': getAntiForgeryToken()
+        },
         credentials: 'include'
     })
         .then(data => {
@@ -191,7 +197,10 @@ async function togglePostSave(postId) {
 async function toggleCommentLike(commentId) {
     await fetchWithToastr(`https://localhost:7000/UserActionApi/ToggleCommentLike/${commentId}`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+            'Content-Type': 'application/json',
+            'RequestVerificationToken': getAntiForgeryToken()
+        },
         credentials: 'include'
     })
         .then(data => {
@@ -221,7 +230,10 @@ async function toggleCommentLike(commentId) {
 async function incrementPostViewsCount(postId) {
     await fetchWithToastr(`https://localhost:7000/UserActionApi/IncrementPostViewsCount/${postId}`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+            'Content-Type': 'application/json',
+            'RequestVerificationToken': getAntiForgeryToken()
+        },
         credentials: 'include'
     })
         .then(data => {

@@ -2,7 +2,8 @@
 @model AddPostCommentFormModel
 
 <form class="comment-form">
-    <input type="hidden" name="PostId" value="@Model.PostId" />
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="PostId" value="@Model.PostId"/>
     <div class="comment-input-container">
         <textarea name="Content" class="comment-input" placeholder="Share your thoughts..."></textarea>
         <span class="text-danger validation-message" data-valmsg-for="Content"></span>
