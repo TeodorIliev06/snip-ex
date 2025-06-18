@@ -18,6 +18,10 @@
             builder
                 .Property(u => u.ProfilePicturePath)
                 .HasDefaultValue(DefaultProfilePicturePath);
+
+            builder
+                .Property(u => u.IsBanned)
+                .HasDefaultValue(false);
         }
     }
 }

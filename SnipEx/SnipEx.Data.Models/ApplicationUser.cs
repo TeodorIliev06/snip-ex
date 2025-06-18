@@ -14,6 +14,8 @@
 
         public DateTime JoinDate { get; set; }
 
+        public bool IsBanned { get; set; }
+
         public virtual ICollection<Post> Posts { get; set; }
             = new HashSet<Post>();
 
