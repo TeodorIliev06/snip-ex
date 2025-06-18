@@ -1,12 +1,11 @@
 ﻿namespace SnipEx.Services.Data.Models.Utils
 {
     using System.IO;
-    using System.Drawing;
     using System.ComponentModel.DataAnnotations;
 
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Identity;
 
     using SnipEx.Data.Models;
     using SnipEx.Services.Data.Contracts.Utils;
@@ -42,9 +41,7 @@
                 await file.CopyToAsync(fileStream);
             }
 
-            // Store relative path for web rendering
-            string relativePath = Path.Combine("images", "profile_pics", uniqueFileName);
-            user.ProfilePicturePath = relativePath;
+            user.ProfilePicturePath = $"images/profile_pics/{uniqueFileName}";
 
             var result = await userManager.UpdateAsync(user);
             return result.Succeeded;

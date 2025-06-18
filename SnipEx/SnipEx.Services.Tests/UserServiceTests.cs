@@ -80,10 +80,12 @@
                 .Returns(mockDbSet.Object);
 
             // Act
-            var result = await _userService.GetTotalLikesReceivedByUserAsync(userId);
+            var result = await _userService.GetTotalLikesReceivedByUserAsync(new List<string> { userId });
 
             // Assert
-            Assert.That(result, Is.EqualTo(2)); // Only 2 likes on the target user's posts
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Count, Is.EqualTo(1));
+            Assert.That(result[userId], Is.EqualTo(2)); // Only 2 likes on the target user's posts
             _mockPostLikeRepository.Verify(r => r.GetAllAttached(), Times.Once);
         }
 
@@ -111,10 +113,12 @@
                 .Returns(mockDbSet.Object);
 
             // Act
-            var result = await _userService.GetTotalLikesReceivedByUserAsync(userId);
+            var result = await _userService.GetTotalLikesReceivedByUserAsync(new List<string> { userId });
 
             // Assert
-            Assert.That(result, Is.EqualTo(0));
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Count, Is.EqualTo(1));
+            Assert.That(result[userId], Is.EqualTo(0));
             _mockPostLikeRepository.Verify(r => r.GetAllAttached(), Times.Once);
         }
 
@@ -131,10 +135,12 @@
                 .Returns(mockDbSet.Object);
 
             // Act
-            var result = await _userService.GetTotalLikesReceivedByUserAsync(userId);
+            var result = await _userService.GetTotalLikesReceivedByUserAsync(new List<string> { userId });
 
             // Assert
-            Assert.That(result, Is.EqualTo(0));
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Count, Is.EqualTo(1));
+            Assert.That(result[userId], Is.EqualTo(0));
             _mockPostLikeRepository.Verify(r => r.GetAllAttached(), Times.Once);
         }
 
@@ -146,18 +152,18 @@
 
             // Act & Assert
             Assert.ThrowsAsync<FormatException>(async () =>
-                await _userService.GetTotalLikesReceivedByUserAsync(invalidUserId));
+                await _userService.GetTotalLikesReceivedByUserAsync(new List<string> { invalidUserId }));
         }
 
         [Test]
         public void GetTotalLikesReceivedByUserAsync_ShouldThrowArgumentNullException_WhenUserIdIsNull()
         {
             // Arrange
-            string nullUserId = null;
+            var nullUserIdList = new List<string> { null };
 
             // Act & Assert
             Assert.ThrowsAsync<ArgumentNullException>(async () =>
-                await _userService.GetTotalLikesReceivedByUserAsync(nullUserId));
+                await _userService.GetTotalLikesReceivedByUserAsync(nullUserIdList));
         }
 
         [Test]
@@ -199,10 +205,12 @@
                 .Returns(mockDbSet.Object);
 
             // Act
-            var result = await _userService.GetTotalLikesReceivedByUserAsync(userId);
+            var result = await _userService.GetTotalLikesReceivedByUserAsync(new List<string> { userId });
 
             // Assert
-            Assert.That(result, Is.EqualTo(1000)); // Only the target user's posts should be counted
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Count, Is.EqualTo(1));
+            Assert.That(result[userId], Is.EqualTo(1000)); // Only the target user's posts should be counted
             _mockPostLikeRepository.Verify(r => r.GetAllAttached(), Times.Once);
         }
 

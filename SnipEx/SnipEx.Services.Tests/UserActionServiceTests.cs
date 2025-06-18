@@ -5,10 +5,10 @@
     using MockQueryable.Moq;
 
     using SnipEx.Data.Models;
-    using SnipEx.Data.Repositories.Contracts;
     using SnipEx.Services.Data.Models;
-    using SnipEx.Services.Mediator.Comments.CommentLiked;
+    using SnipEx.Data.Repositories.Contracts;
     using SnipEx.Services.Mediator.Posts.PostLiked;
+    using SnipEx.Services.Mediator.Comments.CommentLiked;
     using SnipEx.Services.Mediator.Profiles.UserConnection;
 
     [TestFixture]
@@ -558,6 +558,56 @@
         {
             // Arrange
             var currentUserId = Guid.NewGuid().ToString();
+            var targetUserId1 = Guid.NewGuid().ToString();
+            var targetUserId2 = Guid.NewGuid().ToString();
+            var currentUserGuid = Guid.Parse(currentUserId);
+            var targetUserGuid1 = Guid.Parse(targetUserId1);
+            var targetUserGuid2 = Guid.Parse(targetUserId2);
+
+            var mutualUser1 = Guid.NewGuid();
+            var mutualUser2 = Guid.NewGuid();
+            var mutualUser3 = Guid.NewGuid();
+            var nonMutualUser = Guid.NewGuid();
+
+            var connections = new List<UserConnection>
+            {
+                // Current user connections
+                new UserConnection { UserId = currentUserGuid, ConnectedUserId = mutualUser1 },
+                new UserConnection { UserId = mutualUser2, ConnectedUserId = currentUserGuid },
+                new UserConnection { UserId = currentUserGuid, ConnectedUserId = mutualUser3 },
+                new UserConnection { UserId = currentUserGuid, ConnectedUserId = nonMutualUser },
+                
+                // Target user 1 connections (shares mutualUser1 and mutualUser2 with current user)
+                new UserConnection { UserId = targetUserGuid1, ConnectedUserId = mutualUser1 },
+                new UserConnection { UserId = mutualUser2, ConnectedUserId = targetUserGuid1 },
+                
+                // Target user 2 connections (shares mutualUser1 and mutualUser3 with current user)
+                new UserConnection { UserId = targetUserGuid2, ConnectedUserId = mutualUser1 },
+                new UserConnection { UserId = mutualUser3, ConnectedUserId = targetUserGuid2 }
+            };
+
+            var mockDbSet = connections
+                .AsQueryable()
+                .BuildMockDbSet();
+            _mockUserConnectionRepository.Setup(r =>
+                r.GetAllAttached()).Returns(mockDbSet.Object);
+
+            // Act
+            var targetUserIds = new List<string> { targetUserId1, targetUserId2 };
+            var result = await _userActionService.GetMutualConnectionsCountByUserAsync(currentUserId, targetUserIds);
+
+            // Assert
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Count, Is.EqualTo(2));
+            Assert.That(result[targetUserId1], Is.EqualTo(2)); // mutualUser1 and mutualUser2
+            Assert.That(result[targetUserId2], Is.EqualTo(2)); // mutualUser1 and mutualUser3
+        }
+
+        [Test]
+        public async Task GetMutualConnectionsCountByUserAsync_WithSingleTarget_ShouldReturnCorrectCount()
+        {
+            // Arrange
+            var currentUserId = Guid.NewGuid().ToString();
             var targetUserId = Guid.NewGuid().ToString();
             var currentUserGuid = Guid.Parse(currentUserId);
             var targetUserGuid = Guid.Parse(targetUserId);
@@ -571,20 +621,83 @@
                 new UserConnection { UserId = currentUserGuid, ConnectedUserId = mutualUser1 },
                 new UserConnection { UserId = mutualUser2, ConnectedUserId = currentUserGuid },
                 new UserConnection { UserId = currentUserGuid, ConnectedUserId = nonMutualUser },
-
+                
                 // Target user connections
                 new UserConnection { UserId = targetUserGuid, ConnectedUserId = mutualUser1 },
                 new UserConnection { UserId = mutualUser2, ConnectedUserId = targetUserGuid }
             };
 
-            var mockDbSet = connections.AsQueryable().BuildMockDbSet();
-            _mockUserConnectionRepository.Setup(r => r.GetAllAttached()).Returns(mockDbSet.Object);
+            var mockDbSet = connections
+                .AsQueryable()
+                .BuildMockDbSet();
+            _mockUserConnectionRepository.Setup(r =>
+                r.GetAllAttached()).Returns(mockDbSet.Object);
 
             // Act
-            var result = await _userActionService.GetMutualConnectionsCountByUserAsync(currentUserId, targetUserId);
+            var targetUserIds = new List<string> { targetUserId };
+            var result = await _userActionService
+                .GetMutualConnectionsCountByUserAsync(currentUserId, targetUserIds);
 
             // Assert
-            Assert.That(result, Is.EqualTo(2));
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Count, Is.EqualTo(1));
+            Assert.That(result[targetUserId], Is.EqualTo(2));
+        }
+
+        [Test]
+        public async Task GetMutualConnectionsCountByUserAsync_WithNoMutualConnections_ShouldReturnZero()
+        {
+            // Arrange
+            var currentUserId = Guid.NewGuid().ToString();
+            var targetUserId = Guid.NewGuid().ToString();
+            var currentUserGuid = Guid.Parse(currentUserId);
+            var targetUserGuid = Guid.Parse(targetUserId);
+            var currentUserConnection = Guid.NewGuid();
+            var targetUserConnection = Guid.NewGuid();
+
+            var connections = new List<UserConnection> 
+            { 
+                new UserConnection { UserId = currentUserGuid, ConnectedUserId = currentUserConnection },
+                new UserConnection { UserId = targetUserGuid, ConnectedUserId = targetUserConnection }
+            };
+
+            var mockDbSet = connections
+                .AsQueryable()
+                .BuildMockDbSet();
+            _mockUserConnectionRepository.Setup(r =>
+                r.GetAllAttached()).Returns(mockDbSet.Object);
+
+            // Act
+            var targetUserIds = new List<string> { targetUserId };
+            var result = await _userActionService
+                .GetMutualConnectionsCountByUserAsync(currentUserId, targetUserIds);
+
+            // Assert
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Count, Is.EqualTo(1));
+            Assert.That(result[targetUserId], Is.EqualTo(0));
+        }
+
+        [Test]
+        public async Task GetMutualConnectionsCountByUserAsync_WithEmptyTargetList_ShouldReturnEmptyDictionary()
+        {
+            // Arrange
+            var currentUserId = Guid.NewGuid().ToString();
+            var targetUserIds = new List<string>();
+
+            var mockDbSet = new List<UserConnection>()
+                .AsQueryable()
+                .BuildMockDbSet();
+            _mockUserConnectionRepository.Setup(r =>
+                r.GetAllAttached()).Returns(mockDbSet.Object);
+
+            // Act
+            var result = await _userActionService
+                .GetMutualConnectionsCountByUserAsync(currentUserId, targetUserIds);
+
+            // Assert
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Count, Is.EqualTo(0));
         }
 
         #endregion

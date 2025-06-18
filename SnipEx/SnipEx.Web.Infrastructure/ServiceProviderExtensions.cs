@@ -3,8 +3,9 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.Extensions.DependencyInjection;
 
-    using static SnipEx.Common.ApplicationConstants;
     using SnipEx.Data.Models;
+
+    using static SnipEx.Common.ApplicationConstants;
 
     public static class ServiceProviderExtensions
     {

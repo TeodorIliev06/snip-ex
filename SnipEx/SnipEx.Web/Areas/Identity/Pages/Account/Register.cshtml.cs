@@ -12,10 +12,13 @@ namespace SnipEx.Web.Areas.Identity.Pages.Account
 
     using SnipEx.Data.Models;
 
+    using static SnipEx.Common.ApplicationConstants;
+
     public class RegisterModel(
         UserManager<ApplicationUser> userManager,
         IUserStore<ApplicationUser> userStore,
         SignInManager<ApplicationUser> signInManager,
+        RoleManager<ApplicationRole> roleManager,
         ILogger<RegisterModel> logger) : PageModel
     {
         /// <summary>
@@ -97,8 +100,14 @@ namespace SnipEx.Web.Areas.Identity.Pages.Account
                 {
                     logger.LogInformation("User created a new account with password.");
 
-                    var userId = await userManager.GetUserIdAsync(user);
+                    bool isRoleExisting = await roleManager
+                        .RoleExistsAsync(UserRoleName);
+                    if (!isRoleExisting)
+                    {
+                        await roleManager.CreateAsync(new ApplicationRole(UserRoleName));
+                    }
 
+                    await userManager.AddToRoleAsync(user, UserRoleName);
                     await signInManager.SignInAsync(user, isPersistent: false);
                     return LocalRedirect(returnUrl);
 
