@@ -1,0 +1,78 @@
+﻿@using SnipEx.Web.ViewModels.Admin
+@model IEnumerable<ManageUserViewModel>
+
+<div class="container">
+    <h2>Manage User Bans</h2>
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success d-flex justify-content-between">
+            @TempData["SuccessMessage"]
+            <button class="close-btn">x</button>
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger d-flex justify-content-between">
+            @TempData["ErrorMessage"]
+            <button class="close-btn">x</button>
+        </div>
+    }
+    <div class="filter-bar">
+        <div class="search-container">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text"
+                   id="userSearch"
+                   class="search-input"
+                   placeholder="Search by username...">
+        </div>
+        <div class="filter-groups">
+            <button class="banned-filter-btn btn btn-warning">
+                Show Banned Only
+            </button>
+            <button class="clear-filters-btn btn btn-secondary">
+                Clear Filters
+            </button>
+        </div>
+    </div>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Join Date</th>
+            <th>Ban Status</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.UserName</td>
+                <td>@user.Email</td>
+                <td>@user.JoinDate.ToString("MMM dd, yyyy")</td>
+                <td>
+                    <span class="badge @(user.IsBanned ? "badge-danger" : "badge-success")">
+                        @(user.IsBanned ? "Banned" : "Active")
+                    </span>
+                </td>
+                <td>
+                    <form asp-action="ToggleBan" method="post">
+                        <input type="hidden" name="userId" value="@user.Id" />
+                        <button id="actionBtn" type="submit" class="btn @(user.IsBanned ? "btn-success" : "btn-danger")">
+                            @(user.IsBanned ? "Unban User" : "Ban User")
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+
+@section Styles {
+	<link rel="stylesheet" href="~/css/admin/manageBans.css" />
+}
+@section Scripts {
+	<script src="~/js/admin/manageUsers.js" asp-append-version="true"></script>
+}
