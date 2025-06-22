@@ -52,17 +52,7 @@ namespace SnipEx.WebApi
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Title = "SnipEx.WebApi",
-                    Version = "v1",
-                    Description = "API for SnipEx app"
-                });
-
-                c.OperationFilter<FileUploadOperationFilter>();
-            });
+            builder.Services.AddSwaggerApi();
 
             builder.Services.AddRealtimeServices();
 

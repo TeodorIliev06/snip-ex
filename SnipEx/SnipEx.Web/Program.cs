@@ -64,7 +64,7 @@ namespace SnipEx.Web
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Error/404");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
@@ -73,6 +73,8 @@ namespace SnipEx.Web
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseStatusCodePagesWithReExecute("/Error/{0}");
 
             app.UseAuthentication();
             app.UseAuthorization();

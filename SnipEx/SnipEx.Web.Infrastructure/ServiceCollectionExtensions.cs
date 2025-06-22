@@ -2,10 +2,12 @@
 {
     using System.Reflection;
 
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.OpenApi.Models;
     using Microsoft.Extensions.DependencyInjection;
 
-    using SnipEx.Data.Models;
     using SnipEx.Data.Repositories;
+    using SnipEx.Web.Infrastructure.Filters;
     using SnipEx.Data.Repositories.Contracts;
 
     public static class ServiceCollectionExtensions
@@ -77,6 +79,30 @@
 
                 services.AddScoped(serviceInterfaceType, serviceType);
             }
+        }
+
+        public static IServiceCollection AddSwaggerApi(this IServiceCollection services)
+        {
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "SnipEx.WebApi",
+                    Version = "v1",
+                    Description = "API for SnipEx app"
+                });
+
+                c.DocInclusionPredicate((docName, description) =>
+                {
+                    // Only include controllers with [ApiController] attribute
+                    var controllerActionDescriptor = description.ActionDescriptor as Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor;
+                    return controllerActionDescriptor?.ControllerTypeInfo.GetCustomAttributes(typeof(ApiControllerAttribute), true).Any() == true;
+                });
+
+                c.OperationFilter<FileUploadOperationFilter>();
+            });
+
+            return services;
         }
     }
 }
