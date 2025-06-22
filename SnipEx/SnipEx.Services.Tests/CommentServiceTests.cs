@@ -156,17 +156,23 @@
         }
 
         [Test]
-        public async Task AddReplyAsync_ShouldSetIsMentionTrue_WhenParentCommentHasParent()
+        public async Task AddReplyAsync_ShouldSetIsMentionTrue_WhenReferenceCommentIdIsProvided()
         {
             // Arrange
             var postGuid = Guid.NewGuid();
             var parentCommentGuid = Guid.NewGuid();
-            var grandParentCommentGuid = Guid.NewGuid();
+            var referenceCommentGuid = Guid.NewGuid();
             var userId = Guid.NewGuid().ToString();
+
             var parentComment = new Comment
             {
                 Id = parentCommentGuid,
-                ParentCommentId = grandParentCommentGuid
+                ParentCommentId = null
+            };
+
+            var referenceComment = new Comment
+            {
+                Id = referenceCommentGuid
             };
 
             var model = new AddCommentReplyFormModel
@@ -174,12 +180,22 @@
                 Content = "Test reply",
                 PostId = postGuid.ToString(),
                 ParentCommentId = parentCommentGuid.ToString(),
+                ReferenceCommentId = referenceCommentGuid.ToString(),
                 CreatedAt = DateTime.UtcNow.ToString(CreatedAtFormat, CultureInfo.InvariantCulture)
             };
 
-            _mockCommentRepository.Setup(r => r.GetByIdAsync(parentCommentGuid)).ReturnsAsync(parentComment);
-            _mockCommentRepository.Setup(r => r.AddAsync(It.IsAny<Comment>())).Returns(Task.CompletedTask);
-            _mockCommentRepository.Setup(r => r.SaveChangesAsync()).Returns(Task.CompletedTask);
+            _mockCommentRepository.Setup(r =>
+                r.GetByIdAsync(parentCommentGuid))
+                .ReturnsAsync(parentComment);
+            _mockCommentRepository.Setup(r =>
+                r.GetByIdAsync(referenceCommentGuid))
+                .ReturnsAsync(referenceComment);
+            _mockCommentRepository.Setup(r =>
+                r.AddAsync(It.IsAny<Comment>()))
+                .Returns(Task.CompletedTask);
+            _mockCommentRepository.Setup(r =>
+                r.SaveChangesAsync())
+                .Returns(Task.CompletedTask);
 
             // Act
             var result = await _commentService.AddReplyAsync(model, userId);
