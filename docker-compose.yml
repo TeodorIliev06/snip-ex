@@ -1,7 +1,9 @@
 version: '3.8'
 services:
   web:
-    build: ./SnipEx.Web
+    build:
+      context: ./SnipEx
+      dockerfile: SnipEx.Web/Dockerfile
     expose:
       - "80"
     environment:
@@ -11,7 +13,9 @@ services:
       - db
 
   api:
-    build: ./SnipEx.WebApi
+    build:
+      context: ./SnipEx
+      dockerfile: SnipEx.WebApi/Dockerfile
     expose:
       - "80"
     environment:
