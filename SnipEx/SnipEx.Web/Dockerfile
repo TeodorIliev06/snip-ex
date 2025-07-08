@@ -28,6 +28,7 @@ COPY SnipEx.Common/. ./SnipEx.Common/
 COPY SnipEx.Services.Data/. ./SnipEx.Services.Data/
 COPY SnipEx.Data.Models/. ./SnipEx.Data.Models/
 COPY SnipEx.Data/. ./SnipEx.Data/
+COPY SnipEx.Data/Datasets/ ./SnipEx.Data/Datasets/
 COPY SnipEx.Services.Mapping/. ./SnipEx.Services.Mapping/
 COPY SnipEx.Services.Mediator/. ./SnipEx.Services.Mediator/
 COPY SnipEx.Realtime/. ./SnipEx.Realtime/
