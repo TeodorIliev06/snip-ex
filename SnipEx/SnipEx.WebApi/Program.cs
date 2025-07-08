@@ -13,9 +13,8 @@ namespace SnipEx.WebApi
     using SnipEx.Web.Infrastructure;
     using SnipEx.Web.ViewModels.Post;
     using SnipEx.Services.Data.Contracts;
-    using SnipEx.Web.Infrastructure.Filters;
+
     using static SnipEx.Common.SignalRConstants;
-    using Microsoft.OpenApi.Models;
 
     public class Program
     {

@@ -22,9 +22,17 @@ COPY ["SnipEx.Services.Mapping/SnipEx.Services.Mapping.csproj", "SnipEx.Services
 COPY ["SnipEx.Services.Mediator/SnipEx.Services.Mediator.csproj", "SnipEx.Services.Mediator/"]
 COPY ["SnipEx.Web.ViewModels/SnipEx.Web.ViewModels.csproj", "SnipEx.Web.ViewModels/"]
 COPY ["SnipEx.Web.Infrastructure/SnipEx.Web.Infrastructure.csproj", "SnipEx.Web.Infrastructure/"]
-COPY ["SnipEx.Web/SnipEx.Web.csproj", "SnipEx.Web/"]
 RUN dotnet restore "./SnipEx.WebApi/SnipEx.WebApi.csproj"
-COPY . .
+COPY SnipEx.WebApi/. ./SnipEx.WebApi/
+COPY SnipEx.Common/. ./SnipEx.Common/
+COPY SnipEx.Services.Data/. ./SnipEx.Services.Data/
+COPY SnipEx.Data.Models/. ./SnipEx.Data.Models/
+COPY SnipEx.Data/. ./SnipEx.Data/
+COPY SnipEx.Services.Mapping/. ./SnipEx.Services.Mapping/
+COPY SnipEx.Services.Mediator/. ./SnipEx.Services.Mediator/
+COPY SnipEx.Realtime/. ./SnipEx.Realtime/
+COPY SnipEx.Web.ViewModels/. ./SnipEx.Web.ViewModels/
+COPY SnipEx.Web.Infrastructure/. ./SnipEx.Web.Infrastructure/
 WORKDIR "/src/SnipEx.WebApi"
 RUN dotnet build "./SnipEx.WebApi.csproj" -c $BUILD_CONFIGURATION -o /app/build
 

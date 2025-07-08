@@ -247,25 +247,6 @@
 
     improveAccessibility();
 
-    function adjustNotificationBadge() {
-        const badge = document.querySelector('.notification-badge');
-        if (!badge) return;
-
-        if (window.innerWidth <= 480) {
-            badge.style.right = '-8px';
-            badge.style.top = '-8px';
-        } else if (window.innerWidth <= 768) {
-            badge.style.right = '-10px';
-            badge.style.top = '-6px';
-        } else {
-            badge.style.right = '-10px';
-            badge.style.top = '-6px';
-        }
-    }
-
-    adjustNotificationBadge();
-    window.addEventListener('resize', adjustNotificationBadge);
-
     // Optimize performance by debouncing resize events
     function debounce(func, wait) {
         let timeout;
@@ -281,7 +262,6 @@
 
     // Use debounced resize handler
     const debouncedResize = debounce(function () {
-        adjustNotificationBadge();
 
         const sidePanel = document.querySelector('.side-panel');
         if (window.innerWidth > 768 && sidePanel && sidePanel.classList.contains('mobile-open')) {

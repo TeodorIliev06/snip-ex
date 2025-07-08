@@ -20,7 +20,6 @@
     <ProjectReference Include="..\SnipEx.Services.Mediator\SnipEx.Services.Mediator.csproj" />
     <ProjectReference Include="..\SnipEx.Web.Infrastructure\SnipEx.Web.Infrastructure.csproj" />
     <ProjectReference Include="..\SnipEx.Web.ViewModels\SnipEx.Web.ViewModels.csproj" />
-    <ProjectReference Include="..\SnipEx.Web\SnipEx.Web.csproj" />
   </ItemGroup>
 
 </Project>

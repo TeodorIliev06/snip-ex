@@ -23,7 +23,16 @@ COPY ["SnipEx.Realtime/SnipEx.Realtime.csproj", "SnipEx.Realtime/"]
 COPY ["SnipEx.Web.ViewModels/SnipEx.Web.ViewModels.csproj", "SnipEx.Web.ViewModels/"]
 COPY ["SnipEx.Web.Infrastructure/SnipEx.Web.Infrastructure.csproj", "SnipEx.Web.Infrastructure/"]
 RUN dotnet restore "./SnipEx.Web/SnipEx.Web.csproj"
-COPY . .
+COPY SnipEx.Web/. ./SnipEx.Web/
+COPY SnipEx.Common/. ./SnipEx.Common/
+COPY SnipEx.Services.Data/. ./SnipEx.Services.Data/
+COPY SnipEx.Data.Models/. ./SnipEx.Data.Models/
+COPY SnipEx.Data/. ./SnipEx.Data/
+COPY SnipEx.Services.Mapping/. ./SnipEx.Services.Mapping/
+COPY SnipEx.Services.Mediator/. ./SnipEx.Services.Mediator/
+COPY SnipEx.Realtime/. ./SnipEx.Realtime/
+COPY SnipEx.Web.ViewModels/. ./SnipEx.Web.ViewModels/
+COPY SnipEx.Web.Infrastructure/. ./SnipEx.Web.Infrastructure/
 WORKDIR "/src/SnipEx.Web"
 RUN dotnet build "./SnipEx.Web.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
