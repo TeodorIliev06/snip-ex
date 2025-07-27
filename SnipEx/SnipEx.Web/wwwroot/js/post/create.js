@@ -54,36 +54,6 @@
             });
     });
 
-    document.getElementById('code-view-btn').addEventListener('click', function () {
-        this.classList.add('active');
-        document.getElementById('terminal-view-btn').classList.remove('active');
-        document.getElementById('terminal-preview').style.display = 'none';
-        document.querySelector('.editor-container').style.display = 'block';
-    });
-
-    document.getElementById('terminal-view-btn').addEventListener('click', function () {
-        this.classList.add('active');
-        document.getElementById('code-view-btn').classList.remove('active');
-        document.getElementById('terminal-preview').style.display = 'block';
-        document.querySelector('.editor-container').style.display = 'none';
-
-        const code = editor.getValue();
-        const terminalContent = document.querySelector('.terminal-content');
-        terminalContent.innerHTML = '';
-
-        const preElement = document.createElement('pre');
-        const codeElement = document.createElement('code');
-        codeElement.className = 'language-' + (languageMappings[editor.getOption('mode')] || editor.getOption('mode'));
-        codeElement.textContent = editor.getValue() || 'No code to preview yet...';
-        preElement.appendChild(codeElement);
-        terminalContent.appendChild(preElement);
-
-        // If using highlight.js or Prism for terminal highlighting
-        if (typeof hljs !== 'undefined') {
-            hljs.highlightElement(codeElement);
-        }
-    });
-
     // Handle tag management
     const tagsContainer = document.getElementById('tags-container');
     const tagInput = document.getElementById('tag-input');

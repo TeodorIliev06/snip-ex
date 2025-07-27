@@ -26,11 +26,9 @@
         [Authorize]
         public async Task<IActionResult> Create()
         {
-            var availableLanguages = await languageService.GetAllLanguagesAsync();
-            var viewModel = new AddPostFormModel()
-            {
-                AvailableLanguages = availableLanguages
-            };
+            var viewModel = new AddPostFormModel();
+
+            await SetLanguagesForPostModel(viewModel);
 
             return View(viewModel);
         }
@@ -41,14 +39,16 @@
         {
             if (!this.ModelState.IsValid)
             {
+                await SetLanguagesForPostModel(model);
                 return View(model);
             }
 
             var userId = userManager.GetUserId(User)!;
             bool isAdded = await postService.AddPostAsync(model, userId);
+
             if (!isAdded)
             {
-                //Add model errors
+                await SetLanguagesForPostModel(model);
                 return View(model);
             }
 
@@ -73,6 +73,11 @@
             }
 
             return View(viewModel);
+        }
+
+        private async Task SetLanguagesForPostModel(AddPostFormModel model)
+        {
+            model.AvailableLanguages = await languageService.GetAllLanguagesAsync();
         }
     }
 }

@@ -39,28 +39,6 @@
         </div>
 
         <div class="form-group">
-            <label class="form-label">Preview</label>
-            <div class="preview-toggle">
-                <button type="button" class="preview-toggle-btn active" id="code-view-btn">Code</button>
-                <button type="button" class="preview-toggle-btn" id="terminal-view-btn">Terminal</button>
-            </div>
-
-            <div class="terminal-preview" id="terminal-preview" style="display: none;">
-                <div class="terminal-header">
-                    <div class="terminal-buttons">
-                        <span class="terminal-button close"></span>
-                        <span class="terminal-button minimize"></span>
-                        <span class="terminal-button maximize"></span>
-                    </div>
-                    <div class="terminal-title">~/snippets</div>
-                </div>
-                <div class="terminal-content">
-                    <div class="terminal-line">Your code will appear in the terminal preview</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
             <label class="form-label">Tags</label>
             <div class="tags-container" id="tags-container">
                 <!-- Tags will be added dynamically -->
@@ -69,6 +47,18 @@
                 <input type="text" class="tag-input" id="tag-input" placeholder="Add a tag...">
                 <button type="button" class="add-tag-btn" id="add-tag-btn">Add</button>
             </div>
+            
+            <div class="form-buttons">
+                @* TODO: Add save draft feature *@
+                <div>
+                    <a
+                        asp-controller="Post"
+                        asp-action="Index" class="btn btn-danger" style="margin-right: 1rem;">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary">Publish Snippet</button>
+                </div>
+            </div>
     
             <!-- Validation span for tags -->
             <span asp-validation-for="Tags" class="field-validation-error" style="display: none;"></span>
@@ -76,17 +66,7 @@
             <div id="tag-ids-container"></div>
         </div>
 
-        <div class="form-buttons">
-            @* TODO: Add save draft feature *@
-            <div>
-                <a
-                    asp-controller="Post"
-                    asp-action="Index" class="btn btn-danger" style="margin-right: 1rem;">
-                    Cancel
-                </a>
-                <button type="submit" class="btn btn-primary">Publish Snippet</button>
-            </div>
-        </div>
+        
     </form>
 </div>
 
