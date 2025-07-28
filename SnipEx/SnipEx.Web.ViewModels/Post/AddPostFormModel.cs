@@ -17,7 +17,7 @@
         public AddPostFormModel()
         {
             this.CreatedAt = DateTime.UtcNow
-                .ToString(CreatedAtFormat, CultureInfo.InvariantCulture);
+                .ToString(CultureInfo.InvariantCulture);
         }
 
         [Required]

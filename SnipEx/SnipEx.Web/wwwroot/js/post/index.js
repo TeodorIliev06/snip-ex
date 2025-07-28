@@ -19,26 +19,46 @@ function formatDates() {
 }
 
 /**
- * Convert a date string in format 'dd/MM/yyyy' to a relative time string
+ * Convert a date string to a relative time string
+ * Supports both legacy 'dd/MM/yyyy' format and full DateTime strings
  */
 function getRelativeTimeString(dateStr) {
-    const parts = dateStr.split('/');
-    if (parts.length !== 3) {
-        return dateStr;
+    if (!dateStr) {
+        return 'Unknown';
     }
 
-    const day = parseInt(parts[0], 10);
-    const month = parseInt(parts[1], 10) - 1;
-    const year = parseInt(parts[2], 10);
+    let date;
 
-    const date = new Date(year, month, day);
-    const now = new Date();
+    // Check if it's the legacy format 'dd/MM/yyyy'
+    if (dateStr.includes('/') && dateStr.split('/').length === 3) {
+        const parts = dateStr.split('/');
+        const day = parseInt(parts[0], 10);
+        const month = parseInt(parts[1], 10) - 1; // JavaScript months are 0-indexed
+        const year = parseInt(parts[2], 10);
+        date = new Date(year, month, day);
+    } else {
+        // Handle full DateTime strings (ISO format, SQL Server format, etc.)
+        // Examples: 
+        // - "2025-07-28 19:07:54.8789578"
+        // - "2025-07-28T19:07:54.878Z"
+        // - "2025-07-28T19:07:54"
+        date = new Date(dateStr);
+    }
 
+    // Validate the parsed date
     if (isNaN(date.getTime())) {
-        return dateStr;
+        console.warn('Invalid date format:', dateStr);
+        return dateStr; // Return original string if parsing fails
     }
 
+    const now = new Date();
     const diffInMs = now - date;
+
+    // Handle future dates (shouldn't happen, but just in case)
+    if (diffInMs < 0) {
+        return 'just now';
+    }
+
     const diffInSeconds = Math.floor(diffInMs / 1000);
 
     if (diffInSeconds < 60) {

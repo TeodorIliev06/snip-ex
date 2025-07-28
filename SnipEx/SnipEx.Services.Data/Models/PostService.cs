@@ -72,7 +72,7 @@
                     Title = p.Title,
                     Content = p.Content,
                     UserName = p.User?.UserName ?? ApplicationConstants.NoUserName,
-                    CreatedAt = p.CreatedAt.ToString(CreatedAtFormat, CultureInfo.InvariantCulture),
+                    CreatedAt = p.CreatedAt.ToString(CultureInfo.InvariantCulture),
                     Views = p.Views,
                     LikesCount = p.Likes.Count,
                     CommentCount = p.Comments.Count,
@@ -113,13 +113,6 @@
 
         public async Task<bool> AddPostAsync(AddPostFormModel model, string userId)
         {
-            bool isCreationDateValid = DateTime
-                .TryParseExact(model.CreatedAt, CreatedAtFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime creationDate);
-            if (!isCreationDateValid)
-            {
-                return false;
-            }
-
             var userGuid = Guid.Parse(userId);
 
             await using var transaction = await postRepository.BeginTransactionAsync();
@@ -127,7 +120,7 @@
             {
                 var post = new Post();
                 AutoMapperConfig.MapperInstance.Map(model, post);
-                post.CreatedAt = creationDate;
+                post.CreatedAt = DateTime.UtcNow;
                 post.UserId = userGuid;
 
                 await postRepository.AddAsync(post);
