@@ -83,7 +83,9 @@
     text-decoration: none;
     font-size: 0.875rem;
     transition: all 0.3s ease;
-    display: inline-block;
+    display: inline-flex;
+    line-height: 1;
+    white-space: nowrap;
     margin: 0.25rem;
     min-height: 44px; /* Touch target size */
     display: flex;
@@ -145,35 +147,88 @@
     color: transparent;
 }
 
-/* Sort Options */
+/* Sort Options - Override Bootstrap btn-group */
+.post-index-page .sort-options {
+    display: flex;
+    border-radius: 0; /* Remove Bootstrap's border-radius */
+}
+
 .post-index-page .sort-options .btn {
     background-color: transparent;
     border: 1px solid #30363d;
     color: #8b949e;
     transition: all 0.3s ease;
-    border-radius: 6px;
-    margin-left: 0.5rem;
+    border-radius: 0 !important; /* Remove all border radius by default */
+    margin-left: 0 !important; /* Remove spacing between buttons */
     padding: 0.75rem 1rem;
     min-height: 44px;
     white-space: nowrap;
+    position: relative;
+    border-right: none; /* Remove right border except for last */
 }
 
+/* Add border-right back to the last button */
+.post-index-page .sort-options .btn:last-child {
+    border-right: 1px solid #30363d;
+}
+
+/* First button - left cut corners */
+.post-index-page .sort-options .btn:first-child {
+    border-top-left-radius: 6px !important;
+    border-bottom-left-radius: 6px !important;
+}
+
+/* Last button - right cut corners */
+.post-index-page .sort-options .btn:last-child {
+    border-top-right-radius: 6px !important;
+    border-bottom-right-radius: 6px !important;
+}
+
+/* Hover states */
 .post-index-page .sort-options .btn:hover {
     background-color: #21262d !important;
     border-color: #58a6ff;
     color: #58a6ff;
     transform: translateY(-1px);
+    z-index: 1; /* Bring hovered button above others */
 }
 
+.post-index-page .sort-options .btn:hover + .btn {
+    border-left-color: #58a6ff; /* Make next button's left border match */
+}
+
+/* Active state */
 .post-index-page .sort-options .btn.active {
     background-color: #58a6ff;
     border-color: #58a6ff;
     color: #0d1117;
     font-weight: 600;
+    z-index: 2; /* Bring active button above others */
+}
+
+/* Ensure active border doesn't break the seamless look */
+.post-index-page .sort-options .btn.active:not(:last-child) {
+    border-right: 1px solid #58a6ff;
+}
+
+.post-index-page .sort-options .btn.active + .btn {
+    border-left-color: #58a6ff; /* Make next button's left border match */
+}
+
+/* Focus states - override Bootstrap */
+.post-index-page .sort-options .btn:focus {
+    box-shadow: none !important;
+    outline: 2px solid #58a6ff;
+    outline-offset: 2px;
 }
 
 /* Active Filters */
 .post-index-page #activeFilters .badge {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    vertical-align: baseline !important;
+    line-height: 1 !important;
     background-color: #1f6feb !important;
     color: #ffffff !important;
     padding: 0.5rem 0.75rem;
