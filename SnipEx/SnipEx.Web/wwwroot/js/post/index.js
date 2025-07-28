@@ -5,7 +5,6 @@
     initializeCodePreviews();
     applyDynamicClasses();
 
-    // Handle window resize for responsive adjustments
     window.addEventListener('resize', debounce(handleWindowResize, 250));
 });
 
@@ -164,7 +163,6 @@ function initializeCodePreviews() {
             const buttonContainer = card.querySelector('.d-flex.justify-content-between.align-items-center.mt-3');
             const copyButton = buttonContainer.querySelector('.copy-btn');
 
-            // Check if see more button already exists
             if (!buttonContainer.querySelector('.see-more-btn')) {
                 createSeeMoreButton(buttonContainer, copyButton, postUrl, isMobile);
             }
@@ -176,11 +174,9 @@ function initializeCodePreviews() {
  * Create "See more" button with mobile-responsive layout
  */
 function createSeeMoreButton(buttonContainer, copyButton, postUrl, isMobile) {
-    // Create wrapper for buttons
     const rightButtonsWrapper = document.createElement('div');
     rightButtonsWrapper.className = isMobile ? 'd-flex flex-column gap-2 w-100' : 'd-flex gap-2 align-items-center';
 
-    // Move copy button to wrapper
     if (copyButton) {
         rightButtonsWrapper.appendChild(copyButton);
     }
@@ -188,13 +184,12 @@ function createSeeMoreButton(buttonContainer, copyButton, postUrl, isMobile) {
     // Create see more button
     const seeMoreLink = document.createElement('a');
     seeMoreLink.href = postUrl;
-    seeMoreLink.className = 'btn btn-sm btn-outline-secondary see-more-btn';
+    seeMoreLink.className = 'btn btn-sm see-more-btn';
     seeMoreLink.innerHTML = '<i class="bi bi-arrow-right-circle"></i> See more';
 
     rightButtonsWrapper.appendChild(seeMoreLink);
     buttonContainer.appendChild(rightButtonsWrapper);
 
-    // Adjust button container layout for mobile
     if (isMobile) {
         buttonContainer.classList.remove('justify-content-between');
         buttonContainer.classList.add('flex-column', 'align-items-stretch');
@@ -240,10 +235,8 @@ function applyDynamicClasses() {
  * Handle window resize for responsive adjustments
  */
 function handleWindowResize() {
-    // Re-initialize code previews with new mobile state
     initializeCodePreviews();
 
-    // Adjust existing "See more" button layouts
     const isMobile = window.innerWidth <= 768;
     document.querySelectorAll('.snippet-card').forEach(card => {
         const buttonContainer = card.querySelector('.d-flex.justify-content-between.align-items-center.mt-3, .d-flex.flex-column.align-items-stretch.mt-3');
