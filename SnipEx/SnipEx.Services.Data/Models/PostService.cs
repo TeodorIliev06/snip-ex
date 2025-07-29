@@ -1,7 +1,5 @@
 ﻿namespace SnipEx.Services.Data.Models
 {
-    using System.Globalization;
-
     using Microsoft.EntityFrameworkCore;
 
     using SnipEx.Common;
@@ -11,8 +9,6 @@
     using SnipEx.Web.ViewModels.Post;
     using SnipEx.Services.Data.Contracts;
     using SnipEx.Data.Repositories.Contracts;
-
-    using static Common.EntityValidationConstants.Post;
 
     public class PostService(
         IRepository<Tag, Guid> tagRepository,
@@ -72,7 +68,7 @@
                     Title = p.Title,
                     Content = p.Content,
                     UserName = p.User?.UserName ?? ApplicationConstants.NoUserName,
-                    CreatedAt = p.CreatedAt.ToString(CultureInfo.InvariantCulture),
+                    CreatedAt = p.CreatedAt.ToString("O"),
                     Views = p.Views,
                     LikesCount = p.Likes.Count,
                     CommentCount = p.Comments.Count,

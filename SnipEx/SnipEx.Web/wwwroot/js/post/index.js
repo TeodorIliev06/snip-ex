@@ -19,8 +19,7 @@ function formatDates() {
 }
 
 /**
- * Convert a date string to a relative time string
- * Supports both legacy 'dd/MM/yyyy' format and full DateTime strings
+ * Convert a UTC date string to a relative time string in user's local timezone
  */
 function getRelativeTimeString(dateStr) {
     if (!dateStr) {
@@ -29,23 +28,22 @@ function getRelativeTimeString(dateStr) {
 
     let date;
 
-    // Check if it's the legacy format 'dd/MM/yyyy'
-    if (dateStr.includes('/') && dateStr.split('/').length === 3) {
-        const parts = dateStr.split('/');
-        const day = parseInt(parts[0], 10);
-        const month = parseInt(parts[1], 10) - 1; // JavaScript months are 0-indexed
-        const year = parseInt(parts[2], 10);
-        date = new Date(year, month, day);
-    } else {
-        // Handle full DateTime strings (ISO format, SQL Server format, etc.)
-        // Examples: 
-        // - "2025-07-28 19:07:54.8789578"
-        // - "2025-07-28T19:07:54.878Z"
-        // - "2025-07-28T19:07:54"
-        date = new Date(dateStr);
+    // Handle ISO 8601 format
+    try {
+        // If the string doesn't end with 'Z' but is in ISO format, assume it is UTC
+        if (dateStr.includes('T') && !dateStr.endsWith('Z') &&
+            !dateStr.includes('+') && !dateStr.includes('-', 10)) {
+            // Add 'Z' to indicate UTC
+            date = new Date(dateStr + 'Z');
+        } else {
+            // Parse as-is (should handle Z suffix and other timezone indicators)
+            date = new Date(dateStr);
+        }
+    } catch (error) {
+        console.warn('Error parsing date:', dateStr, error);
+        return dateStr;
     }
 
-    // Validate the parsed date
     if (isNaN(date.getTime())) {
         console.warn('Invalid date format:', dateStr);
         return dateStr; // Return original string if parsing fails
@@ -54,7 +52,6 @@ function getRelativeTimeString(dateStr) {
     const now = new Date();
     const diffInMs = now - date;
 
-    // Handle future dates (shouldn't happen, but just in case)
     if (diffInMs < 0) {
         return 'just now';
     }
