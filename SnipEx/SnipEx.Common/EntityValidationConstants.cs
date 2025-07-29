@@ -2,6 +2,11 @@
 {
     public static class EntityValidationConstants
     {
+        public static class DateFormat
+        {
+            public const string IsoString = "O";
+        }
+
         public static class User
         {
             public const int UsernameMinLength = 1;

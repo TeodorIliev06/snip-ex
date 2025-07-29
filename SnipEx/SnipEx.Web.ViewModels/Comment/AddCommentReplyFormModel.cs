@@ -1,9 +1,10 @@
 ﻿namespace SnipEx.Web.ViewModels.Comment
 {
-    using System.ComponentModel.DataAnnotations;
     using System.Globalization;
+    using System.ComponentModel.DataAnnotations;
 
     using AutoMapper;
+
     using SnipEx.Data.Models;
     using SnipEx.Services.Mapping.Contracts;
 
@@ -13,7 +14,7 @@
     {
         public AddCommentReplyFormModel()
         {
-            this.CreatedAt = DateTime.UtcNow.ToString(CreatedAtFormat, CultureInfo.InvariantCulture);
+            this.CreatedAt = DateTime.UtcNow.ToString(CultureInfo.InvariantCulture);
         }
 
         [Required]

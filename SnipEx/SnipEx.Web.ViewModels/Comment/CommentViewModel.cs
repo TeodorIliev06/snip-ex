@@ -7,7 +7,7 @@
     using SnipEx.Services.Mapping.Contracts;
 
     using static Common.ApplicationConstants;
-    using static Common.EntityValidationConstants.Comment;
+    using static Common.EntityValidationConstants.DateFormat;
 
     public class CommentViewModel : IMapFrom<Comment>, IHaveCustomMappings
     {
@@ -35,7 +35,7 @@
             configuration.CreateMap<Comment, CommentViewModel>()
                 .ForMember(d => d.CreatedAt,
                     opt =>
-                    opt.MapFrom(c => c.CreatedAt.ToString(CreatedAtFormat, CultureInfo.InvariantCulture)))
+                    opt.MapFrom(c => c.CreatedAt.ToString(IsoString, CultureInfo.InvariantCulture)))
                 .ForMember(d => d.UserName, opt =>
                     opt.MapFrom(s => s.User != null ? s.User.UserName : NoUserName))
                 .ForMember(d => d.Replies,

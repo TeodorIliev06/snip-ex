@@ -13,7 +13,7 @@
     {
         public AddPostCommentFormModel()
         {
-            this.CreatedAt = DateTime.UtcNow.ToString(CreatedAtFormat, CultureInfo.InvariantCulture);
+            this.CreatedAt = DateTime.UtcNow.ToString(CultureInfo.InvariantCulture);
         }
 
         [Required]

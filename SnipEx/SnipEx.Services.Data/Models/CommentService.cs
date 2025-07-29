@@ -29,19 +29,12 @@
                 return false;
             }
 
-            bool isCreationDateValid = DateTime
-                .TryParseExact(model.CreatedAt, CreatedAtFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime creationDate);
-            if (!isCreationDateValid)
-            {
-                return false;
-            }
-
             var userGuid = Guid.Parse(userId);
 
             var comment = new Comment();
             AutoMapperConfig.MapperInstance.Map(model, comment);
             comment.PostId = postGuid;
-            comment.CreatedAt = creationDate;
+            comment.CreatedAt = DateTime.UtcNow;
             comment.UserId = userGuid;
 
             await commentRepository.AddAsync(comment);
@@ -59,14 +52,6 @@
             var isParentCommentGuidValid = ValidationUtils
                 .TryGetGuid(model.ParentCommentId, out Guid parentCommentGuid);
             if (!isPostGuidValid || !isParentCommentGuidValid)
-            {
-                return false;
-            }
-
-            bool isCreationDateValid = DateTime
-                .TryParseExact(model.CreatedAt, CreatedAtFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime creationDate);
-
-            if (!isCreationDateValid)
             {
                 return false;
             }
@@ -100,8 +85,9 @@
 
             var reply = new Comment();
             AutoMapperConfig.MapperInstance.Map(model, reply);
+
             reply.PostId = postGuid;
-            reply.CreatedAt = creationDate;
+            reply.CreatedAt = DateTime.UtcNow;
             reply.UserId = userGuid;
             reply.ParentCommentId = parentCommentGuid;
 

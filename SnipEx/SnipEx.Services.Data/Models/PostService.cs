@@ -10,6 +10,8 @@
     using SnipEx.Services.Data.Contracts;
     using SnipEx.Data.Repositories.Contracts;
 
+    using static Common.EntityValidationConstants.DateFormat;
+
     public class PostService(
         IRepository<Tag, Guid> tagRepository,
         IRepository<Post, Guid> postRepository,
@@ -68,7 +70,7 @@
                     Title = p.Title,
                     Content = p.Content,
                     UserName = p.User?.UserName ?? ApplicationConstants.NoUserName,
-                    CreatedAt = p.CreatedAt.ToString("O"),
+                    CreatedAt = p.CreatedAt.ToString(IsoString),
                     Views = p.Views,
                     LikesCount = p.Likes.Count,
                     CommentCount = p.Comments.Count,

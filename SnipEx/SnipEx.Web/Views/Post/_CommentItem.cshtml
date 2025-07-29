@@ -8,7 +8,9 @@
             <div class="avatar small">@Model.UserName[0]</div>
             <div>
                 <div class="comment-author">@Model.UserName</div>
-                <div class="comment-date">@Model.CreatedAt</div>
+                <div class="comment-date" data-timestamp="@Model.CreatedAt">
+                    @Model.CreatedAt
+                </div>
             </div>
         </div>
         <div class="comment-actions">
