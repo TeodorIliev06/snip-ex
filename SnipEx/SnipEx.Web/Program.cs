@@ -44,6 +44,7 @@ namespace SnipEx.Web
             builder.Services.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = "/Identity/Account/Login";
+                options.AccessDeniedPath = "/Error/403";
             });
 
             //Register SignalR before using mediator

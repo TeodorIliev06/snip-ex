@@ -1,0 +1,41 @@
+﻿@{
+    ViewData["Title"] = "Access Denied";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SnipEx</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/error/style.css" />
+</head>
+<body>
+<div class="error-container">
+    <div class="error-container">
+        <pre class="ascii-art">
+██   ██   ██████   ██████
+██   ██  ██    ██       ██
+███████  ██    ██   █████
+     ██  ██    ██       ██
+     ██   ██████   ██████
+</pre>
+    </div>
+    <h1 class="error-title">Access Denied</h1>
+
+    <p class="error-message">You don't have permission to access this resource.</p>
+
+    <p class="developer-joke">It's not a bug, it's an undocumented feature... that you can't access.</p>
+
+    <div class="error-actions">
+        <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Back to Home</a>
+        <a asp-controller="Post" asp-action="Index" class="btn btn-secondary">Explore Snippets</a>
+    </div>
+
+    <div class="comment-style">Maybe try logging in with different credentials?</div>
+</div>
+</body>
+</html>

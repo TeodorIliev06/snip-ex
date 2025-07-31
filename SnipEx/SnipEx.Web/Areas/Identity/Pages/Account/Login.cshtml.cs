@@ -101,6 +101,12 @@ namespace SnipEx.Web.Areas.Identity.Pages.Account
                     return Page();
                 }
 
+                if (user.IsBanned)
+                {
+                    Response.StatusCode = 403;
+                    return RedirectToAction("Error", "Error", new { statusCode = 403 });
+                }
+
                 var result = await signInManager.PasswordSignInAsync(user.UserName!, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
