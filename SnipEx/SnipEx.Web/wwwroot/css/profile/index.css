@@ -9,7 +9,6 @@ a {
 
 .profile-container {
     display: flex;
-    min-height: 100vh;
     background-color: #0d1117;
     color: #e6edf3;
 }
@@ -322,7 +321,7 @@ button:disabled {
     }
 
     .snippet-list {
-        grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
         gap: 2rem;
     }
 }

@@ -94,15 +94,22 @@
             return postsCards;
         }
 
-        public async Task<IEnumerable<PostCardViewModel>> GetPostsCardsByIdAsync(string userId)
+        public async Task<IEnumerable<PostCardViewModel>> GetPostsCardsByIdAsync(string userId, int? take = null)
         {
             var userGuid = Guid.Parse(userId);
 
-            var postsCards = await postRepository.GetAllAttached()
+            IQueryable<Post> query = postRepository.GetAllAttached()
                 .Where(p => p.UserId == userGuid)
                 .Include(p => p.Language)
-                .OrderByDescending(p => p.CreatedAt)
-                .Take(3)
+                .OrderByDescending(p => p.CreatedAt);
+
+            // We do not change order, just limit the result set
+            if (take.HasValue)
+            {
+                query = query.Take(take.Value);
+            }
+
+            var postsCards = await query
                 .To<PostCardViewModel>()
                 .ToListAsync();
 

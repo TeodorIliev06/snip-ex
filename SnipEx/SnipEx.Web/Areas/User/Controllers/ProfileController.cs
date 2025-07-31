@@ -28,7 +28,7 @@
                 var userId = string.IsNullOrEmpty(id) ? currentUserId : id;
 
                 var profileInformation = await userService.GetProfileInformationAsync(userId);
-                var postCards = await postService.GetPostsCardsByIdAsync(userId);
+                var postCards = await postService.GetPostsCardsByIdAsync(userId, 3);
 
                 profileInformation.RecentPosts = postCards;
                 profileInformation.IsCurrentUser = userId == currentUserId;
