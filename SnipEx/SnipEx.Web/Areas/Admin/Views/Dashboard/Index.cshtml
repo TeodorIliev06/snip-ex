@@ -2,5 +2,98 @@
     ViewData["Title"] = "Admin Dashboard";
 }
 
-<h1>Admin Dashboard</h1>
-<p>Welcome, Admin! Here's a quick overview of the system.</p>
+<div class="dashboard-container">
+    <div class="dashboard-content">
+        <section class="dashboard-header">
+            <h1>Admin Dashboard</h1>
+            <p class="welcome-text">Welcome, Admin! Here's a quick overview of the system.</p>
+        </section>
+
+        <div class="dashboard-stats">
+            <div class="stats-grid">
+                <div class="stats-card">
+                    <div class="card-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Total Users</h3>
+                        <div class="stat-number">1,234</div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+12% this month</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stats-card">
+                    <div class="card-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Code Snippets</h3>
+                        <div class="stat-number">5,678</div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+8% this month</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stats-card">
+                    <div class="card-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Total Comments</h3>
+                        <div class="stat-number">12,456</div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+15% this month</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stats-card">
+                    <div class="card-icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Page Views</h3>
+                        <div class="stat-number">45,789</div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+23% this month</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="quick-actions">
+            <h2>Quick Actions</h2>
+            <div class="actions-grid">
+                <a asp-area="Admin" asp-controller="Manage" asp-action="ManageUsers" class="action-card">
+                    <div class="action-icon">
+                        <i class="fas fa-users-cog"></i>
+                    </div>
+                    <div class="action-content">
+                        <h3>Manage Users</h3>
+                        <p>View, edit, and manage user accounts</p>
+                    </div>
+                    <div class="action-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/admin/dashboard.js" asp-append-version="true"></script>
+}
+
+@section Styles {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="~/css/admin/dashboard.css" asp-append-version="true">
+}

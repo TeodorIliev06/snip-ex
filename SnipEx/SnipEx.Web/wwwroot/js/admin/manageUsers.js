@@ -64,7 +64,7 @@
                     : `${username} has been unbanned successfully!`;
 
                 toastr.success(successMessage, "", {
-                    timeOut: 3000,
+                    timeOut: 5000,
                     closeButton: true
                 });
             }
