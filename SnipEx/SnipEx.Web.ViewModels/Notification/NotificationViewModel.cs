@@ -8,7 +8,7 @@
     using SnipEx.Data.Models.Enums;
     using SnipEx.Services.Mapping.Contracts;
 
-    using static Common.EntityValidationConstants.Notification;
+    using static Common.EntityValidationConstants.DateFormat;
 
     public class NotificationViewModel : IMapFrom<Notification>, IHaveCustomMappings
     {
@@ -49,7 +49,7 @@
             configuration.CreateMap<Notification, NotificationViewModel>()
                 .ForMember(d => d.CreatedAt,
                     opt =>
-                        opt.MapFrom(n => n.CreatedAt.ToString(CreatedAtFormat, CultureInfo.InvariantCulture)))
+                        opt.MapFrom(n => n.CreatedAt.ToString(IsoString, CultureInfo.InvariantCulture)))
                 .ForMember(d => d.ActorAvatar,
                     opt =>
                         opt.MapFrom(n => "/" + n.Actor.ProfilePicturePath));
