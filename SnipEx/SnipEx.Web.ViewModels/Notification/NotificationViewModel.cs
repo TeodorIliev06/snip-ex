@@ -14,6 +14,8 @@
     {
         public string Id { get; set; } = null!;
 
+        public string ActorId { get; set; } = null!;
+
         public string ActorAvatar { get; set; } = null!;
 
         public string Message { get; set; } = null!;
@@ -23,9 +25,6 @@
         public string CreatedAt { get; set; } = null!;
 
         public bool IsRead { get; set; }
-
-        //public string RelatedItemId { get; set; }
-        //public string RelatedLink { get; set; }
 
         public string RelatedEntityType { get; set; } = null!;
 

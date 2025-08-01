@@ -17,7 +17,6 @@
             <button class="filter-button" data-filter="mention">Mentions</button>
             <button class="filter-button" data-filter="like">Likes</button>
             <button class="filter-button" data-filter="comment">Comments</button>
-            <button class="filter-button" data-filter="follow">Follows</button>
             <button class="filter-button" data-filter="connection">Connections</button>
         </div>
 
@@ -28,7 +27,10 @@
                 {
                     <div class="notification-item @notification.CssType" data-id="@notification.Id">
                         <div class="notification-avatar">
-                            <img src="@notification.ActorAvatar">
+                            <a asp-area="User" asp-controller="Profile" asp-action="Index"
+                               asp-route-id="@notification.ActorId">
+                                <img src="@notification.ActorAvatar">
+                            </a>
                         </div>
                         <div class="notification-content">
                             <div class="notification-text">
@@ -39,11 +41,6 @@
                                       data-timestamp="@notification.CreatedAt">
                                     @notification.CreatedAt
                                 </span>
-                                @*
-                                @if (!string.IsNullOrEmpty(notification.RelatedItemId))
-                                {
-                                    <a href="@notification.RelatedLink" class="notification-link">View</a>
-                                }*@
                             </div>
                         </div>
                         @if (!notification.IsRead)
@@ -63,22 +60,6 @@
                     <span>When you receive notifications, they'll appear here.</span>
                 </div>
             }
-
-            <!-- Follow notification -->
-            <div class="notification-item follow" data-id="3">
-                <div class="notification-avatar">
-                    <img src="/images/default-avatar.png" alt="user3">
-                </div>
-                <div class="notification-content">
-                    <div class="notification-text">
-                        <strong>alexcoder</strong> started following you
-                    </div>
-                    <div class="notification-meta">
-                        <span class="notification-time">Yesterday</span>
-                        <a href="#" class="notification-link">View Profile</a>
-                    </div>
-                </div>
-            </div>
         </div>
 
         @if (Model.Notifications.Any())
