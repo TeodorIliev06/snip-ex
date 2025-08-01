@@ -5,8 +5,6 @@
         public IEnumerable<NotificationViewModel> Notifications { get; set; } 
             = new HashSet<NotificationViewModel>();
 
-        public int UnreadCount { get; set; }
-
         public int TotalCount { get; set; }
 
         public bool HasMoreNotifications { get; set; }

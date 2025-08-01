@@ -14,7 +14,7 @@
         {
             var actor = await userRepository.GetByIdAsync(notification.ActorGuid);
             if (actor == null || 
-                actor.Id == notification.ActorGuid)
+                actor.Id == notification.TargetUserGuid)
             {
                 return;
             }

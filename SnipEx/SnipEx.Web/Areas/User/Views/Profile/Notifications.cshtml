@@ -3,17 +3,13 @@
 @model UserNotificationsViewModel
 
 @{
-    ViewData["Title"] = "SnipEx - Notifications";
+    ViewData["Title"] = "Notifications";
 }
 
 <div class="notifications-container">
     <div class="notifications-content">
         <section class="notifications-header">
             <h1>Notifications</h1>
-            @if (Model.UnreadCount > 0)
-            {
-                <button id="mark-all-read" class="btn-mark-all">Mark all as read</button>
-            }
         </section>
 
         <div class="filter-bar">

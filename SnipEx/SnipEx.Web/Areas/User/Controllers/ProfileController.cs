@@ -54,15 +54,15 @@
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
 
+            await notificationService.MarkAllNotificationsAsReadAsync(userId);
+
             var notifications = await notificationService
                 .GetUserNotificationsAsync(userId);
-            var unreadCount = await notificationService.GetUnreadNotificationsCountAsync(userId);
             var totalCount = await notificationService.GetTotalNotificationsCountAsync(userId);
 
             var viewModel = new UserNotificationsViewModel()
             {
                 Notifications = notifications,
-                UnreadCount = unreadCount,
                 TotalCount = totalCount,
                 HasMoreNotifications = totalCount > notifications.Count(),
                 CurrentPage = 1
