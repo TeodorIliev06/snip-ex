@@ -1,122 +1,45 @@
 ﻿document.addEventListener('DOMContentLoaded', function () {
     // Filter buttons functionality
     const filterButtons = document.querySelectorAll('.filter-button');
-    const connectionItems = document.querySelectorAll('.connection-item');
-
     filterButtons.forEach(button => {
         button.addEventListener('click', () => {
-            // Update active filter button
-            filterButtons.forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-
             const filterValue = button.getAttribute('data-filter');
-
-            // Show/hide connection items based on filter
-            connectionItems.forEach(item => {
-                if (filterValue === 'all') {
-                    item.style.display = 'flex';
-                } else {
-                    if (item.classList.contains(filterValue)) {
-                        item.style.display = 'flex';
-                    } else {
-                        item.style.display = 'none';
-                    }
-                }
-            });
+            const url = new URL(window.location);
+            url.searchParams.set('filter', filterValue);
+            url.searchParams.set('page', '1');
+            window.location.href = url.toString();
         });
     });
 
     const connectionButtons = document.querySelectorAll('.connect-button');
-
     connectionButtons.forEach(button => {
         button.addEventListener('click', async function () {
             const targetUserId = button.getAttribute('data-target-user-id');
-
             await toggleConnection(targetUserId);
         });
     });
-
-    // Load more functionality
-    const loadMoreBtn = document.getElementById('load-more-btn');
-    if (loadMoreBtn) {
-        loadMoreBtn.addEventListener('click', function () {
-            // Here you would make an AJAX request to load more connections
-            this.textContent = 'Loading...';
-
-            // For demo purposes, create dummy connections after a short delay
-            setTimeout(() => {
-                const connectionsList = document.querySelector('.connections-list');
-
-                // Example of dynamically adding new connections
-                for (let i = 0; i < 3; i++) {
-                    const template = `
-                        <div class="connection-item ${['mutual', 'following', 'follower'][Math.floor(Math.random() * 3)]}" data-id="${Math.floor(Math.random() * 1000) + 100}">
-                            <div class="connection-avatar">
-                                <img src="/images/default-avatar.png" alt="dynamic-user">
-                            </div>
-                            <div class="connection-content">
-                                <div class="connection-header">
-                                    <div class="connection-name">
-                                        <span>user${Math.floor(Math.random() * 1000)}</span>
-                                        <span class="connection-badge ${['mutual', 'following', 'follower'][Math.floor(Math.random() * 3)]}">${['Mutual', 'Following', 'Follower'][Math.floor(Math.random() * 3)]}</span>
-                                    </div>
-                                    <div class="connection-actions">
-                                        <button class="${Math.random() > 0.5 ? 'btn-unfollow' : 'btn-follow'}">${Math.random() > 0.5 ? 'Unfollow' : 'Follow'}</button>
-                                    </div>
-                                </div>
-                                <div class="connection-bio">
-                                    Developer with ${Math.floor(Math.random() * 10) + 1} years of experience in web development.
-                                </div>
-                                <div class="connection-meta">
-                                    <span class="meta-item"><i class="fa-solid fa-code"></i> ${Math.floor(Math.random() * 100)} snippets</span>
-                                    <span class="meta-item"><i class="fa-solid fa-star"></i> ${Math.floor(Math.random() * 200)} stars</span>
-                                    <span class="meta-item"><i class="fa-solid fa-users"></i> ${Math.floor(Math.random() * 20)} mutual connections</span>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-
-                    // Add the new connection to the list
-                    connectionsList.insertAdjacentHTML('beforeend', template);
-                }
-
-                // Restore the button text
-                this.textContent = 'Load more';
-
-                // Reattach event listeners to the new buttons
-                document.querySelectorAll('.btn-follow:not([data-initialized])').forEach(btn => {
-                    btn.addEventListener('click', function () {
-                        console.log('Follow button clicked for dynamically added connection');
-                        // Similar functionality as above...
-                    });
-                    btn.setAttribute('data-initialized', 'true');
-                });
-
-                document.querySelectorAll('.btn-unfollow:not([data-initialized])').forEach(btn => {
-                    btn.addEventListener('click', function () {
-                        console.log('Unfollow button clicked for dynamically added connection');
-                        // Similar functionality as above...
-                    });
-                    btn.setAttribute('data-initialized', 'true');
-                });
-
-            }, 1000);
-        });
-    }
 });
 
 async function toggleConnection(targetUserId) {
-    await fetchWithToastr(`https://localhost:7000/UserActionApi/ToggleConnection/${targetUserId}`, {
+    const button = document.querySelector(`.connect-button[data-target-user-id="${targetUserId}"]`);
+    const originalText = button.innerHTML;
+
+    button.disabled = true;
+    button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+
+    try {
+        const data = await fetchWithToastr(`https://localhost:7000/UserActionApi/ToggleConnection/${targetUserId}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include'
-    })
-    .then(data => {
+        });
+
         if (!data) return;
 
         const connectionItem = document
             .querySelector(`.connect-button[data-target-user-id="${targetUserId}"]`)
             ?.closest('.connection-item');
+
         if (!connectionItem) return;
 
         const connectionCount = document.querySelector('.stat-number');
@@ -128,7 +51,40 @@ async function toggleConnection(targetUserId) {
             const originalType = connectionItem.getAttribute('data-original-type') || 'mutual';
             updateConnectionUI(connectionItem, originalType);
         }
-    });
+
+        // Check if we need to reload the page due to filtering
+        // If the connection status change means this item should no longer be visible
+        // in the current filter, reload the page to refresh the data
+        const currentFilter = getCurrentFilter();
+        if (shouldReloadPage(data.isConnected, currentFilter)) {
+            window.location.reload();
+        }
+
+    } catch (error) {
+        console.error('Error toggling connection:', error);
+        button.innerHTML = originalText;
+    } finally {
+        button.disabled = false;
+    }
+}
+
+function getCurrentFilter() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('filter') || 'all';
+}
+
+// Determine if page should reload based on filter and connection status
+function shouldReloadPage(isConnected, currentFilter) {
+    // If we're filtering by 'connected' and the connection was just disconnected,
+    // or if we're filtering by 'mutual' and the connection was just connected,
+    // we should reload to refresh the filtered results
+    if (currentFilter === 'connected' && !isConnected) {
+        return true;
+    }
+    if (currentFilter === 'mutual' && isConnected) {
+        return true;
+    }
+    return false;
 }
 
 const connectionStates = {

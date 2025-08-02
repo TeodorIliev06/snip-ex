@@ -240,6 +240,39 @@
             return connectionsCount;
         }
 
+        public async Task<int> GetMutualConnectionsCountAsync(string targetUserId)
+        {
+            var targetUserGuid = Guid.Parse(targetUserId);
+
+            var userDirectConnections = await userConnectionRepository
+                .GetAllAttached()
+                .Where(uc => (uc.UserId == targetUserGuid || uc.ConnectedUserId == targetUserGuid)
+                             && uc.Status == ConnectionStatus.Accepted)
+                .Select(uc => uc.UserId == targetUserGuid ? uc.ConnectedUserId : uc.UserId)
+                .ToListAsync();
+
+            // Find people who are:
+            // 1. Connected to user's direct connections
+            // 2. NOT directly connected to the user
+            // 3. NOT the user themselves
+            var mutualConnectionsCount = await userConnectionRepository
+                .GetAllAttached()
+                .Where(uc =>
+                    // One person in the connection is from user's direct connections
+                    (userDirectConnections.Contains(uc.UserId) || userDirectConnections.Contains(uc.ConnectedUserId)) &&
+                    // The other person is not the current user
+                    uc.UserId != targetUserGuid && uc.ConnectedUserId != targetUserGuid &&
+                    // The other person is not already a direct connection of the user
+                    !(userDirectConnections.Contains(uc.UserId) && userDirectConnections.Contains(uc.ConnectedUserId)) &&
+                    uc.Status == ConnectionStatus.Accepted)
+                .Select(uc => userDirectConnections.Contains(uc.UserId) ? uc.ConnectedUserId : uc.UserId)
+                .Distinct()
+                .Where(mutualUserId => !userDirectConnections.Contains(mutualUserId))
+                .CountAsync();
+
+            return mutualConnectionsCount;
+        }
+
         public async Task<Dictionary<string, int>> GetMutualConnectionsCountByUserAsync(string currentUserId, List<string> targetUserIds)
         {
             var currentUserGuid = Guid.Parse(currentUserId);

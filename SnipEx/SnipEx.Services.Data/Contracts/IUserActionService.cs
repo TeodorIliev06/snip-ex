@@ -24,6 +24,8 @@
 
         Task<int> GetConnectionsCountAsync(string targetUserId);
 
+        Task<int> GetMutualConnectionsCountAsync(string targetUserId);
+
         Task<Dictionary<string, int>> GetMutualConnectionsCountByUserAsync(string currentUserId,
             List<string> targetUserIds);
 

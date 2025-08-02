@@ -105,32 +105,48 @@
             return View(mySnippetsViewModel);
         }
 
-        public async Task<IActionResult> Connections(int page = 1, int pageSize = 2)
+        public async Task<IActionResult> Connections(int page = 1, int pageSize = 2, string filter = "all")
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
-
-            var connectionsCount = await userActionService.GetConnectionsCountAsync(userId);
-
-            var totalPages = (int)Math.Ceiling((double)connectionsCount / pageSize);
             var skip = (page - 1) * pageSize;
 
-            var directConnections = await userService
-                .GetUserConnectionsAsync(userId, skip, pageSize);
-            var mutualConnections = await userService
-                .GetUserMutualConnectionsAsync(userId, skip, pageSize);
+            IEnumerable<ConnectionViewModel> connections;
+            int totalCount;
 
-            var allConnections = new List<ConnectionViewModel>();
-            allConnections.AddRange(directConnections);
-            allConnections.AddRange(mutualConnections);
+            switch (filter.ToLower())
+            {
+                case "connected":
+                    connections = await userService.GetUserConnectionsAsync(userId, skip, pageSize);
+                    totalCount = await userActionService.GetConnectionsCountAsync(userId);
+                    break;
 
-            var targetUserIds = allConnections.Select(c => c.TargetUserId).ToList();
+                case "mutual":
+                    connections = await userService.GetUserMutualConnectionsAsync(userId, skip, pageSize);
+                    totalCount = await userActionService.GetMutualConnectionsCountAsync(userId);
+                    break;
 
+                default: // "all"
+                    var directConnections = await userService.GetUserConnectionsAsync(userId, skip, pageSize);
+                    var mutualConnections = await userService.GetUserMutualConnectionsAsync(userId, skip, pageSize);
+
+                    connections = directConnections.Concat(mutualConnections);
+
+                    var directCount = await userActionService.GetConnectionsCountAsync(userId);
+                    var mutualCount = await userActionService.GetMutualConnectionsCountAsync(userId);
+                    totalCount = directCount + mutualCount;
+                    break;
+            }
+
+            var totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
+
+            var targetUserIds = connections.Select(c => c.TargetUserId).ToList();
             var mutualConnectionsCounts = await userActionService
                 .GetMutualConnectionsCountByUserAsync(userId, targetUserIds);
             var totalLikesCounts = await userService
                 .GetTotalLikesReceivedByUserAsync(targetUserIds);
 
-            foreach (var connection in allConnections)
+            // Update connection details
+            foreach (var connection in connections)
             {
                 connection.MutualConnectionsCount = mutualConnectionsCounts
                     .GetValueOrDefault(connection.TargetUserId, 0);
@@ -140,13 +156,15 @@
 
             var viewModel = new UserConnectionsViewModel()
             {
-                Connections = allConnections,
-                ConnectionsCount = connectionsCount,
+                Connections = connections,
+                ConnectionsCount = await userActionService.GetConnectionsCountAsync(userId), // Total connections count
+                FilteredConnectionsCount = totalCount, // Filtered connections count
+                CurrentFilter = filter,
                 Pagination = new PaginationViewModel()
                 {
                     CurrentPage = page,
                     PageSize = pageSize,
-                    TotalItems = connectionsCount,
+                    TotalItems = totalCount,
                     TotalPages = totalPages
                 }
             };
