@@ -6,5 +6,7 @@
             = new HashSet<ConnectionViewModel>();
 
         public int ConnectionsCount { get; set; }
+
+        public PaginationViewModel Pagination { get; set; } = new PaginationViewModel();
     }
 }

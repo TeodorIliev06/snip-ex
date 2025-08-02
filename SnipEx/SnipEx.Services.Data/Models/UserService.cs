@@ -83,7 +83,8 @@
         //Quickfix:
         //  Add conditional logic in every projection
         //  Tradeoff is halved storage usage
-        public async Task<IEnumerable<ConnectionViewModel>> GetUserConnectionsAsync(string userId)
+        public async Task<IEnumerable<ConnectionViewModel>> GetUserConnectionsAsync(string userId,
+            int skip = 0, int take = 10)
         {
             var userGuid = Guid.Parse(userId);
             var viewModel = await userConnectionRepository
@@ -91,6 +92,8 @@
                 .Where(uc =>
                     uc.UserId == userGuid || 
                     uc.ConnectedUserId == userGuid)
+                .Skip(skip)
+                .Take(take)
                 .Select(uc => new ConnectionViewModel
                 {
                     UserId = uc.UserId.ToString(),
@@ -114,7 +117,8 @@
             return viewModel;
         }
 
-        public async Task<IEnumerable<ConnectionViewModel>> GetUserMutualConnectionsAsync(string userId)
+        public async Task<IEnumerable<ConnectionViewModel>> GetUserMutualConnectionsAsync(string userId,
+            int skip = 0, int take = 10)
         {
             var userGuid = Guid.Parse(userId);
 
@@ -131,6 +135,8 @@
             // 3. NOT the user themselves
             var mutualConnectionUsers = await userConnectionRepository
                 .GetAllAttached()
+                .Skip(skip)
+                .Take(take)
                 .Where(uc =>
                     // One person in the connection is from user's direct connections
                     (userDirectConnections.Contains(uc.UserId) || userDirectConnections.Contains(uc.ConnectedUserId)) &&

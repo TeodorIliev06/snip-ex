@@ -105,15 +105,19 @@
             return View(mySnippetsViewModel);
         }
 
-        public async Task<IActionResult> Connections()
+        public async Task<IActionResult> Connections(int page = 1, int pageSize = 2)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
 
-            var directConnections = await userService
-                .GetUserConnectionsAsync(userId);
-            var mutualConnections = await userService
-                .GetUserMutualConnectionsAsync(userId);
             var connectionsCount = await userActionService.GetConnectionsCountAsync(userId);
+
+            var totalPages = (int)Math.Ceiling((double)connectionsCount / pageSize);
+            var skip = (page - 1) * pageSize;
+
+            var directConnections = await userService
+                .GetUserConnectionsAsync(userId, skip, pageSize);
+            var mutualConnections = await userService
+                .GetUserMutualConnectionsAsync(userId, skip, pageSize);
 
             var allConnections = new List<ConnectionViewModel>();
             allConnections.AddRange(directConnections);
@@ -137,7 +141,14 @@
             var viewModel = new UserConnectionsViewModel()
             {
                 Connections = allConnections,
-                ConnectionsCount = connectionsCount
+                ConnectionsCount = connectionsCount,
+                Pagination = new PaginationViewModel()
+                {
+                    CurrentPage = page,
+                    PageSize = pageSize,
+                    TotalItems = connectionsCount,
+                    TotalPages = totalPages
+                }
             };
 
             return View(viewModel);

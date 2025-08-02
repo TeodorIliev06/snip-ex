@@ -59,6 +59,62 @@
                         </div>
                     </div>
                 }
+
+                @if (Model.Pagination.TotalPages > 1)
+                {
+                    <div class="pagination-container">
+                        <div class="pagination-info">
+                            <span>Showing @Model.Pagination.StartItem-@Model.Pagination.EndItem of @Model.Pagination.TotalItems connections</span>
+                        </div>
+                        <nav class="pagination-nav" aria-label="Connections pagination">
+                            <ul class="pagination">
+                                <li class="page-item @(!Model.Pagination.HasPrevious ? "disabled" : "")">
+                                    @if (Model.Pagination.HasPrevious)
+                                    {
+                                        <a class="page-link" href="?page=@(Model.Pagination.CurrentPage - 1)" aria-label="Previous">
+                                            <i class="fa-solid fa-chevron-left"></i>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <span class="page-link" aria-label="Previous">
+                                            <i class="fa-solid fa-chevron-left"></i>
+                                        </span>
+                                    }
+                                </li>
+
+                                @foreach (var pageNumber in Model.Pagination.GetPageNumbers())
+                                {
+                                    <li class="page-item @(pageNumber == Model.Pagination.CurrentPage ? "active" : "")">
+                                        @if (pageNumber == Model.Pagination.CurrentPage)
+                                        {
+                                            <span class="page-link current">@pageNumber</span>
+                                        }
+                                        else
+                                        {
+                                            <a class="page-link" href="?page=@pageNumber">@pageNumber</a>
+                                        }
+                                    </li>
+                                }
+
+                                <li class="page-item @(!Model.Pagination.HasNext ? "disabled" : "")">
+                                    @if (Model.Pagination.HasNext)
+                                    {
+                                        <a class="page-link" href="?page=@(Model.Pagination.CurrentPage + 1)" aria-label="Next">
+                                            <i class="fa-solid fa-chevron-right"></i>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <span class="page-link" aria-label="Next">
+                                            <i class="fa-solid fa-chevron-right"></i>
+                                        </span>
+                                    }
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                }
             }
             else
             {
@@ -68,10 +124,6 @@
                     <span>When you receive connections, they'll appear here.</span>
                 </div>
             }
-        </div>
-
-        <div class="load-more">
-            <button id="load-more-btn" class="btn-load-more">Load more</button>
         </div>
     </div>
 </div>
@@ -83,4 +135,5 @@
 @section Styles {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="~/css/profile/connections.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/profile/pagination.css" asp-append-version="true">
 }
