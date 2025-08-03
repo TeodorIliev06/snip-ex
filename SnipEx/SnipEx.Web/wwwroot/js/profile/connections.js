@@ -1,5 +1,6 @@
 ﻿document.addEventListener('DOMContentLoaded', function () {
-    // Filter buttons functionality
+    setActiveFilterButton();
+
     const filterButtons = document.querySelectorAll('.filter-button');
     filterButtons.forEach(button => {
         button.addEventListener('click', () => {
@@ -19,6 +20,20 @@
         });
     });
 });
+
+function setActiveFilterButton() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const currentFilter = urlParams.get('filter') || 'all';
+
+    document.querySelectorAll('.filter-button').forEach(btn => {
+        btn.classList.remove('active');
+    });
+
+    const activeButton = document.querySelector(`.filter-button[data-filter="${currentFilter}"]`);
+    if (activeButton) {
+        activeButton.classList.add('active');
+    }
+}
 
 async function toggleConnection(targetUserId) {
     const button = document.querySelector(`.connect-button[data-target-user-id="${targetUserId}"]`);
@@ -73,7 +88,6 @@ function getCurrentFilter() {
     return urlParams.get('filter') || 'all';
 }
 
-// Determine if page should reload based on filter and connection status
 function shouldReloadPage(isConnected, currentFilter) {
     // If we're filtering by 'connected' and the connection was just disconnected,
     // or if we're filtering by 'mutual' and the connection was just connected,
@@ -110,20 +124,16 @@ function updateConnectionUI(connectionItem, newState) {
     const connectionBadge = connectionItem.querySelector('.connection-badge');
     const config = connectionStates[newState];
 
-    // Clear all possible classes
     const allClasses = ['btn-connect', 'btn-disconnect', 'connected', 'mutual'];
 
-    // Update button
     connectButton.classList.remove(...allClasses);
     connectButton.classList.add(...config.button.classes);
     connectButton.innerHTML = config.button.text;
 
-    // Update badge
     connectionBadge.classList.remove(...allClasses);
     connectionBadge.classList.add(...config.badge.classes);
     connectionBadge.innerHTML = config.badge.text;
 
-    // Update item
     connectionItem.classList.remove(...allClasses);
     connectionItem.classList.add(...config.item.classes);
 }

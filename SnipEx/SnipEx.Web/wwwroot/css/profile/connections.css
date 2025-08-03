@@ -5,7 +5,6 @@
 
 .connections-container {
     display: flex;
-    min-height: 100vh;
     background-color: #0d1117;
     color: #e6edf3;
 }
@@ -225,6 +224,30 @@
 .btn-disconnect:hover {
     background-color: #6e7681;
     color: #e6edf3;
+}
+
+.empty-state {
+    padding: 3rem;
+    text-align: center;
+    background-color: #1a1d24;
+    border-radius: 8px;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+}
+
+.empty-state i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #8b949e;
+}
+
+.empty-state p {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.empty-state span {
+    color: #8b949e;
 }
 
 /* Connection type styling */
