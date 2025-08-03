@@ -105,7 +105,7 @@
             return View(mySnippetsViewModel);
         }
 
-        public async Task<IActionResult> Connections(int page = 1, int pageSize = 2, string filter = "all")
+        public async Task<IActionResult> Connections(int page = 1, int pageSize = 4, string filter = "all")
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
             var skip = (page - 1) * pageSize;

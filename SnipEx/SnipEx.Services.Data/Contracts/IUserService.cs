@@ -12,10 +12,10 @@
         Task<IEnumerable<PostCardViewModel>> GetUserSnippetsAsync(string userId);
 
         Task<IEnumerable<ConnectionViewModel>> GetUserConnectionsAsync(string userId,
-            int skip = 0, int take = 2);
+            int skip = 0, int take = 4);
 
         Task<IEnumerable<ConnectionViewModel>> GetUserMutualConnectionsAsync(string userId,
-            int skip = 0, int take = 2);
+            int skip = 0, int take = 4);
 
         Task<Dictionary<string, int>> GetTotalLikesReceivedByUserAsync(List<string> userIds);
     }
