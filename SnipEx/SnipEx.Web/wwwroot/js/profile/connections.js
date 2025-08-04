@@ -1,16 +1,5 @@
 ﻿document.addEventListener('DOMContentLoaded', function () {
-    setActiveFilterButton();
-
-    const filterButtons = document.querySelectorAll('.filter-button');
-    filterButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const filterValue = button.getAttribute('data-filter');
-            const url = new URL(window.location);
-            url.searchParams.set('filter', filterValue);
-            url.searchParams.set('page', '1');
-            window.location.href = url.toString();
-        });
-    });
+    initializePagination();
 
     const connectionButtons = document.querySelectorAll('.connect-button');
     connectionButtons.forEach(button => {
@@ -20,20 +9,6 @@
         });
     });
 });
-
-function setActiveFilterButton() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const currentFilter = urlParams.get('filter') || 'all';
-
-    document.querySelectorAll('.filter-button').forEach(btn => {
-        btn.classList.remove('active');
-    });
-
-    const activeButton = document.querySelector(`.filter-button[data-filter="${currentFilter}"]`);
-    if (activeButton) {
-        activeButton.classList.add('active');
-    }
-}
 
 async function toggleConnection(targetUserId) {
     const button = document.querySelector(`.connect-button[data-target-user-id="${targetUserId}"]`);
@@ -68,8 +43,6 @@ async function toggleConnection(targetUserId) {
         }
 
         // Check if we need to reload the page due to filtering
-        // If the connection status change means this item should no longer be visible
-        // in the current filter, reload the page to refresh the data
         const currentFilter = getCurrentFilter();
         if (shouldReloadPage(data.isConnected, currentFilter)) {
             window.location.reload();
@@ -83,15 +56,7 @@ async function toggleConnection(targetUserId) {
     }
 }
 
-function getCurrentFilter() {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get('filter') || 'all';
-}
-
 function shouldReloadPage(isConnected, currentFilter) {
-    // If we're filtering by 'connected' and the connection was just disconnected,
-    // or if we're filtering by 'mutual' and the connection was just connected,
-    // we should reload to refresh the filtered results
     if (currentFilter === 'connected' && !isConnected) {
         return true;
     }
