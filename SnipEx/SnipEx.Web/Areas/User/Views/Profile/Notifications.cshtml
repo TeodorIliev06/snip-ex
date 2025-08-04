@@ -13,7 +13,7 @@
         </section>
 
         <div class="filter-bar">
-            <button class="filter-button active" data-filter="all">All</button>
+            <button class="filter-button" data-filter="all">All</button>
             <button class="filter-button" data-filter="mention">Mentions</button>
             <button class="filter-button" data-filter="like">Likes</button>
             <button class="filter-button" data-filter="comment">Comments</button>
@@ -51,6 +51,8 @@
                         }
                     </div>
                 }
+
+                <partial name="_PaginationPartial" model="(Model.Pagination, Model.CurrentFilter, Model.FilteredNotificationsCount)" />
             }
             else
             {
@@ -66,9 +68,11 @@
 
 @section Scripts {
     <script src="~/js/profile/notifications.js" asp-append-version="true"></script>
+    <script src="~/js/profile/pagination.js" asp-append-version="true"></script>
 }
 
 @section Styles {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="~/css/profile/notifications.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/profile/pagination.css" asp-append-version="true">
 }

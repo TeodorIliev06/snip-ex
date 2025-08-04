@@ -1,5 +1,7 @@
 ﻿namespace SnipEx.Web.ViewModels.Notification
 {
+    using SnipEx.Web.ViewModels.User;
+
     public class UserNotificationsViewModel
     {
         public IEnumerable<NotificationViewModel> Notifications { get; set; } 
@@ -7,8 +9,10 @@
 
         public int TotalCount { get; set; }
 
-        public bool HasMoreNotifications { get; set; }
+        public int FilteredNotificationsCount { get; set; }
 
-        public int CurrentPage { get; set; } = 1;
+        public string CurrentFilter { get; set; } = "all";
+
+        public PaginationViewModel Pagination { get; set; } = new PaginationViewModel();
     }
 }

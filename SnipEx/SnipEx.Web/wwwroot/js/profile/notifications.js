@@ -9,72 +9,74 @@
     notificationTextElement.innerHTML = `<strong>${firstWord}</strong> ${restOfMessage}`;
 }
 
-function createNotificationElement(notification) {
-    const div = document.createElement('div');
-    div.className = `notification-item ${notification.cssType}`;
-    div.setAttribute('data-id', notification.id);
 
-    const avatarDiv = document.createElement('div');
-    avatarDiv.className = 'notification-avatar';
-    const img = document.createElement('img');
-    img.src = notification.actorAvatar || '/images/profile_pics/default_user1.png';
-    img.alt = 'User avatar';
-    img.onerror = function () { this.src = '/images/profile_pics/default_user1.png'; };
-    avatarDiv.appendChild(img);
 
-    const contentDiv = document.createElement('div');
-    contentDiv.className = 'notification-content';
 
-    const textDiv = document.createElement('div');
-    textDiv.className = 'notification-text';
 
-    textDiv.textContent = notification.message;
-    getSenderUsernameFromNotification(textDiv);
+// Utility functions for pagination (similar to connections.js)
+function setActiveFilterButton(filterButtonSelector = '.filter-button') {
+    const urlParams = new URLSearchParams(window.location.search);
+    const currentFilter = urlParams.get('filter') || 'all';
 
-    const metaDiv = document.createElement('div');
-    metaDiv.className = 'notification-meta';
+    document.querySelectorAll(filterButtonSelector).forEach(btn => {
+        btn.classList.remove('active');
+    });
 
-    const timeSpan = document.createElement('span');
-    timeSpan.className = 'notification-time';
-    timeSpan.setAttribute('data-timestamp', notification.createdAt);
-    timeSpan.textContent = getRelativeTimeString(notification.createdAt);
-    metaDiv.appendChild(timeSpan);
-
-    if (notification.relatedLink) {
-        const link = document.createElement('a');
-        link.href = notification.relatedLink;
-        link.className = 'notification-link';
-        link.textContent = 'View';
-        metaDiv.appendChild(link);
+    const activeButton = document.querySelector(`${filterButtonSelector}[data-filter="${currentFilter}"]`);
+    if (activeButton) {
+        activeButton.classList.add('active');
     }
+}
 
-    contentDiv.appendChild(textDiv);
-    contentDiv.appendChild(metaDiv);
+function attachFilterListeners(filterButtonSelector = '.filter-button', onFilterChange = null) {
+    const filterButtons = document.querySelectorAll(filterButtonSelector);
+    filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const filterValue = button.getAttribute('data-filter');
+            navigateToFilter(filterValue);
+            if (onFilterChange) {
+                onFilterChange(filterValue);
+            }
+        });
+    });
+}
 
-    if (!notification.isRead) {
-        const badgeDiv = document.createElement('div');
-        badgeDiv.className = 'notification-badge';
-        const unreadSpan = document.createElement('span');
-        unreadSpan.className = 'unread-indicator';
-        badgeDiv.appendChild(unreadSpan);
-        div.appendChild(badgeDiv);
-    }
+function navigateToFilter(filterValue) {
+    const url = new URL(window.location);
+    url.searchParams.set('filter', filterValue);
+    url.searchParams.set('page', '1'); // Reset to first page when filtering
+    window.location.href = url.toString();
+}
 
-    div.appendChild(avatarDiv);
-    div.appendChild(contentDiv);
+function getCurrentFilter() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('filter') || 'all';
+}
 
-    return div;
+function getCurrentPage() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return parseInt(urlParams.get('page')) || 1;
+}
+
+function initializePagination(options = {}) {
+    const filterButtonSelector = options.filterButtonSelector || '.filter-button';
+    const onFilterChange = options.onFilterChange || null;
+
+    setActiveFilterButton(filterButtonSelector);
+    attachFilterListeners(filterButtonSelector, onFilterChange);
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    const filterButtons = document.querySelectorAll('.filter-button');
-    const notificationItems = document.querySelectorAll('.notification-item');
+    // Initialize pagination and filtering
+    initializePagination();
 
+    // Process existing notification messages to format usernames
     const notificationMessages = document.querySelectorAll('.notification-text');
     notificationMessages.forEach(message => {
         getSenderUsernameFromNotification(message);
     });
 
+    // Update timestamps to relative time
     const timestamps = document.querySelectorAll('.notification-time');
     timestamps.forEach(dateSpan => {
         const timestampStr = dateSpan.getAttribute('data-timestamp');

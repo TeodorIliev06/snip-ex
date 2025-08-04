@@ -84,7 +84,7 @@
         //  Add conditional logic in every projection
         //  Tradeoff is halved storage usage
         public async Task<IEnumerable<ConnectionViewModel>> GetUserConnectionsAsync(string userId,
-            int skip = 0, int take = 10)
+            int skip = 0, int take = 4)
         {
             var userGuid = Guid.Parse(userId);
             var viewModel = await userConnectionRepository
@@ -118,7 +118,7 @@
         }
 
         public async Task<IEnumerable<ConnectionViewModel>> GetUserMutualConnectionsAsync(string userId,
-            int skip = 0, int take = 10)
+            int skip = 0, int take = 4)
         {
             var userGuid = Guid.Parse(userId);
 

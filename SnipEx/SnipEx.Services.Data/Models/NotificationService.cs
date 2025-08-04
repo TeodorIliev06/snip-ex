@@ -3,6 +3,7 @@
     using Microsoft.EntityFrameworkCore;
 
     using SnipEx.Data.Models;
+    using SnipEx.Data.Models.Enums;
     using SnipEx.Services.Mapping;
     using SnipEx.Services.Data.Contracts;
     using SnipEx.Data.Repositories.Contracts;
@@ -12,22 +13,46 @@
         IRepository<Notification, Guid> notificationRepository) : INotificationService
     {
         public async Task<IEnumerable<NotificationViewModel>> GetUserNotificationsAsync(string userId,
-            int page = 1, int pageSize = 10)
+            int skip = 0, int take = 4)
         {
             var userGuid = Guid.Parse(userId);
-
             var viewModel = await notificationRepository
                 .GetAllAttached()
                 .Include(n => n.Recipient)
                 .Include(n => n.Actor)
                 .Where(n => n.RecipientId == userGuid)
                 .OrderByDescending(n => n.CreatedAt)
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
+                .Skip(skip)
+                .Take(take)
                 .To<NotificationViewModel>()
                 .ToListAsync();
-
             return viewModel;
+        }
+
+        public async Task<IEnumerable<NotificationViewModel>> GetUserNotificationsByTypesAsync(string userId,
+            IEnumerable<NotificationType> notificationTypes, int skip = 0, int take = 4)
+        {
+            var userGuid = Guid.Parse(userId);
+            var viewModel = await notificationRepository
+                .GetAllAttached()
+                .Include(n => n.Recipient)
+                .Include(n => n.Actor)
+                .Where(n => n.RecipientId == userGuid && notificationTypes.Contains(n.Type))
+                .OrderByDescending(n => n.CreatedAt)
+                .Skip(skip)
+                .Take(take)
+                .To<NotificationViewModel>()
+                .ToListAsync();
+            return viewModel;
+        }
+
+        public async Task<int> GetNotificationsCountByTypesAsync(string userId, IEnumerable<NotificationType> notificationTypes)
+        {
+            var userGuid = Guid.Parse(userId);
+            return await notificationRepository
+                .GetAllAttached()
+                .Where(n => n.RecipientId == userGuid && notificationTypes.Contains(n.Type))
+                .CountAsync();
         }
 
         public async Task<int> GetUnreadNotificationsCountAsync(string userId)
