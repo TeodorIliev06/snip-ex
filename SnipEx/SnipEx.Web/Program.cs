@@ -51,6 +51,8 @@ namespace SnipEx.Web
             builder.Services.AddRealtimeServices();
             builder.Services.AddMediator();
 
+            builder.Services.AddExternalAuthentication(builder.Configuration);
+
             builder.Services.RegisterRepositories(typeof(ApplicationUser).Assembly);
             builder.Services.RegisterUserDefinedServices(typeof(IPostService).Assembly);
 

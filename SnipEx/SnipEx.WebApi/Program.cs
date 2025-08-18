@@ -61,7 +61,7 @@ namespace SnipEx.WebApi
             builder.Services.AddRealtimeServices();
             builder.Services.AddMediator();
 
-            builder.UseJwtAuthentication();
+            builder.Services.AddJwtAuthentication();
 
             builder.Services.AddCors(cfg =>
             {
