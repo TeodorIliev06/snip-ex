@@ -136,6 +136,10 @@
     border-left: 3px solid #f85149;
 }
 
+.validation-summary ul {
+    margin-bottom: 0;
+}
+
 .form-options {
     display: flex;
     justify-content: space-between;

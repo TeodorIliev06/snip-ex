@@ -62,7 +62,8 @@
                 {
                     if (provider.Name == "Google")
                     {
-                        <form asp-page="./ExternalLogin" asp-route-provider="Google" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="external-login-form">
+                        <form asp-page-handler="ExternalLogin" method="post" asp-route-provider="Google"
+                              asp-route-returnUrl="@Model.ReturnUrl">
                             <button type="submit" class="btn-external btn-google">
                                 <i class="fab fa-google"></i> Continue with Google
                             </button>
@@ -70,7 +71,8 @@
                     }
                     else if (provider.Name == "GitHub")
                     {
-                        <form asp-page="./ExternalLogin" asp-route-provider="GitHub" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="external-login-form">
+                        <form asp-page-handler="ExternalLogin" method="post" asp-route-provider="GitHub"
+                              asp-route-returnUrl="@Model.ReturnUrl">
                             <button type="submit" class="btn-external btn-github">
                                 <i class="fab fa-github"></i> Continue with GitHub
                             </button>

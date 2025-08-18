@@ -4,6 +4,7 @@
 
 namespace SnipEx.Web.Areas.Identity.Pages.Account
 {
+    using System.Security.Claims;
     using System.ComponentModel.DataAnnotations;
 
     using Microsoft.AspNetCore.Mvc;
@@ -108,6 +109,7 @@ namespace SnipEx.Web.Areas.Identity.Pages.Account
                 if (user == null)
                 {
                     ModelState.AddModelError(string.Empty, "Invalid Email!");
+                    await PopulateExternalLoginsAsync(returnUrl);
                     return Page();
                 }
 
@@ -145,12 +147,116 @@ namespace SnipEx.Web.Areas.Identity.Pages.Account
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    await PopulateExternalLoginsAsync(returnUrl);
                     return Page();
                 }
             }
 
             // If we got this far, something failed, redisplay form
+            await PopulateExternalLoginsAsync(returnUrl);
             return Page();
+        }
+
+        public async Task<IActionResult> OnPostExternalLoginAsync(string provider, string returnUrl = null)
+        {
+            var redirectUrl = Url.Page("./Login", pageHandler: "Callback", values: new { returnUrl });
+            var properties = signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+
+            return new ChallengeResult(provider, properties);
+        }
+
+        public async Task<IActionResult> OnGetCallbackAsync(string returnUrl = null, string remoteError = null)
+        {
+            returnUrl ??= Url.Content("~/");
+
+            if (remoteError != null)
+            {
+                ModelState.AddModelError(string.Empty, $"Error from external provider: {remoteError}");
+                await PopulateExternalLoginsAsync(returnUrl);
+
+                return Page();
+            }
+
+            var info = await signInManager.GetExternalLoginInfoAsync();
+            if (info == null)
+            {
+                ModelState.AddModelError(string.Empty, "Error loading external login information.");
+                await PopulateExternalLoginsAsync(returnUrl);
+
+                return Page();
+            }
+
+            // Sign in the user with this external login provider if the user already has a login.
+            var result = await signInManager
+                .ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey,
+                    isPersistent: false, bypassTwoFactor: true);
+            if (result.Succeeded)
+            {
+                logger.LogInformation("User logged in with {Name} provider.", info.LoginProvider);
+                return LocalRedirect(returnUrl);
+            }
+            if (result.IsLockedOut)
+            {
+                return RedirectToPage("./Lockout");
+            }
+            else
+            {
+                var email = GetEmailFromExternalLogin(info);
+                if (email != null)
+                {
+                    var user = new ApplicationUser
+                    {
+                        UserName = email,
+                        Email = email,
+                        EmailConfirmed = true
+                    };
+                    var createResult = await userManager.CreateAsync(user);
+
+                    if (createResult.Succeeded)
+                    {
+                        createResult = await userManager.AddLoginAsync(user, info);
+                        if (createResult.Succeeded)
+                        {
+                            await signInManager.SignInAsync(user, isPersistent: false);
+                            logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
+
+                            return LocalRedirect(returnUrl);
+                        }
+                    }
+
+                    foreach (var error in createResult.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                    await PopulateExternalLoginsAsync(returnUrl);
+
+                    return Page();
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Email claim not received from external provider.");
+                    await PopulateExternalLoginsAsync(returnUrl);
+
+                    return Page();
+                }
+            }
+        }
+
+        private async Task PopulateExternalLoginsAsync(string returnUrl = null)
+        {
+            ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            ReturnUrl = returnUrl ?? Url.Content("~/");
+        }
+
+        private string GetEmailFromExternalLogin(ExternalLoginInfo info)
+        {
+            if (info.LoginProvider == "GitHub")
+            {
+                return info.Principal.FindFirstValue(ClaimTypes.Email)
+                       ?? info.Principal.FindFirstValue("urn:github:email");
+            }
+
+            return info.Principal.FindFirstValue(ClaimTypes.Email);
         }
     }
 }
