@@ -32,7 +32,8 @@ namespace SnipEx.Web
                 .AddEntityFrameworkStores<SnipExDbContext>()
                 .AddRoles<ApplicationRole>()
                 .AddSignInManager<SignInManager<ApplicationUser>>()
-                .AddUserManager<UserManager<ApplicationUser>>();
+                .AddUserManager<UserManager<ApplicationUser>>()
+                .AddDefaultTokenProviders(); // May use a custom token provider later on
 
             builder.Services.AddControllersWithViews(options =>
             {
