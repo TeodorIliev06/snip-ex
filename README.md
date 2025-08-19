@@ -89,6 +89,14 @@ SnipEx/
 - Push notifications for interactions
 - Real-time collaboration features
 
+### 🔐 **Authentication Enhancements**
+- **External Login Providers:**
+  - Sign in with **Google** or **GitHub** using OAuth 2.0.
+  - Don't have an account? One will be created for you automatically.
+- **Forgot Password:**
+  - Secure password reset flow via email.
+  - Users can request a password reset link and set a new password securely.
+
 ## Roles
 
 ### *User*
@@ -112,12 +120,13 @@ SnipEx/
 - .NET 8.0 SDK
 - Microsoft SQL Server (LocalDB or full instance)
 - Visual Studio 2022 or VS Code
+- Check out the [`CONFIGURATION.md`](./docs/CONFIGURATION.md) for advanced features
 
 ### Setup Instructions
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone <https://github.com/TeodorIliev06/snip-ex>
    cd snip-ex
    ```
 
@@ -133,6 +142,6 @@ SnipEx/
 4. **Run the Applications**
    - Start both `SnipEx.Web` and `SnipEx.WebApi` projects simultaneously
    - The web application will be available at `https://localhost:7024`
-   - The API will be available at `https://localhost:7025`
+   - The API will be available at `https://localhost:7000`
 
 ### *To explore the project's full capabilities, ensure both the web app and the API are running simultaneously for optimal real-time features and seamless user experience. Happy coding!* 🚀
