@@ -17,8 +17,8 @@ namespace SnipEx.Web.Areas.Identity.Pages.Account
     using SnipEx.Data.Models;
 
     public class ForgotPasswordModel(
-        UserManager<ApplicationUser> userManager): PageModel
-    //IEmailSender emailSender) : PageModel //TODO: Will come up with a custom implementation
+        UserManager<ApplicationUser> userManager, 
+        IEmailSender emailSender) : PageModel
     {
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -63,10 +63,10 @@ namespace SnipEx.Web.Areas.Identity.Pages.Account
                     values: new { area = "Identity", code },
                     protocol: Request.Scheme);
 
-                //await emailSender.SendEmailAsync(
-                //    Input.Email,
-                //    "Reset Password",
-                //    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                await emailSender.SendEmailAsync(
+                    Input.Email,
+                    "Reset Password",
+                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }

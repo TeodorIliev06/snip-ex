@@ -3,12 +3,14 @@ namespace SnipEx.Web
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.AspNetCore.Identity.UI.Services;
 
     using SnipEx.Data;
     using SnipEx.Realtime;
     using SnipEx.Data.Models;
     using SnipEx.Services.Mapping;
     using SnipEx.Services.Mediator;
+    using SnipEx.Web.External.Email;
     using SnipEx.Web.Infrastructure;
     using SnipEx.Web.ViewModels.Post;
     using SnipEx.Services.Data.Contracts;
@@ -56,6 +58,8 @@ namespace SnipEx.Web
 
             builder.Services.RegisterRepositories(typeof(ApplicationUser).Assembly);
             builder.Services.RegisterUserDefinedServices(typeof(IPostService).Assembly);
+
+            builder.Services.AddTransient<IEmailSender, SendGridEmailSender>();
 
             var app = builder.Build();
 
