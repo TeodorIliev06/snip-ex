@@ -50,6 +50,37 @@
                 </div>
             </form>
         </div>
+        
+        <div class="external-login-separator">
+            <span>or</span>
+        </div>
+
+        <div class="external-login-buttons">
+            @if (Model.ExternalLogins != null)
+            {
+                foreach (var provider in Model.ExternalLogins)
+                {
+                    if (provider.Name == "Google")
+                    {
+                        <form asp-page-handler="ExternalLogin" method="post" asp-route-provider="Google"
+                              asp-route-returnUrl="@Model.ReturnUrl">
+                            <button type="submit" class="btn-external btn-google">
+                                <i class="fab fa-google"></i> Continue with Google
+                            </button>
+                        </form>
+                    }
+                    else if (provider.Name == "GitHub")
+                    {
+                        <form asp-page-handler="ExternalLogin" method="post" asp-route-provider="GitHub"
+                              asp-route-returnUrl="@Model.ReturnUrl">
+                            <button type="submit" class="btn-external btn-github">
+                                <i class="fab fa-github"></i> Continue with GitHub
+                            </button>
+                        </form>
+                    }
+                }
+            }
+        </div>
 
         <div class="register-section">
             <p>Don't have an account yet? <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="register-link">Register now</a></p>
